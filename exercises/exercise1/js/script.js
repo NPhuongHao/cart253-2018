@@ -18,6 +18,9 @@ var feltTextureImage;
 // The current position of the transparent image of "felt"
 var feltTextureImageX;
 var feltTextureImageY;
+//current position of rect
+var rectX;
+var rectY;
 
 
 // preload()
@@ -46,6 +49,10 @@ function setup() {
   feltTextureImageX = width/2;
   feltTextureImageY = 0 - feltTextureImage.height/2;
 
+  // Start the rect off screen to the left
+  rectX = 0 - width/5;
+  rectY = 0;
+
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
 }
@@ -60,6 +67,7 @@ function draw() {
 
   // Move the felt image down by increasing its y position
   feltTextureImageY += 1;
+  rectX += 1.5;
 
   // Display the felt image
   image(feltTextureImage,feltTextureImageX,feltTextureImageY);
@@ -75,4 +83,7 @@ function draw() {
 
   // Display the clown image
   image(clownImage,clownImageX,clownImageY);
+  fill(255,255,255,50);
+  stroke(0,0,0,50);
+  rect(rectX,rectY,width/5,height);
 }
