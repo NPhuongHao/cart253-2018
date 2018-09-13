@@ -21,6 +21,12 @@ var feltTextureImageY;
 //current position of rect
 var rectX;
 var rectY;
+// The added image
+var imgAdded;
+
+//current position of added image 1
+var imgAddedX;
+var imgAddedY;
 
 
 // preload()
@@ -30,6 +36,7 @@ var rectY;
 function preload() {
   clownImage = loadImage("assets/images/clown.png");
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
+  imgAdded = loadImage("assets/images/bloobros2(1).png");
 }
 
 
@@ -53,8 +60,10 @@ function setup() {
   rectX = 0 - width/5;
   rectY = 0;
 
+
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
+
 }
 
 
@@ -83,7 +92,18 @@ function draw() {
 
   // Display the clown image
   image(clownImage,clownImageX,clownImageY);
+
+  //Display the moving rect
   fill(255,255,255,50);
   stroke(0,0,0,50);
   rect(rectX,rectY,width/5,height);
+
+  // Start the added img exactly where the mouse is
+  imgAddedX = mouseX;
+  imgAddedY = mouseY;
+  imgAdded.height = 50;
+  imgAdded.width = 50;
+
+  // Display the added image
+  image(imgAdded,imgAddedX,imgAddedY);
 }
