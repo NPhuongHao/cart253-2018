@@ -34,6 +34,10 @@ var imgAdded2;
 var imgAdded2X;
 var imgAdded2Y;
 
+//The sin image and its position
+var imgSin;
+var imgSinX;
+var imgSinY;
 
 // preload()
 //
@@ -44,6 +48,7 @@ function preload() {
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
   imgAdded = loadImage("assets/images/bloobros2(1).png");
   imgAdded2 = loadImage("assets/images/doggo.png");
+  imgSin = loadImage("assets/images/grumpycat.png");
 }
 
 
@@ -73,8 +78,17 @@ function setup() {
   imgAdded2.height = 120;
   imgAdded2.width = 120;
 
+
+  // Start the sin img off screen to the left
+  imgSin.height = 100;
+  imgSin.width = 100;
+  imgSinX = 0 - imgSin.width/2;
+  imgSinY = height/2;
+
+
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
+
 
 }
 
@@ -110,15 +124,14 @@ function draw() {
   stroke(0,0,0,50);
   rect(rectX,rectY,width/5,height);
 
-  // Setting up and display the added image 1
   // Start the added img exactly where the mouse is
   imgAddedX = mouseX;
   imgAddedY = mouseY;
   imgAdded.height = 50;
   imgAdded.width = 50;
-
-  // Display the added image
+  // Display the added image 1
   image(imgAdded,imgAddedX,imgAddedY);
+
 
   //Setting up and display added img 2
   xDistance = mouseX - imgAdded2X;
@@ -129,4 +142,11 @@ function draw() {
 
   //Display added img 2
   image(imgAdded2,imgAdded2X,imgAdded2Y);
+
+  // Move the Sin img according to the sin wave
+  imgSinX += 0.75;
+  imgSinY = height/2 + 200 * Math.sin(imgSinX / 10);
+
+  //Display sin img
+  image(imgSin,imgSinX,imgSinY);
 }
