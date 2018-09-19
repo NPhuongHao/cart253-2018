@@ -21,12 +21,18 @@ var feltTextureImageY;
 //current position of rect
 var rectX;
 var rectY;
+
 // The added image
 var imgAdded;
 
 //current position of added image 1
 var imgAddedX;
 var imgAddedY;
+
+// The added image 2 and its postion
+var imgAdded2;
+var imgAdded2X;
+var imgAdded2Y;
 
 
 // preload()
@@ -37,6 +43,7 @@ function preload() {
   clownImage = loadImage("assets/images/clown.png");
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
   imgAdded = loadImage("assets/images/bloobros2(1).png");
+  imgAdded2 = loadImage("assets/images/doggo.png");
 }
 
 
@@ -60,6 +67,11 @@ function setup() {
   rectX = 0 - width/5;
   rectY = 0;
 
+  //Start the added img 2 exactly where the mouse is
+  imgAdded2X = mouseX;
+  imgAdded2Y = mouseY;
+  imgAdded2.height = 120;
+  imgAdded2.width = 120;
 
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
@@ -98,6 +110,7 @@ function draw() {
   stroke(0,0,0,50);
   rect(rectX,rectY,width/5,height);
 
+  // Setting up and display the added image 1
   // Start the added img exactly where the mouse is
   imgAddedX = mouseX;
   imgAddedY = mouseY;
@@ -106,4 +119,14 @@ function draw() {
 
   // Display the added image
   image(imgAdded,imgAddedX,imgAddedY);
+
+  //Setting up and display added img 2
+  xDistance = mouseX - imgAdded2X;
+  yDistance = mouseY - imgAdded2Y;
+  //Add 1/30th of the x and y distance to the clown's current (x,y) location
+  imgAdded2X = imgAdded2X + xDistance/30;
+  imgAdded2Y = imgAdded2Y + yDistance/30;
+
+  //Display added img 2
+  image(imgAdded2,imgAdded2X,imgAdded2Y);
 }
