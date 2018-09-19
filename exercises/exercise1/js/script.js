@@ -38,6 +38,9 @@ var imgAdded2Y;
 var imgSin;
 var imgSinX;
 var imgSinY;
+//How it moves
+var amplitudeMultiplier = 200;
+var frequency = 1/10;
 
 // preload()
 //
@@ -145,7 +148,7 @@ function draw() {
 
   // Move the Sin img according to the sin wave
   imgSinX += 0.75;
-  imgSinY = height/2 + 200 * Math.sin(imgSinX / 10);
+  imgSinY = height/2 + amplitudeMultiplier * Math.sin(imgSinX * frequency);
 
   //Display sin img
   image(imgSin,imgSinX,imgSinY);
