@@ -10,7 +10,8 @@ A simple dodging game with keyboard controls
 // The position and size of our avatar circle
 var avatarX;
 var avatarY;
-var avatarSize = 50;
+var avatarWidth = 10;
+var avatarHeigth = 50;
 
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
@@ -50,6 +51,9 @@ function setup() {
   // No stroke so it looks cleaner
   noStroke();
 
+  //Set the rectangle avatar at the CENTER
+  rectMode(CENTER);
+
 }
 
 // draw()
@@ -57,8 +61,8 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-  // A pink background
-  background(255,220,220);
+  // A background that slightly becomes redder each time the player dodges successfully
+  background(80 + dodges*10,80 + dodges*5,80 + dodges*5);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -96,9 +100,14 @@ function draw() {
   // Check if the enemy and avatar overlap - if they do the player loses
   // We do this by checking if the distance between the centre of the enemy
   // and the centre of the avatar is less that their combined radii
-  if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
+  if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarWidth/2) {
     // Tell the player they lost
     console.log("YOU LOSE!");
+    result = "YOU LOSE!";
+    fill(255,255,255);
+    text('Press ENTER to replay!',width/2,height*0.6);
+    //freeze frame
+    noLoop();
     // Reset the enemy's position
     enemyX = 0;
     enemyY = random(0,height);
@@ -119,9 +128,10 @@ function draw() {
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
     result = "YOU LOSE!";
-    noLoop();
-    fill(252, 127, 134);
+    fill(0);
     text('Press ENTER to replay!',width/2,height*0.6);
+    //freeze frame
+    noLoop();
   }
 
   // Check if the enemy has moved all the way across the screen
@@ -133,23 +143,25 @@ function draw() {
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
-    enemySpeed = random(5,15);
+    enemySpeed = random(15,25);
+    fill(200);
   }
 
   // Display the number of successful dodges in the console
   console.log(dodges);
 
-  // The player is black
+  // The player changes color slightly each frame
   fill(0);
   // Draw the player as a circle
-  ellipse(avatarX,avatarY,avatarSize,avatarSize);
+  rect(avatarX,avatarY,avatarWidth,avatarHeigth);
 
   // The enemy is red
   fill(255,0,0);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
 
-  fill(255,255,255);
+  //Display result
+  fill(50,0,0);
   textAlign(CENTER,CENTER);
   textSize(50);
   textFont("Lato");
@@ -161,6 +173,7 @@ function draw() {
 
 }
 
+//If player presses ENTER then the game restarts
 function keyPressed() {
   if (keyCode == RETURN) {
     loop();
