@@ -29,12 +29,15 @@ var enemyVX = 5;
 // How many dodges the player has made
 var dodges = 0;
 
+//The result
+var result
+
 // setup()
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
   // Create our playing area
-  createCanvas(500,500);
+  createCanvas(1000,500);
 
   // Put the avatar in the centre
   avatarX = width/2;
@@ -46,6 +49,7 @@ function setup() {
 
   // No stroke so it looks cleaner
   noStroke();
+
 }
 
 // draw()
@@ -107,13 +111,17 @@ function draw() {
 
   // Check if the avatar has gone off the screen (cheating!)
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
-    // If they went off the screen they lose in the same way as above.
-    console.log("YOU LOSE!");
-    enemyX = 0;
+    enemyX = 0 - enemySize/2;
     enemyY = random(0,height);
     avatarX = width/2;
     avatarY = height/2;
     dodges = 0;
+    // If they went off the screen they lose in the same way as above.
+    console.log("YOU LOSE!");
+    result = "YOU LOSE!";
+    noLoop();
+    fill(252, 127, 134);
+    text('Press ENTER to replay!',width/2,height*0.6);
   }
 
   // Check if the enemy has moved all the way across the screen
@@ -125,6 +133,7 @@ function draw() {
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
+    enemySpeed = random(5,15);
   }
 
   // Display the number of successful dodges in the console
@@ -140,4 +149,21 @@ function draw() {
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
 
+  fill(255,255,255);
+  textAlign(CENTER,CENTER);
+  textSize(50);
+  textFont("Lato");
+  textStyle(BOLD);
+  text(result,width/2,height*0.38);
+  textSize(20);
+  textStyle(NORMAL);
+  text('DODGES = ' + dodges,width*0.8,height*0.1);
+
+}
+
+function keyPressed() {
+  if (keyCode == RETURN) {
+    loop();
+    result = '';
+  }
 }
