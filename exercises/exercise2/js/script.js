@@ -119,7 +119,7 @@ function draw() {
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(10,height-10); //so that it doesn't start too close to the edges
-    enemySpeed = random(5,15);
+    enemySpeed = random(5,12);
     // Tell them how many scores they have made
     console.log(scores + " scores!");
     //If player successfully ate a sun with velocity > 8.5, avatar becomes big for one turn
