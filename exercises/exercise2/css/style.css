@@ -12,17 +12,3 @@ body {
   font-family: Lato;
 }
 
-div {
-  position: absolute;
-}
-.container {
-  width: 1000px;
-  height: 500px;
-  font-size: 12px;
-}
-
-h2 {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}

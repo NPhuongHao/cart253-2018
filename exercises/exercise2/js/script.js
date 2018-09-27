@@ -9,6 +9,7 @@ A simple dodging game with keyboard controls
 
 // The position and size of our avatar cloud
 var avatar;
+var avatarWin;
 var avatarX;
 var avatarY;
 var avatarHeigth = 60;
@@ -35,9 +36,14 @@ var scores = 0;
 //The result
 var result
 
+//Instruction var name and opacity
+var instructionOpacity = 1;
+
 function preload() {
   enemy = loadImage("assets/images/sun.png");
-  avatar = loadImage("assets/images/cloud.png")
+  avatar = loadImage("assets/images/cloud.png");
+  avatarWin = loadImage("assets/images/cloudwin.png");
+
 }
 // setup()
 //
@@ -68,7 +74,8 @@ function setup() {
 // game over situations.
 function draw() {
   // A background that slightly becomes darker each time the player scores successfully
-  background(200 - scores*5,220 - scores*5,255 - scores*5);
+  background(180 - scores*5,220 - scores*5,255 - scores*5);
+
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -112,7 +119,7 @@ function draw() {
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(10,height-10); //so that it doesn't start too close to the edges
-    enemySpeed = random(5,10);
+    enemySpeed = random(5,15);
     // Tell them how many scores they have made
     console.log(scores + " scores!");
     //If player successfully ate a sun with velocity > 8.5, avatar becomes big for one turn
@@ -128,56 +135,39 @@ function draw() {
 
   // Check if the avatar has gone off the screen (cheating!)
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
-    // Reset the enemy and avatar position
-    enemyX = 0 - enemySize/2;
-    enemyY = random(0,height);
-    avatarX = width/2;
-    avatarY = height/2;
-    scores = 0;
-    //Reset avatar size
-    avatarWidth = 90;
-    avatarHeigth = 60;
-    // If they went off the screen they lose in the same way as above.
+    reset();
+    // If they went off the screen they lose.
     console.log("YOU LOSE!");
     result = "YOU LOSE!";
     fill(255);
-    text('Press ENTER to replay!',width/2,height*0.6);
+    text('Press ENTER to restart',width/2,height*0.6);
     //freeze frame
     noLoop();
   }
 
   // Check if the enemy has moved all the way across the screen
   if (enemyX > width) {
-    // Reset the dodge counter
-    scores = 0;
-    // Reset the enemy and avatar position
-    enemyX = 0 - enemySize/2;
-    enemyY = random(0,height);
-    avatarX = width/2;
-    avatarY = height/2;
-    scores = 0;
-    //Reset avatar size
-    avatarWidth = 90;
-    avatarHeigth = 60;
-    // Tell the player they lost
+    reset();
+        // Tell the player they lost
     console.log("YOU LOSE!");
     result = "YOU LOSE!";
     fill(255,255,255);
-    text('Press ENTER to replay!',width/2,height*0.6);
+    text('Press ENTER to restart',width/2,height*0.6);
     //freeze frame
     noLoop();
   }
 
   //If the background becomes Black then the player wins
-  /*if (background() == rbg(0)) {
+  if (scores*5 >= 255) {
+    reset();
     console.log("YOU WIN!")
     result = "YOU WIN!";
     fill(255);
     text('The world is now plunged into eternal darkness',width/2,height*0.6);
-    text('Press ENTER to restart!',width/2,heigh*0.7);
+    text('Press ENTER to restart',width/2,height*0.7);
     noLoop();
   }
-  */
+
 
   // Display the number of successful scores in the console
   console.log(scores);
@@ -185,23 +175,37 @@ function draw() {
   // The player changes color slightly each frame
   fill(0);
   // Draw the player as a cloud
-  //If player successfully ate
-  image(avatar,avatarX,avatarY,avatarWidth,avatarHeigth);
+  if (result == "YOU WIN!") {
+    image(avatarWin,avatarX,avatarY,avatarWidth,avatarHeigth);
+  } else {
+    image(avatar,avatarX,avatarY,avatarWidth,avatarHeigth);
+  }
 
   // Draw the enemy as a sun
   image(enemy,enemyX,enemyY,enemySize,enemySize);
 
+
+  // Instruction text
+  instructionOpacity = constrain(instructionOpacity - 0.02,0,1);
+  console.log('Opacity = '+ instructionOpacity );
+  fill('rgba( 100,140,150,'+instructionOpacity+')');
+  textAlign(CENTER);
+  textStyle(BOLD);
+  textSize(70);
+  text('⇦ ⇨ ⇧ ⇩', width/2, height*0.45 );
+  textSize(40);
+  text('Eat the suns before they burn the sky!', width/2, height*0.55);
 
   //Display result
   fill(255);
   textAlign(CENTER,CENTER);
   textSize(50);
   textFont("Lato");
-  textStyle(BOLD);
   text(result,width/2,height*0.38);
   textSize(20);
   textStyle(NORMAL);
   text('Scores = ' + scores,width*0.9,height*0.1);
+
 
 }
 
@@ -211,5 +215,18 @@ function keyPressed() {
   if (keyCode == RETURN) {
     loop();
     result = '';
+
   }
+}
+
+function reset() {
+  // Reset the enemy and avatar position
+  enemyX = 0 - enemySize/2;
+  enemyY = random(0,height);
+  avatarX = width/2;
+  avatarY = height/2;
+  scores = 0;
+  //Reset avatar size
+  avatarWidth = 90;
+  avatarHeigth = 60;
 }
