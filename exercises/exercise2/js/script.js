@@ -7,32 +7,38 @@ A simple dodging game with keyboard controls
 
 ******************************************************/
 
-// The position and size of our avatar circle
+// The position and size of our avatar cloud
+var avatar;
 var avatarX;
 var avatarY;
-var avatarWidth = 10;
-var avatarHeigth = 50;
+var avatarHeigth = 60;
+var avatarWidth = 90;
 
-// The speed and velocity of our avatar circle
+// The speed and velocity of our avatar cloud
 var avatarSpeed = 10;
 var avatarVX = 0;
 var avatarVY = 0;
 
-// The position and size of the enemy circle
+// The name, position and size of the enemy sun
+var enemy;
 var enemyX;
 var enemyY;
 var enemySize = 50;
 
-// The speed and velocity of our enemy circle
+// The speed and velocity of our enemy sun
 var enemySpeed = 5;
 var enemyVX = 5;
 
-// How many dodges the player has made
-var dodges = 0;
+// How many scores the player has made
+var scores = 0;
 
 //The result
 var result
 
+function preload() {
+  enemy = loadImage("assets/images/sun.png");
+  avatar = loadImage("assets/images/cloud.png")
+}
 // setup()
 //
 // Make the canvas, position the avatar and anemy
@@ -51,18 +57,18 @@ function setup() {
   // No stroke so it looks cleaner
   noStroke();
 
-  //Set the rectangle avatar at the CENTER
-  rectMode(CENTER);
+  //Set the image avatar at the CENTER
+  imageMode(CENTER);
 
 }
 
 // draw()
 //
-// Handle moving the avatar and enemy and checking for dodges and
+// Handle moving the avatar and enemy and checking for scores and
 // game over situations.
 function draw() {
-  // A background that slightly becomes redder each time the player dodges successfully
-  background(80 + dodges*10,80 + dodges*5,80 + dodges*5);
+  // A background that slightly becomes darker each time the player scores successfully
+  background(200 - scores*5,220 - scores*5,255 - scores*5);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -101,34 +107,40 @@ function draw() {
   // We do this by checking if the distance between the centre of the enemy
   // and the centre of the avatar is less that their combined radii
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarWidth/2) {
-    // Tell the player they lost
-    console.log("YOU LOSE!");
-    result = "YOU LOSE!";
-    fill(255,255,255);
-    text('Press ENTER to replay!',width/2,height*0.6);
-    //freeze frame
-    noLoop();
-    // Reset the enemy's position
+    // This means the player eated a sun so update its dodge statistic
+    scores = scores + 1;
+    // Reset the enemy's position to the left at a random height
     enemyX = 0;
-    enemyY = random(0,height);
-    // Reset the avatar's position
-    avatarX = width/2;
-    avatarY = height/2;
-    // Reset the dodge counter
-    dodges = 0;
+    enemyY = random(10,height-10); //so that it doesn't start too close to the edges
+    enemySpeed = random(5,10);
+    // Tell them how many scores they have made
+    console.log(scores + " scores!");
+    //If player successfully ate a sun with velocity > 8.5, avatar becomes big for one turn
+    if (enemySpeed > 8.5) {
+      avatarWidth = 130;
+      avatarHeigth = 100;
+    } else {
+      avatarWidth = 90;
+      avatarHeigth = 60;
+    }
+
   }
 
   // Check if the avatar has gone off the screen (cheating!)
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
+    // Reset the enemy and avatar position
     enemyX = 0 - enemySize/2;
     enemyY = random(0,height);
     avatarX = width/2;
     avatarY = height/2;
-    dodges = 0;
+    scores = 0;
+    //Reset avatar size
+    avatarWidth = 90;
+    avatarHeigth = 60;
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
     result = "YOU LOSE!";
-    fill(0);
+    fill(255);
     text('Press ENTER to replay!',width/2,height*0.6);
     //freeze frame
     noLoop();
@@ -136,32 +148,52 @@ function draw() {
 
   // Check if the enemy has moved all the way across the screen
   if (enemyX > width) {
-    // This means the player dodged so update its dodge statistic
-    dodges = dodges + 1;
-    // Tell them how many dodges they have made
-    console.log(dodges + " DODGES!");
-    // Reset the enemy's position to the left at a random height
-    enemyX = 0;
+    // Reset the dodge counter
+    scores = 0;
+    // Reset the enemy and avatar position
+    enemyX = 0 - enemySize/2;
     enemyY = random(0,height);
-    enemySpeed = random(15,25);
-    fill(200);
+    avatarX = width/2;
+    avatarY = height/2;
+    scores = 0;
+    //Reset avatar size
+    avatarWidth = 90;
+    avatarHeigth = 60;
+    // Tell the player they lost
+    console.log("YOU LOSE!");
+    result = "YOU LOSE!";
+    fill(255,255,255);
+    text('Press ENTER to replay!',width/2,height*0.6);
+    //freeze frame
+    noLoop();
   }
 
-  // Display the number of successful dodges in the console
-  console.log(dodges);
+  //If the background becomes Black then the player wins
+  /*if (background() == rbg(0)) {
+    console.log("YOU WIN!")
+    result = "YOU WIN!";
+    fill(255);
+    text('The world is now plunged into eternal darkness',width/2,height*0.6);
+    text('Press ENTER to restart!',width/2,heigh*0.7);
+    noLoop();
+  }
+  */
+
+  // Display the number of successful scores in the console
+  console.log(scores);
 
   // The player changes color slightly each frame
   fill(0);
-  // Draw the player as a circle
-  rect(avatarX,avatarY,avatarWidth,avatarHeigth);
+  // Draw the player as a cloud
+  //If player successfully ate
+  image(avatar,avatarX,avatarY,avatarWidth,avatarHeigth);
 
-  // The enemy is red
-  fill(255,0,0);
-  // Draw the enemy as a circle
-  ellipse(enemyX,enemyY,enemySize,enemySize);
+  // Draw the enemy as a sun
+  image(enemy,enemyX,enemyY,enemySize,enemySize);
+
 
   //Display result
-  fill(50,0,0);
+  fill(255);
   textAlign(CENTER,CENTER);
   textSize(50);
   textFont("Lato");
@@ -169,9 +201,10 @@ function draw() {
   text(result,width/2,height*0.38);
   textSize(20);
   textStyle(NORMAL);
-  text('DODGES = ' + dodges,width*0.8,height*0.1);
+  text('Scores = ' + scores,width*0.9,height*0.1);
 
 }
+
 
 //If player presses ENTER then the game restarts
 function keyPressed() {
