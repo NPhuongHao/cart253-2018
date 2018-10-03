@@ -127,8 +127,14 @@ function setup() {
   // Once we've displayed all decoys, we choose a location for the target
   targetX = random(0,width);
   targetY = random(0,height);
+  // Reroll if target's location overlaps the instruction panel
+  while((targetX <= (instructionW + 20 + targetImage.width/2)) && (targetY <= (instructionH + 20 + targetImage.height/2))) {
+  targetX = random(0,width);
+  targetY = random(0,height);
+    }
   // And draw it (this means it will always be on top)
-  image(targetImage,targetX,targetY);
+      image(targetImage,targetX,targetY);
+
 }
 
 
@@ -141,6 +147,7 @@ function draw() {
     fill(random(255));
     // Tell them they won!
     text("YOU WINNED!",width/2,height/2);
+    //Question: Why nothing happens when we click on the target image on the instruction panel?
 
     noFill();
     stroke(random(255));
