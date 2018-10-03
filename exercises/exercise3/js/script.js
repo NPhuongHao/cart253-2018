@@ -15,6 +15,10 @@ var targetX;
 var targetY;
 var targetImage;
 
+//Target's speed
+var targetVX = 10;
+var targetVY = 5;
+
 // The ten decoy images
 var decoyImage1;
 var decoyImage2;
@@ -132,13 +136,16 @@ function setup() {
   targetX = random(0,width);
   targetY = random(0,height);
     }
-  // And draw it (this means it will always be on top)
-      image(targetImage,targetX,targetY);
 
 }
 
 
 function draw() {
+
+  // And draw it (this means it will always be on top)
+      image(targetImage,targetX,targetY);
+
+
   if (gameOver) {
     // Prepare our typography
     textFont("Helvetica");
@@ -149,10 +156,28 @@ function draw() {
     text("YOU WINNED!",width/2,height/2);
     //Question: Why nothing happens when we click on the target image on the instruction panel?
 
-    noFill();
+    /*noFill();
     stroke(random(255));
     strokeWeight(10);
-    ellipse(targetX,targetY,targetImage.width,targetImage.height);
+    ellipse(targetX,targetY,targetImage.width,targetImage.height);*/
+    if (targetX - targetImage.width/2 > width) {
+      targetX = 0 - targetImage.width/2;
+    }
+    if (targetY - targetImage.height/2 > height) {
+      targetY = 0 - targetImage.height/2;
+    }
+
+    if (targetX > width/2) {
+      targetImage.width -=0.5;
+      targetImage.height -=0.5;
+    } else {
+      targetImage.width +=0.5;
+      targetImage.height +=0.5;
+    }
+    targetX += targetVX;
+    targetY += targetVY;
+
+
   }
 }
 
