@@ -34,6 +34,10 @@ var numDecoys = 100;
 // Keep track of whether they've won
 var gameOver = false;
 
+// The parameters of the instruction panel
+var instructionW = 180;
+var instructionH = 180;
+
 // preload()
 //
 // Loads the target and decoy images before the program starts
@@ -103,6 +107,23 @@ function setup() {
     }
   }
 
+  // Set location of the instruction panel on the top left of the screen
+  noStroke();
+  rectMode(CENTER);
+  fill(254,89,88);
+  rect(instructionW/2 + 20, instructionH/2 + 20, instructionW, instructionH);
+  fill(5,35,46);
+  rect(instructionW/2 + 20, instructionH/6 + 20, instructionW, instructionH/3);
+  fill(245,214,111);
+  textAlign(CENTER,CENTER);
+  textFont("Helvetica");
+  textSize(16);
+  textStyle(BOLD);
+  text("HAVE YOU SEEN", instructionW/2 + 20, instructionH/6 + 13);
+  text("THIS DOG?",instructionW/2 + 20, instructionH/6 + 30)
+
+  image(targetImage,instructionW/2 + 20,instructionH/3*2 + 20);
+
   // Once we've displayed all decoys, we choose a location for the target
   targetX = random(0,width);
   targetY = random(0,height);
@@ -110,12 +131,12 @@ function setup() {
   image(targetImage,targetX,targetY);
 }
 
+
 function draw() {
   if (gameOver) {
     // Prepare our typography
     textFont("Helvetica");
     textSize(128);
-    textAlign(CENTER,CENTER);
     noStroke();
     fill(random(255));
     // Tell them they won!
