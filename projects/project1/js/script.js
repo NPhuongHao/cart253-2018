@@ -19,7 +19,7 @@ var playerY;
 var playerRadius = 25;
 var playerVX = 0;
 var playerVY = 0;
-var playerMaxSpeed = 3;
+var playerMaxSpeed = 2;
 // Player health
 var playerHealth;
 var playerMaxHealth = 255;
@@ -139,6 +139,16 @@ function handleInput() {
 // Updates player position based on velocity,
 // wraps around the edges.
 function movePlayer() {
+
+  //Quicken playerMaxSpeed when player holds SHIFT keys
+  if (keyIsDown(SHIFT)) {
+    playerMaxSpeed = 6;
+    playerHealth -= 0.5; 
+  } else {
+    playerMaxSpeed = 2;
+  }
+
+
   // Update position
   playerX += playerVX;
   playerY += playerVY;
