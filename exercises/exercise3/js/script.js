@@ -171,6 +171,7 @@ function draw() {
       targetY = 0 - targetImage.height/2;
     }
 
+//Option 1: Sausage dog move around the screen
     /*if (targetX > width/2) {
       targetImage.width -=0.5;
       targetImage.height -=0.5;
@@ -182,9 +183,10 @@ function draw() {
     targetY += targetVY;
     */
 
+//Option 2: Sausage dogs randomly fill the screen
       targetX = random(0,width);
       targetY = random(0,height);
-
+        //Set a variable for the avatar's size
       var avatarSizeVar = random(50,200);
       targetImage.width = avatarSizeVar;
       targetImage.height = avatarSizeVar;
