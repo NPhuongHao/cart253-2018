@@ -154,10 +154,15 @@ function draw() {
     noStroke();
     fill(random(255));
     // Tell them they won!
-    text("YOU WINNED!",width/2,height/2);
+    text("YOU WINNED!",width/2,height*0.4);
     textSize(42);
-    fill(random(200,250));
-    text("...And filled the world with cute little sausage dogs",width/2,height*0.65);
+    fill(254,89,88);
+    text("...And filled the world with cute little sausage dogs",width/2,height*0.55);
+    fill(254,89,88);
+    rect(width/2, height*0.65,500,40);
+    textSize(30);
+    fill(255,255,0);
+    text("Press ENTER to restart",width/2, height*0.65);
     //Question: Why nothing happens when we click on the target image on the instruction panel?
 
     /*noFill();
@@ -190,10 +195,12 @@ function draw() {
       var avatarSizeVar = random(50,200);
       targetImage.width = avatarSizeVar;
       targetImage.height = avatarSizeVar;
-
-
-
-
+      //Don't let it fill up forever
+      var counter = 0;
+      counter ++;
+      if (counter > 500) {
+        noLoop();
+      }
   }
 }
 
@@ -207,5 +214,11 @@ function mousePressed() {
     if (mouseY > targetY - targetImage.height/2 && mouseY < targetY + targetImage.height/2) {
       gameOver = true;
     }
+  }
+}
+
+function keyPressed() {
+  if (keyCode === RETURN) {
+    window.location.reload();
   }
 }
