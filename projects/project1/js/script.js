@@ -19,7 +19,7 @@ var playerY;
 var playerRadius = 25;
 var playerVX = 0;
 var playerVY = 0;
-var playerMaxSpeed = 2;
+var playerMaxSpeed = 3;
 // Player health
 var playerHealth;
 var playerMaxHealth = 255;
@@ -33,6 +33,8 @@ var preyRadius = 25;
 var preyVX;
 var preyVY;
 var preyMaxSpeed = 4;
+var tx;
+var ty;
 // Prey health
 var preyHealth;
 var preyMaxHealth = 100;
@@ -65,6 +67,8 @@ function setupPrey() {
   preyVX = -preyMaxSpeed;
   preyVY = preyMaxSpeed;
   preyHealth = preyMaxHealth;
+  tx = random(0,1000);
+  ty = random(0,1000);
 }
 
 // setupPlayer()
@@ -200,16 +204,8 @@ function checkEating() {
 // Moves the prey based on random velocity changes
 function movePrey() {
   // Change the prey's velocity at random intervals
-  // random() will be < 0.05 5% of the time, so the prey
-  // will change direction on 5% of frames
-  if (random() < 0.05) {
-    // Set velocity based on random values to get a new direction
-    // and speed of movement
-    // Use map() to convert from the 0-1 range of the random() function
-    // to the appropriate range of velocities for the prey
-    preyVX = map(random(),0,1,-preyMaxSpeed,preyMaxSpeed);
-    preyVY = map(random(),0,1,-preyMaxSpeed,preyMaxSpeed);
-  }
+  preyVX = map(noise(tx),0,1,-preyMaxSpeed,preyMaxSpeed);
+  preyVY = map(noise(ty),0,1,-preyMaxSpeed,preyMaxSpeed);
 
   // Update prey position based on velocity
   preyX += preyVX;
@@ -229,6 +225,9 @@ function movePrey() {
   else if (preyY > height) {
     preyY -= height;
   }
+
+  tx += 0.01;
+  ty += 0.01;
 }
 
 // drawPrey()
