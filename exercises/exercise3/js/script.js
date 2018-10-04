@@ -17,7 +17,7 @@ var targetImage;
 
 //Target's speed
 var targetVX = 10;
-var targetVY = 5;
+var targetVY = 15;
 
 // The ten decoy images
 var decoyImage1;
@@ -30,10 +30,6 @@ var decoyImage7;
 var decoyImage8;
 var decoyImage9;
 var decoyImage10;
-
-// The number of decoys to show on the screen, randomly
-// chosen from the decoy images
-var numDecoys = 100;
 
 // Keep track of whether they've won
 var gameOver = false;
@@ -68,43 +64,48 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   background("#ffff00");
   imageMode(CENTER);
+  // The number of decoys to show on the screen, randomly
+  // chosen from the decoy images
+  var numDecoys = random(50,120);
 
   // Use a for loop to draw as many decoys as we need
   for (var i = 0; i < numDecoys; i++) {
     // Choose a random location for this decoy
     var x = random(0,width);
     var y = random(0,height);
+    //Choose a random size for each decoy
+    var z = random(50,200);
     // Generate a random number we can use for probability
     var r = random();
     // Use the random number to display one of the ten decoy
     // images, each with a 10% chance of being shown
     // We'll talk more about this nice quality of random soon enough
     if (r < 0.1) {
-      image(decoyImage1,x,y);
+      image(decoyImage1,x,y,z,z);
     }
     else if (r < 0.2) {
-      image(decoyImage2,x,y);
+      image(decoyImage2,x,y,z,z);
     }
     else if (r < 0.3) {
-      image(decoyImage3,x,y);
+      image(decoyImage3,x,y,z,z);
     }
     else if (r < 0.4) {
-      image(decoyImage4,x,y);
+      image(decoyImage4,x,y,z,z);
     }
     else if (r < 0.5) {
-      image(decoyImage5,x,y);
+      image(decoyImage5,x,y,z,z);
     }
     else if (r < 0.6) {
-      image(decoyImage6,x,y);
+      image(decoyImage6,x,y,z,z);
     }
     else if (r < 0.7) {
-      image(decoyImage7,x,y);
+      image(decoyImage7,x,y,z,z);
     }
     else if (r < 0.8) {
-      image(decoyImage8,x,y);
+      image(decoyImage8,x,y,z,z);
     }
     else if (r < 0.9) {
-      image(decoyImage9,x,y);
+      image(decoyImage9,x,y,z,z);
     }
     else if (r < 1.0) {
       image(decoyImage10,x,y);
@@ -154,6 +155,9 @@ function draw() {
     fill(random(255));
     // Tell them they won!
     text("YOU WINNED!",width/2,height/2);
+    textSize(42);
+    fill(random(200,250));
+    text("...And filled the world with cute little sausage dogs",width/2,height*0.65);
     //Question: Why nothing happens when we click on the target image on the instruction panel?
 
     /*noFill();
@@ -167,7 +171,7 @@ function draw() {
       targetY = 0 - targetImage.height/2;
     }
 
-    if (targetX > width/2) {
+    /*if (targetX > width/2) {
       targetImage.width -=0.5;
       targetImage.height -=0.5;
     } else {
@@ -176,6 +180,16 @@ function draw() {
     }
     targetX += targetVX;
     targetY += targetVY;
+    */
+
+      targetX = random(0,width);
+      targetY = random(0,height);
+
+      var avatarSizeVar = random(50,200);
+      targetImage.width = avatarSizeVar;
+      targetImage.height = avatarSizeVar;
+
+
 
 
   }
