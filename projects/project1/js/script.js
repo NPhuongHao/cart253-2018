@@ -39,7 +39,9 @@ var preyY;
 var preyRadius = 25;
 var preyVX;
 var preyVY;
-var preyMaxSpeed = 4;
+///////////NEW//////////////
+var preyMaxSpeed = 2;
+//////////ENDNEW////////////
 var tx;
 var ty;
 // Prey health
@@ -53,10 +55,19 @@ var eatHealth = 20;
 // Number of prey eaten during the game
 var preyEaten = 0;
 
-var opacity = 100;
+// motivationText's style
+var opacity = 255;
 var motivationText;
+var motivationFont;
 // setup()
 //
+
+///////////NEW//////////////
+function preload() {
+  motivationFont = loadFont('assets/fonts/AllertaStencil-Regular.ttf');
+}
+//////////ENDNEW////////////
+
 // Sets up the basic elements of the game
 function setup() {
   createCanvas(500,500);
@@ -97,11 +108,19 @@ function setupPlayer() {
 // displays the two agents.
 // When the game is over, shows the game over screen.
 function draw() {
+
+/////////////NEW////////////
   background(100,100,200);
   textAlign(RIGHT);
-  textSize(14);
-  text("PREYS EATEN: " + preyEaten, width-20, 20);
+  textFont('Arial')
+  textSize(18);
+  textStyle(BOLD);
+  fill(255,255);
+  text("PREYS EATEN: " + preyEaten, width-30, 30);
+  fill(0,255);
   textAlign(CENTER);
+  textStyle(BOLD);
+//////////ENDNEW////////////
 
   if (!gameOver) {
     handleInput();
@@ -156,8 +175,8 @@ function movePlayer() {
   ///////NEW/////////
   //Quicken playerMaxSpeed when player holds SHIFT keys
   if (keyIsDown(SHIFT)) {
-    playerMaxSpeed = 6;
-    playerHealth -= 0.5;
+    playerMaxSpeed = 8;
+    playerHealth -= 0.8;
   } else {
     playerMaxSpeed = 4;
   }
@@ -208,6 +227,9 @@ function checkEating() {
   if (d < playerRadius + preyRadius) {
     // Increase the player health
     playerHealth = constrain(playerHealth + eatHealth,0,playerMaxHealth);
+/////////////NEW//////////////
+    // Change preyRadius randomly
+    preyRadius = random(15,30);
     // Reduce the prey health
     preyHealth = constrain(preyHealth - eatHealth,0,preyMaxHealth);
     //Decrease the playerRadius when it reaches 25px and increase it when it reaches 10px
@@ -263,26 +285,27 @@ function movePrey() {
     tx += 0.8;
     ty += 0.8;
   } else if ( 10 <= preyEaten && preyEaten < 15) {
-    displayMotivation("I'M IMPRESSED");
-    preyMaxSpeed = 5;
+    displayMotivation("I'M IMPRESSED", height/2);
+    preyMaxSpeed = 4;
     tx += 0.5;
     ty += 0.5;
   } else if (15 <= preyEaten && preyEaten < 20) {
-    displayMotivation("HOW ABOUT THIS?");
+    displayMotivation("HOW ABOUT THIS?", height/2);
     tx += 0.1;
     ty += 0.1;
   } else if (20 <= preyEaten && preyEaten < 25) {
-    displayMotivation("TRY HARDER");
+    displayMotivation("TRY HARDER", height/2);
     preyMaxSpeed = 6;
     tx += 0.05;
     ty += 0.05;
   } else if (25 <= preyEaten && preyEaten < 30) {
-    displayMotivation("RELAX A BIT");
+    displayMotivation("RELAX A BIT", height/2);
     preyMaxSpeed = 2;
-    tx += 0.05;
-    ty += 0.05;
+    tx += 0.2;
+    ty += 0.2;
   } else if (30 <= preyEaten) {
-    displayMotivation("STAY DILIGENT FROM NOW ON");
+    displayMotivation("STAY DILIGENT", height*0.47);
+    displayMotivation("FROM NOW ON", height*0.53);
     preyMaxSpeed = 8;
     tx += 0.01;
     ty += 0.01;
@@ -345,13 +368,15 @@ function modifyPlayerRadius() {
     console.log ("playerRadiusUp = " + playerRadiusUp + " playerRadius = " + playerRadius);
   }
 
-  function displayMotivation(m) {
+  function displayMotivation(m,h) {
     motivationText = m;
-    opacity -= 1.5;
+    opacity -= 5;
     opacity = constrain(opacity,0,255);
     console.log ("opacity " + opacity);
     fill(0,opacity);
-    text(motivationText, width/2, height/2);
+    textSize(38);
+    textFont(motivationFont);
+    text(motivationText, width/2, h);
   }
 
   ///////ENDNEW/////////
