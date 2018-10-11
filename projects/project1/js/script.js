@@ -17,6 +17,8 @@ var gameOver = false;
 var playerX;
 var playerY;
 var playerRadius = 25;
+var playerRadiusV;
+var playerRadiusUp = false;
 var playerVX = 0;
 var playerVY = 0;
 var playerMaxSpeed = 2;
@@ -143,7 +145,7 @@ function movePlayer() {
   //Quicken playerMaxSpeed when player holds SHIFT keys
   if (keyIsDown(SHIFT)) {
     playerMaxSpeed = 6;
-    playerHealth -= 0.5; 
+    playerHealth -= 0.5;
   } else {
     playerMaxSpeed = 2;
   }
@@ -195,7 +197,8 @@ function checkEating() {
     playerHealth = constrain(playerHealth + eatHealth,0,playerMaxHealth);
     // Reduce the prey health
     preyHealth = constrain(preyHealth - eatHealth,0,preyMaxHealth);
-
+    //Decrease the playerRadius when it reaches 25px and increase it when it reaches 10px
+    modifyPlayerRadius();
     // Check if the prey died
     if (preyHealth === 0) {
       // Move the "new" prey to a random position
@@ -268,3 +271,25 @@ function showGameOver() {
   gameOverText += "before you died."
   text(gameOverText,width/2,height/2);
 }
+
+
+function modifyPlayerRadius() {
+  playerRadiusV = 0.2;
+  //Check if we're in the process of adding or taking away values
+  if (playerRadiusUp == true) {
+    //Check if playerRadius has reached max ceilling
+    if (playerRadius <=25) {
+      playerRadius += playerRadiusV;
+    } else {
+      playerRadiusUp = false;
+    }
+  } else {
+    ////Check if playerRadius has reached min ceilling
+    if (playerRadius >= 10) {
+      playerRadius -= playerRadiusV;
+    } else {
+      playerRadiusUp = true;
+    }
+      }
+    console.log ("playerRadiusUp = " + playerRadiusUp + " playerRadius = " + playerRadius);
+  }
