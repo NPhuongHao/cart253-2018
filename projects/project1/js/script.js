@@ -17,11 +17,16 @@ var gameOver = false;
 var playerX;
 var playerY;
 var playerRadius = 25;
-var playerRadiusV;
-var playerRadiusUp = false;
 var playerVX = 0;
 var playerVY = 0;
 var playerMaxSpeed = 2;
+
+///////NEW/////////
+//playerRadius' modificators
+var playerRadiusV;
+var playerRadiusUp = false; //To check if we're in the process of increasing or decreasing playerRadius
+///////ENDNEW/////////
+
 // Player health
 var playerHealth;
 var playerMaxHealth = 255;
@@ -44,10 +49,12 @@ var preyMaxHealth = 100;
 var preyFill = 200;
 
 // Amount of health obtained per frame of "eating" the prey
-var eatHealth = 10;
+var eatHealth = 20;
 // Number of prey eaten during the game
 var preyEaten = 0;
 
+var opacity = 100;
+var motivationText;
 // setup()
 //
 // Sets up the basic elements of the game
@@ -142,6 +149,7 @@ function handleInput() {
 // wraps around the edges.
 function movePlayer() {
 
+  ///////NEW/////////
   //Quicken playerMaxSpeed when player holds SHIFT keys
   if (keyIsDown(SHIFT)) {
     playerMaxSpeed = 6;
@@ -149,6 +157,7 @@ function movePlayer() {
   } else {
     playerMaxSpeed = 2;
   }
+  ///////ENDNEW/////////
 
 
   // Update position
@@ -194,13 +203,13 @@ function checkEating() {
   // Check if it's an overlap
   if (d < playerRadius + preyRadius) {
     // Increase the player health
-    playerHealth = constrain(playerHealth + eatHealth,0,playerMaxHealth);
+    playerHealth = constrain(playerHealth + eatHealth,2,playerMaxHealth);
     // Reduce the prey health
-    preyHealth = constrain(preyHealth - eatHealth,0,preyMaxHealth);
+    preyHealth = constrain(preyHealth - eatHealth,2,preyMaxHealth);
     //Decrease the playerRadius when it reaches 25px and increase it when it reaches 10px
     modifyPlayerRadius();
     // Check if the prey died
-    if (preyHealth === 0) {
+    if (preyHealth === 2) {
       // Move the "new" prey to a random position
       preyX = random(0,width);
       preyY = random(0,height);
@@ -208,10 +217,14 @@ function checkEating() {
       preyHealth = preyMaxHealth;
       // Track how many prey were eaten
       preyEaten++;
+      if (preyEaten == 16 || preyEaten == 21 || preyEaten == 26 || preyEaten == 31) {
+        opacity = 255;
+      }
     }
   }
 }
 
+///////NEW/////////
 // movePrey()
 //
 // Moves the prey based on random velocity changes
@@ -239,9 +252,30 @@ function movePrey() {
     preyY -= height;
   }
 
-  tx += 0.01;
-  ty += 0.01;
+  if (preyEaten <= 10) {
+    tx += 0.8;
+    ty += 0.8;
+  } else if ( 10 < preyEaten && preyEaten <= 15) {
+    displayMotivation("I'M IMPRESSED");
+    tx += 0.5;
+    ty += 0.5;
+  } else if (15 < preyEaten && preyEaten <= 20) {
+    displayMotivation("HOW ABOUT THIS?");
+    tx += 0.3;
+    ty += 0.3;
+  } else if (20 < preyEaten && preyEaten <= 25) {
+    displayMotivation("TRY HARDER")
+    tx += 0.01;
+    ty += 0.01;
+  } else if (30 < preyEaten) {
+    displayMotivation("STAY DILIGENT FROM NOW ON");
+    tx += 0.03;
+    ty += 0.03;
+  }
+
 }
+
+///////ENDNEW/////////
 
 // drawPrey()
 //
@@ -249,6 +283,7 @@ function movePrey() {
 function drawPrey() {
   fill(preyFill,preyHealth);
   ellipse(preyX,preyY,preyRadius*2);
+  push();
 }
 
 // drawPlayer()
@@ -272,6 +307,7 @@ function showGameOver() {
   text(gameOverText,width/2,height/2);
 }
 
+///////NEW/////////
 
 function modifyPlayerRadius() {
   playerRadiusV = 0.2;
@@ -293,3 +329,14 @@ function modifyPlayerRadius() {
       }
     console.log ("playerRadiusUp = " + playerRadiusUp + " playerRadius = " + playerRadius);
   }
+
+  function displayMotivation(m) {
+    motivationText = m;
+    opacity -= 1.5;
+    opacity = constrain(opacity,0,255);
+    console.log ("opacity " + opacity);
+    fill(0,opacity);
+    text(motivationText, width/2, height/2);
+  }
+
+  ///////ENDNEW/////////
