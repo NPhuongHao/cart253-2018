@@ -19,7 +19,7 @@ var playerY;
 var playerRadius = 25;
 var playerVX = 0;
 var playerVY = 0;
-var playerMaxSpeed = 2;
+var playerMaxSpeed = 4;
 
 ///////NEW/////////
 //playerRadius' modificators
@@ -98,6 +98,10 @@ function setupPlayer() {
 // When the game is over, shows the game over screen.
 function draw() {
   background(100,100,200);
+  textAlign(RIGHT);
+  textSize(14);
+  text("PREYS EATEN: " + preyEaten, width-20, 20);
+  textAlign(CENTER);
 
   if (!gameOver) {
     handleInput();
@@ -155,7 +159,7 @@ function movePlayer() {
     playerMaxSpeed = 6;
     playerHealth -= 0.5;
   } else {
-    playerMaxSpeed = 2;
+    playerMaxSpeed = 4;
   }
   ///////ENDNEW/////////
 
@@ -203,13 +207,13 @@ function checkEating() {
   // Check if it's an overlap
   if (d < playerRadius + preyRadius) {
     // Increase the player health
-    playerHealth = constrain(playerHealth + eatHealth,2,playerMaxHealth);
+    playerHealth = constrain(playerHealth + eatHealth,0,playerMaxHealth);
     // Reduce the prey health
-    preyHealth = constrain(preyHealth - eatHealth,2,preyMaxHealth);
+    preyHealth = constrain(preyHealth - eatHealth,0,preyMaxHealth);
     //Decrease the playerRadius when it reaches 25px and increase it when it reaches 10px
     modifyPlayerRadius();
     // Check if the prey died
-    if (preyHealth === 2) {
+    if (preyHealth === 0) {
       // Move the "new" prey to a random position
       preyX = random(0,width);
       preyY = random(0,height);
@@ -217,8 +221,11 @@ function checkEating() {
       preyHealth = preyMaxHealth;
       // Track how many prey were eaten
       preyEaten++;
-      if (preyEaten == 16 || preyEaten == 21 || preyEaten == 26 || preyEaten == 31) {
+////////NEW////////////
+//Give back 100% opacity for motivationText as player eats a certain amount of preys
+      if (preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30) {
         opacity = 255;
+////////ENDNEW/////////
       }
     }
   }
@@ -252,25 +259,33 @@ function movePrey() {
     preyY -= height;
   }
 
-  if (preyEaten <= 10) {
+  if (preyEaten < 10) {
     tx += 0.8;
     ty += 0.8;
-  } else if ( 10 < preyEaten && preyEaten <= 15) {
+  } else if ( 10 <= preyEaten && preyEaten < 15) {
     displayMotivation("I'M IMPRESSED");
+    preyMaxSpeed = 5;
     tx += 0.5;
     ty += 0.5;
-  } else if (15 < preyEaten && preyEaten <= 20) {
+  } else if (15 <= preyEaten && preyEaten < 20) {
     displayMotivation("HOW ABOUT THIS?");
-    tx += 0.3;
-    ty += 0.3;
-  } else if (20 < preyEaten && preyEaten <= 25) {
-    displayMotivation("TRY HARDER")
+    tx += 0.1;
+    ty += 0.1;
+  } else if (20 <= preyEaten && preyEaten < 25) {
+    displayMotivation("TRY HARDER");
+    preyMaxSpeed = 6;
+    tx += 0.05;
+    ty += 0.05;
+  } else if (25 <= preyEaten && preyEaten < 30) {
+    displayMotivation("RELAX A BIT");
+    preyMaxSpeed = 2;
+    tx += 0.05;
+    ty += 0.05;
+  } else if (30 <= preyEaten) {
+    displayMotivation("STAY DILIGENT FROM NOW ON");
+    preyMaxSpeed = 8;
     tx += 0.01;
     ty += 0.01;
-  } else if (30 < preyEaten) {
-    displayMotivation("STAY DILIGENT FROM NOW ON");
-    tx += 0.03;
-    ty += 0.03;
   }
 
 }
