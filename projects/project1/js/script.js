@@ -12,6 +12,8 @@ sprinting, random movement, screen wrap.
 
 // Track whether the game is over
 var gameOver = false;
+// Track whether the game is won
+var gameWin = false;
 
 // Player position, size, velocity
 var playerX;
@@ -48,7 +50,7 @@ var ty;
 var preyHealth;
 var preyMaxHealth = 100;
 // Prey fill color
-var preyFill = 220;
+var preyFill = {x: 0, y: 10, z: 65};
 
 // Amount of health obtained per frame of "eating" the prey
 var eatHealth = 20;
@@ -62,10 +64,12 @@ var motivationFont;
 
 //Background settings
 var backgroundUp = false;
-var backgroundV = 0.5;
+var backgroundV = 1;
 var backgroundX = 180;
 var backgroundY = 220;
 var backgroundZ = 255;
+var dayCount = 0;
+
 
 //Introduction
 var counter = 0; // Counter code used to change narration accordingly
@@ -125,20 +129,20 @@ function setupPlayer() {
 // When the game is over, shows the game over screen.
 function draw() {
 
-/////////////NEW////////////
-  // BG color = morning comes and goes
-  changeBackgroundColor();
-  textAlign(RIGHT);
-  textFont('Arial')
-  textSize(18);
-  textStyle(BOLD);
-  fill(255,255);
-  text("PREYS EATEN: " + preyEaten, width-30, 30);
-  textAlign(CENTER);
-  textStyle(BOLD);
-//////////ENDNEW////////////
 
   if (!gameOver) {
+    /////////////NEW////////////
+      // BG color = morning comes and goes
+      changeBackgroundColor();
+      textAlign(RIGHT);
+      textFont('Arial')
+      textSize(18);
+      textStyle(BOLD);
+      fill(255,255);
+      text("DAY " + dayCount, width-30, 30);
+      textAlign(CENTER);
+      textStyle(BOLD);
+    //////////ENDNEW////////////
     handleInput();
 
     movePlayer();
@@ -146,12 +150,16 @@ function draw() {
 
     updateHealth();
     checkEating();
+    checkDay();
 
     drawPrey();
     drawPlayer();
   }
   else {
     showGameOver();
+  }
+  if (gameWin == true) {
+    showGameWin();
   }
   //Change narration according to counter code
   if (go == false) {
@@ -160,7 +168,6 @@ function draw() {
 }
 
 // handleInput()
-//
 // Checks arrow keys and adjusts player velocity accordingly
 function handleInput() {
   // Check for horizontal movement
@@ -266,13 +273,13 @@ function checkEating() {
       preyEaten++;
 ////////NEW////////////
 //Give back 100% opacity for motivationText as player eats a certain amount of preys
-      if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30) {
+      if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30 || dayCount == 9 && counter == 13) {
         opacity = 255;
+      }
 ////////ENDNEW/////////
       }
     }
   }
-}
 
 ///////NEW/////////
 // movePrey()
@@ -312,7 +319,7 @@ if (0 <= preyEaten && preyEaten < 10) {
     tx += 0.5;
     ty += 0.5;
   } else if (15 <= preyEaten && preyEaten < 20) {
-    displayMotivation("HOW ABOUT THIS?", height/2);
+    displayMotivation("THEY KNOW\n YOU ARE AFTER THEM", height/2);
     tx += 0.1;
     ty += 0.1;
   } else if (20 <= preyEaten && preyEaten < 25) {
@@ -321,18 +328,43 @@ if (0 <= preyEaten && preyEaten < 10) {
     tx += 0.05;
     ty += 0.05;
   } else if (25 <= preyEaten && preyEaten < 30) {
-    displayMotivation("RELAX A BIT", height/2);
+    displayMotivation("CALM \n BEFORE THE STORM", height/2);
     preyMaxSpeed = 2;
     tx += 0.2;
     ty += 0.2;
   } else if (30 <= preyEaten) {
-    displayMotivation("STAY DILIGENT", height*0.47);
-    displayMotivation("FROM NOW ON", height*0.53);
+    displayMotivation("STAY DILIGENT", height*0.45);
+    displayMotivation("FROM NOW ON", height*0.55);
     preyMaxSpeed = 8;
-    tx += 0.01;
-    ty += 0.01;
+    tx += 0.07;
+    ty += 0.07;
   }
 
+}
+
+function checkDay() {
+//Another day comes when the sky is fully lightened
+  if (backgroundZ == 255) {
+    dayCount += 1;
+  }
+//At night the prey's health decrease making it harder to see
+if (backgroundUp == false) {
+  if (backgroundX < 100) {
+    preyHealth -= 1;
+  }
+} else if (backgroundUp == true) {
+  if (backgroundX < 100) {
+    preyHealth += 1;
+  }
+}
+if (dayCount == 9) {
+  displayMotivation('ALMOST THERE', height/2);
+  counter += 1;
+}
+//If the player survive pass day 13, the game is won
+if (dayCount == 11) {
+  gameWin = true;
+}
 }
 
 ///////ENDNEW/////////
@@ -341,7 +373,7 @@ if (0 <= preyEaten && preyEaten < 10) {
 //
 // Draw the prey as an ellipse with alpha based on health
 function drawPrey() {
-  fill(preyFill,preyHealth);
+  fill(preyFill.x,preyFill.y,preyFill.z,preyHealth);
   ellipse(preyX,preyY,preyRadius*2);
   push();
 }
@@ -358,15 +390,29 @@ function drawPlayer() {
 //
 // Display text about the game being over!
 function showGameOver() {
+  background(0);
+  fill(255,0,0);
   textSize(32);
   textAlign(CENTER,CENTER);
-  var gameOverText = "GAME OVER\n";
-  gameOverText += "You ate " + preyEaten + " prey\n";
-  gameOverText += "before you died."
+  textFont(motivationFont);
+  var gameOverText = "WELCOME\n";
+  var result = constrain(dayCount - 1,0,dayCount);
+  gameOverText += "You survived " + result + " days\n";
   text(gameOverText,width/2,height/2);
 }
 
 ///////NEW/////////
+
+function showGameWin(){
+  changeBackgroundColor();;
+  fill(255);
+  textSize(32);
+  textAlign(CENTER,CENTER);
+  textFont(motivationFont);
+  text("GOOD HUMAN",width/2,height*0.45);
+  textSize(26);
+  text("You have completed your task\n Now, go back to your life", width/2, height*0.55);
+}
 
 function modifyPlayerRadius() {
   playerRadiusV = 0.2;
@@ -393,7 +439,6 @@ function displayMotivation(m,h) {
     motivationText = m;
     opacity -= 5;
     opacity = constrain(opacity,0,255);
-    console.log ("opacity " + opacity);
     fill(255,0,0,opacity);
     textSize(38);
     textFont(motivationFont);
@@ -408,17 +453,16 @@ function changeBackgroundColor() {
         backgroundY = constrain(backgroundY += backgroundV, 10, 220);
         backgroundZ = constrain(backgroundZ += backgroundV, 65, 255);
         background(backgroundX, backgroundY, backgroundZ);
-        console.log(backgroundX + ' ' + backgroundY + ' ' + backgroundZ);
-        console.log(backgroundUp);
       } else {
         backgroundUp = false;
       }
-    } else {
+    }
+    if (backgroundUp == false) {
       ////Check if playerRadius has reached min ceilling
       if (backgroundX > 0) {
         backgroundX = constrain(backgroundX -= backgroundV, 0, 180);
         backgroundY = constrain(backgroundY -= backgroundV, 10, 220);
-        backgroundZ = constrain(backgroundZ -= backgroundV, 65, 255);
+        backgroundZ = constrain(backgroundZ -= backgroundV, 65, 260);
         background(backgroundX, backgroundY, backgroundZ);
       } else {
         backgroundUp = true;
@@ -459,7 +503,7 @@ function instruction(n) {
     fill(21, 254, 203);
     introNara = 'They are countless, and you are alone.\n But do not be afraid.';
     }  if (n == 10) {
-    introNara = 'Catch them before your life fades away,\n and after 30 days, you shall earn my blessing.'
+    introNara = 'Catch them before your life fades away,\n and after 10 days, you shall earn my blessing.'
     }  if (n == 11) {
     introNara = 'Be careful, \n it will be hard to catch them at night...';
     }  if (n == 12) {
@@ -477,7 +521,6 @@ function instruction(n) {
 function keyPressed() {
   if (keyCode===RETURN) {
     counter ++;
-    console.log(counter);
     if (counter <= 12) {
       instruction(counter);
     }
