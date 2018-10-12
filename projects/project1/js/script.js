@@ -44,12 +44,12 @@ var tx;
 var ty;
 // Prey health
 var preyHealth;
-var preyMaxHealth = 200;
+var preyMaxHealth = 170;
 // Prey fill color
-var preyFill = {x: 30, y: 60, z: 105};
+var preyFill = {x: 20, y: 30, z: 85};
 
 // Amount of health obtained per frame of "eating" the prey
-var eatHealth = 30;
+var eatHealth = 40;
 // Number of prey eaten during the game
 var preyEaten = 0;
 
@@ -60,7 +60,7 @@ var motivationFont;
 
 //Background settings
 var backgroundUp = false;
-var backgroundV = 1.5;
+var backgroundV = 2;
 var backgroundX = 180;
 var backgroundY = 220;
 var backgroundZ = 255;
@@ -91,6 +91,9 @@ function preload() {
 // Sets up the basic elements of the game
 function setup() {
   createCanvas(500,500);
+//issue: sound file doesn't play when website opened the first time, but plays successfully when press F5
+  introSound.loop = true;
+  introSound.play();
   background(backgroundX, backgroundY, backgroundZ);
   textAlign(CENTER);
 
@@ -98,8 +101,6 @@ function setup() {
 
   setupPrey();
   setupPlayer();
-  introSound.play();
-  introSound.loop = true;
 }
 
 // setupPrey()
@@ -207,7 +208,7 @@ function movePlayer() {
   //Quicken playerMaxSpeed when player holds SHIFT keys
   if (keyIsDown(SHIFT)) {
     playerMaxSpeed = 13;
-    playerHealth -= 0.8;
+    playerHealth -= 1;
   } else {
     playerMaxSpeed = 8;
   }
@@ -239,7 +240,7 @@ function movePlayer() {
 // Check if the player is dead
 function updateHealth() {
   // Reduce player health, constrain to reasonable range
-  playerHealth = constrain(playerHealth - 0.5,0,playerMaxHealth);
+  playerHealth = constrain(playerHealth - 0.8,0,playerMaxHealth);
   // Check if the player is dead
   if (playerHealth === 0) {
     // If so, the game is over
@@ -277,7 +278,7 @@ function checkEating() {
       // Track how many prey were eaten
       preyEaten++;
       //Give back 100% opacity for motivationText as player eats a certain amount of preys
-      if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30 || dayCount == 8 && counter == 13) {
+      if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30) {
         opacity = 255;
       }
     }
@@ -326,7 +327,7 @@ if (0 <= preyEaten && preyEaten < 10) {
     ty += 0.1;
   } else if (20 <= preyEaten && preyEaten < 25) {
     displayMotivation("TRY HARDER", height/2);
-    preyMaxSpeed = 8;
+    preyMaxSpeed = 10;
     tx += 0.05;
     ty += 0.05;
   } else if (25 <= preyEaten && preyEaten < 30) {
@@ -337,7 +338,7 @@ if (0 <= preyEaten && preyEaten < 10) {
   } else if (30 <= preyEaten) {
     displayMotivation("STAY DILIGENT", height*0.45);
     displayMotivation("FROM NOW ON", height*0.55);
-    preyMaxSpeed = 12;
+    preyMaxSpeed = 17;
     tx += 0.07;
     ty += 0.07;
   }
@@ -351,17 +352,13 @@ function checkDay() {
   }
 //At night the prey's health decrease making it harder to see
 if (backgroundUp == false) {
-  if (backgroundX < 80) {
-    preyHealth -= 0.5;
+  if (backgroundX < 90) {
+    preyHealth -= 1;
   }
 } else if (backgroundUp == true) {
-  if (backgroundX < 80) {
-    preyHealth += 0.5;
+  if (backgroundX < 90) {
+    preyHealth += 1;
   }
-}
-if (dayCount == 8) {
-  displayMotivation('ALMOST THERE', height/2);
-  counter += 1;
 }
 //If the player survive pass day 13, the game is won
 if (dayCount == 11) {
@@ -407,18 +404,22 @@ function showGameOver() {
 }
 
 function showGameWin(){
+  clockSound.pause();
   gameWinSound.play();
   gameWinSound.loop = true;
   changeBackgroundColor();
+  fill(0,15,30,200);
+  rect(0,0,500,500);
+  playerRadius = 0;
   fill(255);
   textSize(32);
   textStyle(BOLD);
   textAlign(CENTER,CENTER);
-  playerHealth = 0;
   textFont(motivationFont);
-  text("GOOD HUMAN",width/2,height*0.45);
+  text("GOOD HUMAN\n\n",width/2,height*0.45);
   textSize(26);
   text("You have completed your task\n Now, go back to your life", width/2, height*0.55);
+  noLoop();
 }
 
 function modifyPlayerRadius() {
