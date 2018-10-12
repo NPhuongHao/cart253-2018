@@ -418,7 +418,7 @@ function showGameWin(){
   textFont(motivationFont);
   text("GOOD HUMAN\n\n",width/2,height*0.45);
   textSize(26);
-  text("You have completed your task\n Now, go back to your life", width/2, height*0.55);
+  text("You have completed your task\n Treasure your new life", width/2, height*0.55);
   noLoop();
 }
 
