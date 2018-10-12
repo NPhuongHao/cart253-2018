@@ -31,7 +31,7 @@ var playerRadiusUp = false; //To check if we're in the process of increasing or 
 var playerHealth;
 var playerMaxHealth = 255;
 // Player fill color
-var playerFill = 50;
+var playerFill = 20;
 
 // Prey position, size, velocity
 var preyX;
@@ -48,7 +48,7 @@ var ty;
 var preyHealth;
 var preyMaxHealth = 100;
 // Prey fill color
-var preyFill = 200;
+var preyFill = 220;
 
 // Amount of health obtained per frame of "eating" the prey
 var eatHealth = 20;
@@ -59,18 +59,34 @@ var preyEaten = 0;
 var opacity = 255;
 var motivationText;
 var motivationFont;
+
+//Background settings
+var backgroundUp = false;
+var backgroundV = 0.5;
+var backgroundX = 180;
+var backgroundY = 220;
+var backgroundZ = 255;
+
+//Introduction
+var counter = 0; // Counter code used to change narration accordingly
+var introNara;
+var go = false; // Run the game or not
+
+
 // setup()
 //
 
 ///////////NEW//////////////
 function preload() {
   motivationFont = loadFont('assets/fonts/AllertaStencil-Regular.ttf');
+  player = loadImage('assets/images/heart.png');
 }
 //////////ENDNEW////////////
 
 // Sets up the basic elements of the game
 function setup() {
   createCanvas(500,500);
+  background(backgroundX, backgroundY, backgroundZ);
 
   noStroke();
 
@@ -110,14 +126,14 @@ function setupPlayer() {
 function draw() {
 
 /////////////NEW////////////
-  background(100,100,200);
+  // BG color = morning comes and goes
+  changeBackgroundColor();
   textAlign(RIGHT);
   textFont('Arial')
   textSize(18);
   textStyle(BOLD);
   fill(255,255);
   text("PREYS EATEN: " + preyEaten, width-30, 30);
-  fill(0,255);
   textAlign(CENTER);
   textStyle(BOLD);
 //////////ENDNEW////////////
@@ -136,6 +152,10 @@ function draw() {
   }
   else {
     showGameOver();
+  }
+  //Change narration according to counter code
+  if (go == false) {
+    instruction(counter);
   }
 }
 
@@ -230,6 +250,7 @@ function checkEating() {
 /////////////NEW//////////////
     // Change preyRadius randomly
     preyRadius = random(15,30);
+///////////ENDNEW////////////
     // Reduce the prey health
     preyHealth = constrain(preyHealth - eatHealth,0,preyMaxHealth);
     //Decrease the playerRadius when it reaches 25px and increase it when it reaches 10px
@@ -245,7 +266,7 @@ function checkEating() {
       preyEaten++;
 ////////NEW////////////
 //Give back 100% opacity for motivationText as player eats a certain amount of preys
-      if (preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30) {
+      if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30) {
         opacity = 255;
 ////////ENDNEW/////////
       }
@@ -281,7 +302,8 @@ function movePrey() {
     preyY -= height;
   }
 
-  if (preyEaten < 10) {
+if (0 <= preyEaten && preyEaten < 10) {
+    displayMotivation('TIK TOK', height/2);
     tx += 0.8;
     ty += 0.8;
   } else if ( 10 <= preyEaten && preyEaten < 15) {
@@ -338,7 +360,6 @@ function drawPlayer() {
 function showGameOver() {
   textSize(32);
   textAlign(CENTER,CENTER);
-  fill(0);
   var gameOverText = "GAME OVER\n";
   gameOverText += "You ate " + preyEaten + " prey\n";
   gameOverText += "before you died."
@@ -365,18 +386,110 @@ function modifyPlayerRadius() {
       playerRadiusUp = true;
     }
       }
-    console.log ("playerRadiusUp = " + playerRadiusUp + " playerRadius = " + playerRadius);
   }
 
-  function displayMotivation(m,h) {
+
+function displayMotivation(m,h) {
     motivationText = m;
     opacity -= 5;
     opacity = constrain(opacity,0,255);
     console.log ("opacity " + opacity);
-    fill(0,opacity);
+    fill(255,0,0,opacity);
     textSize(38);
     textFont(motivationFont);
     text(motivationText, width/2, h);
   }
+
+function changeBackgroundColor() {
+    if (backgroundUp == true) {
+      //Check if background color has reached max ceilling
+      if (backgroundZ < 255) {
+        backgroundX = constrain(backgroundX += backgroundV, 0, 180);
+        backgroundY = constrain(backgroundY += backgroundV, 10, 220);
+        backgroundZ = constrain(backgroundZ += backgroundV, 65, 255);
+        background(backgroundX, backgroundY, backgroundZ);
+        console.log(backgroundX + ' ' + backgroundY + ' ' + backgroundZ);
+        console.log(backgroundUp);
+      } else {
+        backgroundUp = false;
+      }
+    } else {
+      ////Check if playerRadius has reached min ceilling
+      if (backgroundX > 0) {
+        backgroundX = constrain(backgroundX -= backgroundV, 0, 180);
+        backgroundY = constrain(backgroundY -= backgroundV, 10, 220);
+        backgroundZ = constrain(backgroundZ -= backgroundV, 65, 255);
+        background(backgroundX, backgroundY, backgroundZ);
+      } else {
+        backgroundUp = true;
+      }
+        }
+  }
+
+function instruction(n) {
+  background(0,10,55);
+  fill(255);
+  textFont(motivationFont);
+  textSize(18);
+  //Display narration based on counter code
+  if (n == 0) {
+    introNara = 'Greetings, human.';
+    } if (n == 1) {
+    introNara = 'My name is Death.'
+    } if (n == 2) {
+    introNara = 'Your heart has weakened,\n';
+    introNara += 'and you are dying.';
+    }  if (n == 3) {
+    introNara = 'You asked for my help\n';
+    introNara += 'to restore your life...';
+    }  if (n == 4) {
+    fill(255,0,0);
+    introNara = 'But my power is not for granted.';
+    }  if (n == 5) {
+    introNara = 'However';
+    }  if (n == 6) {
+    introNara = 'Considering the good deeds\n';
+    introNara += 'that you have done...';
+    }  if (n == 7) {
+    introNara = 'I shall grant you your wish,\n';
+    introNara += 'with a small condition.';
+    }  if (n == 8) {
+    introNara = 'You will have to hunt down\n the demons that escaped my jail.';
+    }  if (n == 9) {
+    fill(21, 254, 203);
+    introNara = 'They are countless, and you are alone.\n But do not be afraid.';
+    }  if (n == 10) {
+    introNara = 'Catch them before your life fades away,\n and after 30 days, you shall earn my blessing.'
+    }  if (n == 11) {
+    introNara = 'Be careful, \n it will be hard to catch them at night...';
+    }  if (n == 12) {
+    fill(255,0,0);
+    textSize(24);
+    introNara = 'Hurry up, and do not die.';
+    }
+  text(introNara, width/2, height/2);
+  fill(255,100);
+  textSize(12)
+  text('Press ENTER to proceed\n Press Backspace to skip', width/2, height*0.9);
+  noLoop();
+  }
+
+function keyPressed() {
+  if (keyCode===RETURN) {
+    counter ++;
+    console.log(counter);
+    if (counter <= 12) {
+      instruction(counter);
+    }
+    else {
+      go = true;
+      loop();
+    }
+  } else if (keyCode === BACKSPACE) {
+    go = true;
+    loop();
+  }
+}
+
 
   ///////ENDNEW/////////
