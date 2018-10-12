@@ -92,8 +92,6 @@ function preload() {
 function setup() {
   createCanvas(500,500);
 //issue: sound file doesn't play when website opened the first time, but plays successfully when press F5
-  introSound.loop = true;
-  introSound.play();
   background(backgroundX, backgroundY, backgroundZ);
   textAlign(CENTER);
 
@@ -133,7 +131,6 @@ function setupPlayer() {
 // displays the two agents.
 // When the game is over, shows the game over screen.
 function draw() {
-
   if (go == true){
     if (!gameOver) {
         // BG color = morning comes and goes
@@ -481,6 +478,8 @@ function changeBackgroundColor() {
   }
 
 function instruction(n) {
+  introSound.loop = true;
+  introSound.play();
   background(0,5,35);
   fill(255);
   textFont(motivationFont);
