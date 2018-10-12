@@ -277,7 +277,7 @@ function checkEating() {
       // Track how many prey were eaten
       preyEaten++;
       //Give back 100% opacity for motivationText as player eats a certain amount of preys
-      if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30 || dayCount == 9 && counter == 13) {
+      if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30 || dayCount == 8 && counter == 13) {
         opacity = 255;
       }
     }
@@ -326,7 +326,7 @@ if (0 <= preyEaten && preyEaten < 10) {
     ty += 0.1;
   } else if (20 <= preyEaten && preyEaten < 25) {
     displayMotivation("TRY HARDER", height/2);
-    preyMaxSpeed = 6;
+    preyMaxSpeed = 8;
     tx += 0.05;
     ty += 0.05;
   } else if (25 <= preyEaten && preyEaten < 30) {
@@ -337,7 +337,7 @@ if (0 <= preyEaten && preyEaten < 10) {
   } else if (30 <= preyEaten) {
     displayMotivation("STAY DILIGENT", height*0.45);
     displayMotivation("FROM NOW ON", height*0.55);
-    preyMaxSpeed = 8;
+    preyMaxSpeed = 12;
     tx += 0.07;
     ty += 0.07;
   }
@@ -359,7 +359,7 @@ if (backgroundUp == false) {
     preyHealth += 0.5;
   }
 }
-if (dayCount == 9) {
+if (dayCount == 8) {
   displayMotivation('ALMOST THERE', height/2);
   counter += 1;
 }
