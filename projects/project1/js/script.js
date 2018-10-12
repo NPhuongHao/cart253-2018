@@ -503,9 +503,9 @@ function instruction(n) {
     introNara = 'However';
     }  if (n == 6) {
     introNara = 'Considering the good deeds\n';
-    introNara += 'that you have done...';
+    introNara += 'that you have done in your life...';
     }  if (n == 7) {
-    introNara = 'I shall grant you your wish,\n';
+    introNara = 'I shall let you go on,\n';
     introNara += 'with a small condition.';
     }  if (n == 8) {
     introNara = 'You will have to hunt down\n the demons that escaped my jail.';
