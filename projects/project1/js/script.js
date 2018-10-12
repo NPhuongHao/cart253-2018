@@ -21,39 +21,35 @@ var playerY;
 var playerRadius = 25;
 var playerVX = 0;
 var playerVY = 0;
-var playerMaxSpeed = 4;
+var playerMaxSpeed = 8;
 
-///////NEW/////////
 //playerRadius' modificators
 var playerRadiusV;
 var playerRadiusUp = false; //To check if we're in the process of increasing or decreasing playerRadius
-///////ENDNEW/////////
 
 // Player health
 var playerHealth;
 var playerMaxHealth = 255;
 // Player fill color
-var playerFill = 20;
+var playerFill = 255;
 
 // Prey position, size, velocity
 var preyX;
 var preyY;
-var preyRadius = 25;
+var preyRadius = 50;
 var preyVX;
 var preyVY;
-///////////NEW//////////////
 var preyMaxSpeed = 2;
-//////////ENDNEW////////////
 var tx;
 var ty;
 // Prey health
 var preyHealth;
-var preyMaxHealth = 100;
+var preyMaxHealth = 200;
 // Prey fill color
-var preyFill = {x: 0, y: 10, z: 65};
+var preyFill = {x: 30, y: 60, z: 105};
 
 // Amount of health obtained per frame of "eating" the prey
-var eatHealth = 20;
+var eatHealth = 30;
 // Number of prey eaten during the game
 var preyEaten = 0;
 
@@ -64,7 +60,7 @@ var motivationFont;
 
 //Background settings
 var backgroundUp = false;
-var backgroundV = 1;
+var backgroundV = 1.5;
 var backgroundX = 180;
 var backgroundY = 220;
 var backgroundZ = 255;
@@ -80,22 +76,30 @@ var go = false; // Run the game or not
 // setup()
 //
 
-///////////NEW//////////////
 function preload() {
   motivationFont = loadFont('assets/fonts/AllertaStencil-Regular.ttf');
+  prey = loadImage('assets/images/skull.png');
   player = loadImage('assets/images/heart.png');
+  backgroundImage = loadImage('assets/images/background.jpg');
+  introSound = new Audio('assets/sounds/Wadanohara_OST_GameOver.mp3');
+  gameOverSound = new Audio('assets/sounds/Ib_OST_Goofball_Extended.mp3');
+  gameWinSound = new Audio('assets/sounds/Wadanohara_OST_WadanoharasOcarina.mp3');
+  eatSound = new Audio('assets/sounds/MonsterGrunt.mp3');
+  clockSound = new Audio('assets/sounds/clock.mp3');
 }
-//////////ENDNEW////////////
 
 // Sets up the basic elements of the game
 function setup() {
   createCanvas(500,500);
   background(backgroundX, backgroundY, backgroundZ);
+  textAlign(CENTER);
 
   noStroke();
 
   setupPrey();
   setupPlayer();
+  introSound.play();
+  introSound.loop = true;
 }
 
 // setupPrey()
@@ -129,37 +133,38 @@ function setupPlayer() {
 // When the game is over, shows the game over screen.
 function draw() {
 
+  if (go == true){
+    if (!gameOver) {
+        // BG color = morning comes and goes
+        clockSound.play();
+        clockSound.loop = true;
+        changeBackgroundColor();
+        textAlign(RIGHT);
+        textFont('Arial')
+        textSize(18);
+        textStyle(BOLD);
+        fill(255,255);
+        text("DAY " + dayCount, width-30, 30);
+        textAlign(CENTER);
+        textStyle(BOLD);
+      handleInput();
 
-  if (!gameOver) {
-    /////////////NEW////////////
-      // BG color = morning comes and goes
-      changeBackgroundColor();
-      textAlign(RIGHT);
-      textFont('Arial')
-      textSize(18);
-      textStyle(BOLD);
-      fill(255,255);
-      text("DAY " + dayCount, width-30, 30);
-      textAlign(CENTER);
-      textStyle(BOLD);
-    //////////ENDNEW////////////
-    handleInput();
+      movePlayer();
+      movePrey();
 
-    movePlayer();
-    movePrey();
+      updateHealth();
+      checkEating();
+      checkDay();
 
-    updateHealth();
-    checkEating();
-    checkDay();
-
-    drawPrey();
-    drawPlayer();
-  }
-  else {
-    showGameOver();
-  }
-  if (gameWin == true) {
-    showGameWin();
+      drawPrey();
+      drawPlayer();
+    }
+    else {
+      showGameOver();
+    }
+    if (gameWin == true) {
+      showGameWin();
+    }
   }
   //Change narration according to counter code
   if (go == false) {
@@ -199,15 +204,13 @@ function handleInput() {
 // wraps around the edges.
 function movePlayer() {
 
-  ///////NEW/////////
   //Quicken playerMaxSpeed when player holds SHIFT keys
   if (keyIsDown(SHIFT)) {
-    playerMaxSpeed = 8;
+    playerMaxSpeed = 13;
     playerHealth -= 0.8;
   } else {
-    playerMaxSpeed = 4;
+    playerMaxSpeed = 8;
   }
-  ///////ENDNEW/////////
 
 
   // Update position
@@ -252,12 +255,11 @@ function checkEating() {
   var d = dist(playerX,playerY,preyX,preyY);
   // Check if it's an overlap
   if (d < playerRadius + preyRadius) {
+    eatSound.play();
+    eatSound.currentTime = 0;
     // Increase the player health
     playerHealth = constrain(playerHealth + eatHealth,0,playerMaxHealth);
-/////////////NEW//////////////
     // Change preyRadius randomly
-    preyRadius = random(15,30);
-///////////ENDNEW////////////
     // Reduce the prey health
     preyHealth = constrain(preyHealth - eatHealth,0,preyMaxHealth);
     //Decrease the playerRadius when it reaches 25px and increase it when it reaches 10px
@@ -267,21 +269,21 @@ function checkEating() {
       // Move the "new" prey to a random position
       preyX = random(0,width);
       preyY = random(0,height);
+      preyRadius = random(40,60);
       // Give it full health
       preyHealth = preyMaxHealth;
+      console.log(preyHealth);
+      console.log(preyX, preyY);
       // Track how many prey were eaten
       preyEaten++;
-////////NEW////////////
-//Give back 100% opacity for motivationText as player eats a certain amount of preys
+      //Give back 100% opacity for motivationText as player eats a certain amount of preys
       if (preyEaten == 10 || preyEaten == 15 || preyEaten == 20 || preyEaten == 25 || preyEaten == 30 || dayCount == 9 && counter == 13) {
         opacity = 255;
       }
-////////ENDNEW/////////
-      }
     }
   }
+}
 
-///////NEW/////////
 // movePrey()
 //
 // Moves the prey based on random velocity changes
@@ -349,12 +351,12 @@ function checkDay() {
   }
 //At night the prey's health decrease making it harder to see
 if (backgroundUp == false) {
-  if (backgroundX < 100) {
-    preyHealth -= 1;
+  if (backgroundX < 80) {
+    preyHealth -= 0.5;
   }
 } else if (backgroundUp == true) {
-  if (backgroundX < 100) {
-    preyHealth += 1;
+  if (backgroundX < 80) {
+    preyHealth += 0.5;
   }
 }
 if (dayCount == 9) {
@@ -367,14 +369,13 @@ if (dayCount == 11) {
 }
 }
 
-///////ENDNEW/////////
 
 // drawPrey()
 //
 // Draw the prey as an ellipse with alpha based on health
 function drawPrey() {
-  fill(preyFill.x,preyFill.y,preyFill.z,preyHealth);
-  ellipse(preyX,preyY,preyRadius*2);
+  tint(preyFill.x,preyFill.y,preyFill.z,preyHealth);
+  image(prey,preyX,preyY,preyRadius,preyRadius);
   push();
 }
 
@@ -382,14 +383,17 @@ function drawPrey() {
 //
 // Draw the player as an ellipse with alpha based on health
 function drawPlayer() {
-  fill(playerFill,playerHealth);
-  ellipse(playerX,playerY,playerRadius*2);
+  fill(250,20,50,playerHealth);
+  ellipse(playerX,playerY,playerRadius*2,playerRadius*2);
 }
 
 // showGameOver()
 //
 // Display text about the game being over!
 function showGameOver() {
+  clockSound.pause();
+  gameOverSound.play();
+  gameOverSound.loop = true;
   background(0);
   fill(255,0,0);
   textSize(32);
@@ -399,15 +403,18 @@ function showGameOver() {
   var result = constrain(dayCount - 1,0,dayCount);
   gameOverText += "You survived " + result + " days\n";
   text(gameOverText,width/2,height/2);
+  noLoop();
 }
 
-///////NEW/////////
-
 function showGameWin(){
-  changeBackgroundColor();;
+  gameWinSound.play();
+  gameWinSound.loop = true;
+  changeBackgroundColor();
   fill(255);
   textSize(32);
+  textStyle(BOLD);
   textAlign(CENTER,CENTER);
+  playerHealth = 0;
   textFont(motivationFont);
   text("GOOD HUMAN",width/2,height*0.45);
   textSize(26);
@@ -452,7 +459,8 @@ function changeBackgroundColor() {
         backgroundX = constrain(backgroundX += backgroundV, 0, 180);
         backgroundY = constrain(backgroundY += backgroundV, 10, 220);
         backgroundZ = constrain(backgroundZ += backgroundV, 65, 255);
-        background(backgroundX, backgroundY, backgroundZ);
+        tint(backgroundX, backgroundY, backgroundZ,200);
+        image(backgroundImage,0,0,500,500);
       } else {
         backgroundUp = false;
       }
@@ -463,7 +471,8 @@ function changeBackgroundColor() {
         backgroundX = constrain(backgroundX -= backgroundV, 0, 180);
         backgroundY = constrain(backgroundY -= backgroundV, 10, 220);
         backgroundZ = constrain(backgroundZ -= backgroundV, 65, 260);
-        background(backgroundX, backgroundY, backgroundZ);
+        tint(backgroundX, backgroundY, backgroundZ,200);
+        image(backgroundImage,0,0,500,500);
       } else {
         backgroundUp = true;
       }
@@ -471,7 +480,7 @@ function changeBackgroundColor() {
   }
 
 function instruction(n) {
-  background(0,10,55);
+  background(0,5,35);
   fill(255);
   textFont(motivationFont);
   textSize(18);
@@ -515,7 +524,6 @@ function instruction(n) {
   fill(255,100);
   textSize(12)
   text('Press ENTER to proceed\n Press Backspace to skip', width/2, height*0.9);
-  noLoop();
   }
 
 function keyPressed() {
@@ -526,13 +534,10 @@ function keyPressed() {
     }
     else {
       go = true;
-      loop();
+      introSound.pause();
     }
   } else if (keyCode === BACKSPACE) {
     go = true;
-    loop();
+    introSound.pause();
   }
 }
-
-
-  ///////ENDNEW/////////
