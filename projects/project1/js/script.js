@@ -166,8 +166,6 @@ function draw() {
   }
   //Change narration according to counter code
   if (go == false) {
-    introSound.loop = true;
-    introSound.play();
     instruction(counter);
   }
 }
