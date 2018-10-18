@@ -39,7 +39,8 @@ var leftPaddle = {
   vy: 0,
   speed: 5,
   upKeyCode: 87, // The key code for W
-  downKeyCode: 83 // The key code for S
+  downKeyCode: 83, // The key code for S
+  score: 0
 }
 
 // RIGHT PADDLE
@@ -55,7 +56,8 @@ var rightPaddle = {
   vy: 0,
   speed: 5,
   upKeyCode: 38, // The key code for the UP ARROW
-  downKeyCode: 40 // The key code for the DOWN ARROW
+  downKeyCode: 40, // The key code for the DOWN ARROW
+  score: 0
 }
 
 // A variable to hold the beep sound we will play on bouncing
@@ -66,6 +68,7 @@ var beepSFX;
 // Loads the beep audio for the sound of bouncing
 function preload() {
   beepSFX = new Audio("assets/sounds/beep.wav");
+  fontScore = loadFont('assets/fonts/ARCADECLASSIC.TTF')
 }
 
 // setup()
@@ -139,6 +142,10 @@ function draw() {
   displayPaddle(leftPaddle);
   displayPaddle(rightPaddle);
   displayBall();
+
+  //Update Score
+  updateScore(leftPaddle.score, 80);
+  updateScore(rightPaddle.score, width-80);
 }
 
 
@@ -261,6 +268,17 @@ function handleBallOffScreen() {
     // carries on moving with the same velocity after its
     // position is reset.
     // This is where we would count points etc!
+
+    ///////NEW////////
+    //Display score for each paddle.
+    if (ballLeft > width) {
+      //if ball goes off the right side, add 1 point for left paddle
+      leftPaddle.score += 1;
+    } else {
+      //if ball goes off the left side, add 1 point for right paddle
+      rightPaddle.score += 1;
+    }
+
   }
 }
 
@@ -276,4 +294,12 @@ function displayBall() {
 // Draws the specified paddle on screen based on its properties
 function displayPaddle(paddle) {
   rect(paddle.x,paddle.y,paddle.w,paddle.h);
+}
+
+function updateScore(paddleScore, scorePosition) {
+  textAlign(CENTER);
+  textFont(fontScore);
+  fill(255);
+  textSize(20);
+  text('Score    ' + paddleScore, scorePosition, 40);
 }
