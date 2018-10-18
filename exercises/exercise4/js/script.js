@@ -80,7 +80,7 @@ function preload() {
 // and velocities.
 function setup() {
   // Create canvas and set drawing modes
-  createCanvas(840,480);
+  createCanvas(860,480);
   rectMode(CENTER);
   noStroke();
   fill(fgColor);
@@ -196,7 +196,10 @@ function handleInput(paddle) {
 // properties, which is true of both the two paddles and the ball
 function updatePosition(object) {
   object.x += object.vx;
-  object.y += object.vy;
+  object.y = object.y + object.vy;
+  ////NEW////limit the paddle's movement inside the canvas
+  object.y = constrain(object.y, 0, height);
+  ///////ENDNEW////////
 }
 
 // handleBallWallCollision()
@@ -264,12 +267,7 @@ function handleBallOffScreen() {
 
   // Check for ball going off the sides
   if (ballRight < 0 || ballLeft > width) {
-    // If it went off either side, reset it to the centre
-    ball.x = width/2;
-    ball.y = height/2;
-    //the ball launch toward the paddle that won the most recent point with a random y velocity
-    ball.vx = -ball.vx;
-    ball.vy = random(ball.speed-2, ball.speed+4)
+    reset();
     // NOTE that we don't change its velocity here so it just
     // carries on moving with the same velocity after its
     // position is reset.
@@ -318,5 +316,14 @@ function updatePaddle() {
   //Change each paddle's size depending on its score comparing one to the other
   leftPaddle.h = leftPaddle.hOriginal + scoreDistance*10;
   rightPaddle.h = rightPaddle.hOriginal - scoreDistance*10;
+}
+
+function reset() {
+  // If it went off either side, reset it to the centre
+  ball.x = width/2;
+  ball.y = height/2;
+  //the ball launch toward the paddle that won the most recent point with a random y velocity
+  ball.vx = -ball.vx;
+  ball.vy = random(ball.speed-2, ball.speed+4)
 }
 //////ENDNEW//////
