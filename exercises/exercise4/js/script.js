@@ -15,7 +15,7 @@ var fgColor = 255;
 var ball = {
   x: 0,
   y: 0,
-  size: 20,
+  size: 15,
   vx: 0,
   vy: 0,
   speed: 5
@@ -34,6 +34,7 @@ var leftPaddle = {
   x: 0,
   y: 0,
   w: 20,
+  hOriginal: 70,
   h: 70,
   vx: 0,
   vy: 0,
@@ -51,6 +52,7 @@ var rightPaddle = {
   x: 0,
   y: 0,
   w: 20,
+  hOriginal: 70,
   h: 70,
   vx: 0,
   vy: 0,
@@ -78,7 +80,7 @@ function preload() {
 // and velocities.
 function setup() {
   // Create canvas and set drawing modes
-  createCanvas(640,480);
+  createCanvas(840,480);
   rectMode(CENTER);
   noStroke();
   fill(fgColor);
@@ -146,6 +148,7 @@ function draw() {
   //Update Score
   updateScore(leftPaddle.score, 80);
   updateScore(rightPaddle.score, width-80);
+  updatePaddle();
 }
 
 
@@ -264,6 +267,9 @@ function handleBallOffScreen() {
     // If it went off either side, reset it to the centre
     ball.x = width/2;
     ball.y = height/2;
+    //the ball launch toward the paddle that won the most recent point with a random y velocity
+    ball.vx = -ball.vx;
+    ball.vy = random(ball.speed-2, ball.speed+4)
     // NOTE that we don't change its velocity here so it just
     // carries on moving with the same velocity after its
     // position is reset.
@@ -278,6 +284,7 @@ function handleBallOffScreen() {
       //if ball goes off the left side, add 1 point for right paddle
       rightPaddle.score += 1;
     }
+    //////ENDNEW///////
 
   }
 }
@@ -296,6 +303,7 @@ function displayPaddle(paddle) {
   rect(paddle.x,paddle.y,paddle.w,paddle.h);
 }
 
+//////NEW///////
 function updateScore(paddleScore, scorePosition) {
   textAlign(CENTER);
   textFont(fontScore);
@@ -303,3 +311,12 @@ function updateScore(paddleScore, scorePosition) {
   textSize(20);
   text('Score    ' + paddleScore, scorePosition, 40);
 }
+
+function updatePaddle() {
+  //Calculate the distance between each paddle's score
+  var scoreDistance = leftPaddle.score - rightPaddle.score;
+  //Change each paddle's size depending on its score comparing one to the other
+  leftPaddle.h = leftPaddle.hOriginal + scoreDistance*10;
+  rightPaddle.h = rightPaddle.hOriginal - scoreDistance*10;
+}
+//////ENDNEW//////
