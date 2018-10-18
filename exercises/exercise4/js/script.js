@@ -19,7 +19,7 @@ var ball = {
   sizeOriginal: 20,
   vx: 0,
   vy: 0,
-  speed: 5,
+  speed: 6,
 }
 
 var ballTrail = {
@@ -63,9 +63,11 @@ var leftPaddle = {
   h: 70,
   vx: 0,
   vy: 0,
-  speed: 5,
+  speed: 6,
   upKeyCode: 87, // The key code for W
   downKeyCode: 83, // The key code for S
+  leftKeyCode: 65,
+  rightKeyCode: 68,
   score: 0,
   color: 255
 }
@@ -82,9 +84,11 @@ var rightPaddle = {
   h: 70,
   vx: 0,
   vy: 0,
-  speed: 5,
+  speed: 6,
   upKeyCode: 38, // The key code for the UP ARROW
   downKeyCode: 40, // The key code for the DOWN ARROW
+  leftKeyCode: 37,
+  rightKeyCode: 39,
   score: 0,
   color: {
     r: 255,
@@ -96,13 +100,14 @@ var rightPaddle = {
 //Distance between 2 paddles' score
 var scoreDistance;
 
-var effectV;
-var effectVUp = true;
-var i = 0;
-var opacity = 0;
-
 // A variable to hold the beep sound we will play on bouncing
 var beepSFX;
+
+var divider = {
+  x: 0,
+  y: 0,
+  size: 10,
+}
 
 // preload()
 //
@@ -151,6 +156,7 @@ function setupBall() {
   ball.vy = ball.speed;
 }
 
+
 // draw()
 //
 // Calls the appropriate functions to run the game
@@ -159,6 +165,7 @@ function draw() {
   background(bgColor);
   leftPaddle.color = {r:255, b:255, g:255};
   rightPaddle.color = {r:255, b: 255, g:255};
+  setupDividerAndInstruction();
 
   // Handle input
   // Notice how we're using the SAME FUNCTION to handle the input
@@ -196,6 +203,18 @@ function draw() {
 }
 
 
+function setupDividerAndInstruction() {
+  divider.y = 65;
+  divider.x = width/2;
+  fill(255,100);
+  while (divider.y < height) {
+    rect(divider.x, divider.y, divider.size, divider.size);
+    divider.y += 20;
+  }
+  textSize(14);
+  text('BACKSPACE to pause \n SHIFT to resume', width/2, 30);
+}
+
 // handleInput(paddle)
 //
 // Updates the paddle's velocity based on whether one of its movement
@@ -229,6 +248,20 @@ function handleInput(paddle) {
     // Otherwise stop moving
     paddle.vy = 0;
   }
+
+  if (keyIsDown(paddle.rightKeyCode)) {
+    // Move up
+    paddle.vx = + paddle.speed;
+  }
+  // Otherwise if the .downKeyCode is being pressed
+  else if (keyIsDown(paddle.leftKeyCode)) {
+    // Move down
+    paddle.vx = -paddle.speed;
+  }
+  else {
+    // Otherwise stop moving
+    paddle.vx = 0;
+  }
 }
 
 //update ball's trail
@@ -259,9 +292,15 @@ function updatePositionBall() {
 // properties, which is true of both the two paddles and the ball
 function updatePosition(object) {
   object.x += object.vx;
-  object.y = object.y + object.vy;
+  object.y += object.vy;
   ////NEW////limit the paddle's movement inside the canvas
-  object.y = constrain(object.y, 0+object.h/2, height-object.h/2);
+  object.y = constrain(object.y, 0 + object.h/2, height - object.h/2);
+  if (object = leftPaddle) {
+    object.x = constrain(object.x, 0 + object.w/2, width/2 - object.w/2);
+  } else if (object = rightPaddle) {
+    object.x = constrain(object.x, width/2 + object.w/2, width - object.w/2);
+  }
+
   ///////ENDNEW////////
 }
 
@@ -309,7 +348,6 @@ function handleBallPaddleCollision(paddle) {
   if (ballBottom > paddleTop && ballTop < paddleBottom) {
     // Then check if it is touching the paddle horizontally
     if (ballLeft < paddleRight && ballRight > paddleLeft) {
-      paddleCollisionEffect(paddle);
       // Then the ball is touching the paddle so reverse its vx
       ball.vx = -ball.vx;
       // Play our bouncing sound effect by rewinding and then playing
@@ -442,4 +480,13 @@ function checkGameOver() {
   }
 }
 
+function keyPressed() {
+  if (keyCode === RETURN) {
+    window.location.reload();
+  } if (keyCode === BACKSPACE) {
+    noLoop();
+  } if (keyCode === SHIFT) {
+    loop();
+  }
+}
 //////ENDNEW//////
