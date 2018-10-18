@@ -21,6 +21,30 @@ var ball = {
   speed: 5
 }
 
+var ballTrail = {
+  no1: {
+    x: 0,
+    y: 0
+  },
+  no2: {
+    x: 0,
+    y: 0
+  },
+  no3: {
+    x: 0,
+    y: 0
+  },
+  no4: {
+    x: 0,
+    y: 0
+  },
+  no5: {
+    x: 0,
+    y: 0
+  }
+}
+var n = 1;
+
 // PADDLES
 
 // How far in from the walls the paddles should be drawn on x
@@ -130,7 +154,7 @@ function draw() {
   // for all three objects!
   updatePosition(leftPaddle);
   updatePosition(rightPaddle);
-  updatePosition(ball);
+  updatePositionBall();
 
   // Handle collisions
   handleBallWallCollision();
@@ -187,6 +211,26 @@ function handleInput(paddle) {
   }
 }
 
+//update ball's trail
+function updatePositionBall() {
+  ballTrail.no1.x = ballTrail.no2.x;
+  ballTrail.no1.y = ballTrail.no2.y;
+  console.log(ballTrail.no1.x,ballTrail.no1.y);
+  ballTrail.no2.x = ballTrail.no3.x;
+  ballTrail.no2.y = ballTrail.no3.y;
+  ballTrail.no3.x = ballTrail.no4.x;
+  ballTrail.no3.y = ballTrail.no4.y;
+  ballTrail.no4.x = ballTrail.no5.x;
+  ballTrail.no4.y = ballTrail.no5.y;
+  ballTrail.no5.x = ball.x;
+  ballTrail.no5.y = ball.y;
+  ball.x += ball.vx;
+  ball.y = ball.y + ball.vy;
+
+}
+
+
+
 // updatePosition(object)
 //
 // Sets the position of the object passed in based on its velocity
@@ -198,7 +242,7 @@ function updatePosition(object) {
   object.x += object.vx;
   object.y = object.y + object.vy;
   ////NEW////limit the paddle's movement inside the canvas
-  object.y = constrain(object.y, 0, height);
+  object.y = constrain(object.y, 0+object.h/2, height-object.h/2);
   ///////ENDNEW////////
 }
 
@@ -291,7 +335,18 @@ function handleBallOffScreen() {
 //
 // Draws ball on screen based on its properties
 function displayBall() {
-  rect(ball.x,ball.y,ball.size,ball.size);
+  fill(255,10);
+  ellipse(ballTrail.no1.x,ballTrail.no1.y,ball.size,ball.size);
+  fill(255,20);
+  ellipse(ballTrail.no2.x,ballTrail.no2.y,ball.size,ball.size);
+  fill(255,50);
+  ellipse(ballTrail.no3.x,ballTrail.no3.y,ball.size,ball.size);
+  fill(255,100);
+  ellipse(ballTrail.no4.x,ballTrail.no4.y,ball.size,ball.size);
+  fill(255,150);
+  ellipse(ballTrail.no5.x,ballTrail.no5.y,ball.size,ball.size);
+  fill(255);
+  ellipse(ball.x,ball.y,ball.size,ball.size);
 }
 
 // displayPaddle(paddle)
