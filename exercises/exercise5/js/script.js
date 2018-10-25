@@ -77,6 +77,7 @@ function draw() {
 
 
 //////NEW////////
+//Style divider and instruction
 function setupDividerAndInstruction() {
   divider.y = 65;
   divider.x = width/2;
@@ -90,6 +91,7 @@ function setupDividerAndInstruction() {
 }
 //////END NEW////////
 //////NEW////////
+//Reload when player presses ENTER, pause when presses BACKSPACE, return when presses SHIFT
 function keyPressed() {
   if (keyCode === RETURN) {
     window.location.reload();

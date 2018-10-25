@@ -14,7 +14,11 @@ function Ball(x,y,vx,vy,size,speed) {
   this.vy = vy;
   this.size = size;
   this.speed = speed;
+/////NEW/////
+  this.trail = [[0,0], [0,0], [0,0], [0,0], [0,0]] //Each array member = a trailing ball's position
+/////END NEW/////
 }
+
 
 // update()
 //
@@ -22,6 +26,15 @@ function Ball(x,y,vx,vy,size,speed) {
 // checks for bouncing on upper or lower edgs, checks for going
 // off left or right side.
 Ball.prototype.update = function () {
+  /////NEW/////
+  //Update trail's position
+  this.trail[0] = this.trail[1];
+  this.trail[1] = this.trail[2];
+  this.trail[2] = this.trail[3];
+  this.trail[3] = this.trail[4];
+  this.trail[4] = [this.x, this.y];
+  console.log(this.trail[3]);
+  /////END NEW/////
   // Update position with velocity
   this.x += this.vx;
   this.y += this.vy;
@@ -41,6 +54,8 @@ Ball.prototype.update = function () {
 // Otherwise it returns false.
 Ball.prototype.isOffScreen = function () {
   // Check for going off screen and reset if so
+//////NEW/////
+//Define which paddle gains score
   if (this.x + this.size < 0 || this.x > width) {
     if (this.x + this.size < 0) {
       leftPaddle.gainScore = false;
@@ -49,6 +64,7 @@ Ball.prototype.isOffScreen = function () {
       rightPaddle.gainScore = false;
       leftPaddle.gainScore = true;
     }
+//////END NEW/////
     return true;
   }
   else {
@@ -60,7 +76,19 @@ Ball.prototype.isOffScreen = function () {
 //
 // Draw the ball as a rectangle on the screen
 Ball.prototype.display = function () {
-  fill(255);
+  /////NEW/////
+  //Display trail balls
+  fill(255,70,0,20);
+  rect(this.trail[0][0],this.trail[0][1],this.size,this.size);
+  fill(255,91,6,50);
+  rect(this.trail[1][0],this.trail[1][1],this.size,this.size);
+  fill(254,126,16,100);
+  rect(this.trail[2][0],this.trail[2][1],this.size,this.size);
+  fill(254,112,104,150);
+  rect(this.trail[3][0],this.trail[3][1],this.size,this.size);
+  fill(253,254,152,200);
+  rect(this.trail[4][0],this.trail[4][1],this.size,this.size);
+  fill(255,255,142);
   rect(this.x,this.y,this.size,this.size);
 }
 

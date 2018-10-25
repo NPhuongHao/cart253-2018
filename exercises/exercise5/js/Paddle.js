@@ -17,8 +17,8 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.downKey = downKey;
   this.upKey = upKey;
 ///////NEW///////
-  this.gainScore = false;
-  this.score = 0;
+  this.gainScore = false; //check if this paddle gains score
+  this.score = 0; //store paddle's score
 ///////END NEW///////
 }
 
@@ -55,6 +55,7 @@ Paddle.prototype.display = function() {
 }
 
 //////NEW////////
+//Update paddle's score
 Paddle.prototype.updateScore = function() {
     if (this.gainScore === true) {
       this.score++;
@@ -70,6 +71,7 @@ Paddle.prototype.updateScore = function() {
 //////END NEW////////
 
 //////NEW//////
+//Change paddle's size when losing or winning
 Paddle.prototype.ballOffScreenUpdate = function() {
   if (this.gainScore === true) {
     this.h += 5;
