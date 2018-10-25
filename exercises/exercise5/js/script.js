@@ -114,15 +114,15 @@ function keyPressed() {
 //CHeck if game is over
 function checkGameOver() {
   var scoreDistance = leftPaddle.score - rightPaddle.score;
-  if (scoreDistance > 5 || scoreDistance < -5) {
+  if (scoreDistance >= 5 || scoreDistance <= -5) {
     background(0);
     textAlign(CENTER);
     textSize(40);
     text('GAME  OVER', width/2, height*0.4);
     textSize(20);
-    if (scoreDistance > 5) {
+    if (scoreDistance >= 5) {
       text('Player  1  win  with  ' + leftPaddle.score + '  points!', width/2, height*0.55);
-    } else if (scoreDistance < -5) {
+    } else if (scoreDistance <= -5) {
       text('Player  2  win  with  ' + leftPaddle.score + '  points!', width/2, height*0.55);
     }
     text('Press  ENTER  to  replay', width/2, height*0.65);
