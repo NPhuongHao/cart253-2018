@@ -57,6 +57,8 @@ function draw() {
 
   if (ball.isOffScreen()) {
     ball.reset();
+    leftPaddle.ballOffScreenUpdate();
+    rightPaddle.ballOffScreenUpdate();
     console.log(leftPaddle.score, rightPaddle.score);
   }
 

@@ -16,8 +16,10 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.speed = speed;
   this.downKey = downKey;
   this.upKey = upKey;
+///////NEW///////
   this.gainScore = false;
   this.score = 0;
+///////END NEW///////
 }
 
 // handleInput()
@@ -66,3 +68,13 @@ Paddle.prototype.updateScore = function() {
     text('Score    ' + rightPaddle.score, width-80, 40);
 }
 //////END NEW////////
+
+//////NEW//////
+Paddle.prototype.ballOffScreenUpdate = function() {
+  if (this.gainScore === true) {
+    this.h += 5;
+  } else if (this.gainScore === false) {
+    this.h -= 5;
+  }
+}
+//////END NEW//////
