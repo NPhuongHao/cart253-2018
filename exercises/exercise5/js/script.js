@@ -76,6 +76,10 @@ function draw() {
   ball.display();
   leftPaddle.display();
   rightPaddle.display();
+
+  /////NEW/////
+  checkGameOver();
+  /////END NEW////
 }
 
 
@@ -85,12 +89,13 @@ function setupDividerAndInstruction() {
   divider.y = 65;
   divider.x = width/2 - divider.size/2;
   fill(255,100);
-  while (divider.y < height) {
+  while (divider.y < height-35) {
     rect(divider.x, divider.y, divider.size, divider.size);
     divider.y += 20;
   }
   textSize(14);
   text('BACKSPACE to pause \n SHIFT to resume', width/2, 30);
+  text('Gain 5 points superior to your opponent to win!', width/2, height-20);
 }
 //////END NEW////////
 //////NEW////////
@@ -105,3 +110,23 @@ function keyPressed() {
   }
 }
 //////END NEW////////
+//////NEW//////
+//CHeck if game is over
+function checkGameOver() {
+  var scoreDistance = leftPaddle.score - rightPaddle.score;
+  if (scoreDistance > 5 || scoreDistance < -5) {
+    background(0);
+    textAlign(CENTER);
+    textSize(40);
+    text('GAME  OVER', width/2, height*0.4);
+    textSize(20);
+    if (scoreDistance > 5) {
+      text('Player  1  win  with  ' + leftPaddle.score + '  points!', width/2, height*0.55);
+    } else if (scoreDistance < -5) {
+      text('Player  2  win  with  ' + leftPaddle.score + '  points!', width/2, height*0.55);
+    }
+    text('Press  ENTER  to  replay', width/2, height*0.65);
+    noLoop();
+  }
+}
+//////END NEW//////
