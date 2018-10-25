@@ -6,7 +6,7 @@
 // Paddle constructor
 //
 // Sets the properties with the provided arguments or defaults
-function Paddle(x,y,w,h,speed,downKey,upKey) {
+function Paddle(x,y,w,h,speed,downKey,upKey,leftKey,rightKey) {
   this.x = x;
   this.y = y;
   this.vx = 0;
@@ -17,6 +17,8 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.downKey = downKey;
   this.upKey = upKey;
 ///////NEW///////
+  this.leftKey = leftKey;
+  this.rightKey = rightKey;
   this.gainScore = false; //check if this paddle gains score
   this.score = 0; //store paddle's score
 ///////END NEW///////
@@ -36,6 +38,21 @@ Paddle.prototype.handleInput = function() {
   else {
     this.vy = 0;
   }
+  /////NEW/////
+  //Paddle's horizontal movement
+  if (keyIsDown(this.rightKey)) {
+      // Move right
+      this.vx += this.speed/5;
+    }
+    else if (keyIsDown(this.leftKey)) {
+      // Move left
+      this.vx -= this.speed/5;
+    }
+    else {
+      // Otherwise stop moving
+      this.vx = 0;
+    }
+  /////END NEW/////
 }
 
 // update()
@@ -44,6 +61,13 @@ Paddle.prototype.handleInput = function() {
 Paddle.prototype.update = function() {
   this.y += this.vy;
   this.y = constrain(this.y,0,height-this.h);
+  /////NEW/////
+  //Paddle's horizonal position
+  this.x += this.vx;
+  //Limit horizontal position of each paddle
+  leftPaddle.x = constrain(leftPaddle.x, 0, width/2-leftPaddle.w-divider.size/2);
+  rightPaddle.x = constrain(rightPaddle.x, width/2+divider.size/2, width-rightPaddle.w);
+  /////END NEW/////
 }
 
 // display()

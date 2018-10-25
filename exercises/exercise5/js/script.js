@@ -32,12 +32,15 @@ function preload() {
 function setup() {
   createCanvas(860,480);
   // Create a ball
-  ball = new Ball(width/2,height/2,5,5,10,5);
-  // Create the right paddle with UP and DOWN as controls
-  rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW);
-  // Create the left paddle with W and S as controls
-  // Keycodes 83 and 87 are W and S respectively
-  leftPaddle = new Paddle(0,height/2,10,60,10,83,87);
+  ball = new Ball(width/2,height/2,5,5,15,5);
+  /////NEW/////
+  // Create the right paddle with UP, DOWN, LEFT, RIGHT as controls
+  rightPaddle = new Paddle(width-10,height/2,10,70,10,DOWN_ARROW,UP_ARROW,37,39);
+  // Create the left paddle with W, S, A, D as controls
+  // Keycodes 83 and 87 are W and S respectively, 65 and 68 are A and D respectively
+  leftPaddle = new Paddle(0,height/2,10,70,10,83,87,65,68);
+  noStroke();
+  /////END NEW/////
 }
 
 // draw()
@@ -80,7 +83,7 @@ function draw() {
 //Style divider and instruction
 function setupDividerAndInstruction() {
   divider.y = 65;
-  divider.x = width/2;
+  divider.x = width/2 - divider.size/2;
   fill(255,100);
   while (divider.y < height) {
     rect(divider.x, divider.y, divider.size, divider.size);
