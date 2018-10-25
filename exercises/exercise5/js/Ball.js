@@ -13,6 +13,7 @@ function Ball(x,y,vx,vy,size,speed) {
   this.vx = vx;
   this.vy = vy;
   this.size = size;
+  this.sizeOriginal = size;
   this.speed = speed;
 /////NEW/////
   this.trail = [[0,0], [0,0], [0,0], [0,0], [0,0]] //Each array member = a trailing ball's position
@@ -106,6 +107,16 @@ Ball.prototype.handleCollision = function(paddle) {
       this.y -= this.vy;
       // Reverse x velocity to bounce
       this.vx = -this.vx;
+      // Play our bouncing sound effect by rewinding and then playing
+      beepSFX.currentTime = 0;
+      beepSFX.play();
+      this.size = this.sizeOriginal + random(0, 20);
+      console.log(this.size);
+      paddle.color = {
+        r: 255,
+        b: 70,
+        g: 0
+      }
     }
   }
 }
