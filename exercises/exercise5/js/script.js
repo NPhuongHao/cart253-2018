@@ -14,6 +14,8 @@ var ball;
 var leftPaddle;
 var rightPaddle;
 
+var scores = [0, 0];
+
 // setup()
 //
 // Creates the ball and paddles
@@ -44,6 +46,7 @@ function draw() {
 
   if (ball.isOffScreen()) {
     ball.reset();
+    updateScore();
   }
 
   ball.handleCollision(leftPaddle);
@@ -52,4 +55,14 @@ function draw() {
   ball.display();
   leftPaddle.display();
   rightPaddle.display();
+}
+
+function updateScore() {
+    if (leftPaddle.gainScore === true) {
+      scores[0]++;
+      console.log(scores);
+    } else if (rightPaddle.gainScore === true) {
+      scores[1]++;
+      console.log(scores);
+    }
 }
