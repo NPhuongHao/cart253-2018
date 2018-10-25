@@ -33,7 +33,6 @@ Ball.prototype.update = function () {
   this.trail[2] = this.trail[3];
   this.trail[3] = this.trail[4];
   this.trail[4] = [this.x, this.y];
-  console.log(this.trail[3]);
   /////END NEW/////
   // Update position with velocity
   this.x += this.vx;
@@ -88,6 +87,7 @@ Ball.prototype.display = function () {
   rect(this.trail[3][0],this.trail[3][1],this.size,this.size);
   fill(253,254,152,200);
   rect(this.trail[4][0],this.trail[4][1],this.size,this.size);
+  /////END NEW/////
   fill(255,255,142);
   rect(this.x,this.y,this.size,this.size);
 }
@@ -116,4 +116,8 @@ Ball.prototype.handleCollision = function(paddle) {
 Ball.prototype.reset = function () {
   this.x = width/2;
   this.y = height/2;
+  //the ball launch toward the paddle that won the most recent point with a random y velocity
+  this.vx = -this.vx;
+  this.vy = random(this.speed-2, this.speed+4);
+  console.log(this.vy);
 }
