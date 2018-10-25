@@ -16,6 +16,12 @@ var rightPaddle;
 
 var scores = [0, 0];
 
+function preload() {
+  beepSFX = new Audio("assets/sounds/beep.wav");
+  mainFont = loadFont("assets/fonts/ARCADECLASSIC.TTF");
+}
+
+
 // setup()
 //
 // Creates the ball and paddles
@@ -46,8 +52,11 @@ function draw() {
 
   if (ball.isOffScreen()) {
     ball.reset();
-    updateScore();
   }
+
+  //////NEW////////
+  updateScore();
+  //////END NEW////////
 
   ball.handleCollision(leftPaddle);
   ball.handleCollision(rightPaddle);
@@ -57,12 +66,21 @@ function draw() {
   rightPaddle.display();
 }
 
+//////NEW////////
 function updateScore() {
     if (leftPaddle.gainScore === true) {
       scores[0]++;
-      console.log(scores);
+      leftPaddle.gainScore = false;
     } else if (rightPaddle.gainScore === true) {
       scores[1]++;
-      console.log(scores);
+      rightPaddle.gainScore = false;
     }
+    console.log(scores);
+    textAlign(CENTER);
+    textFont(mainFont);
+    fill(255);
+    textSize(20);
+    text('Score    ' + scores[0], 80, 40);
+    text('Score    ' + scores[1], width-80, 40);
 }
+//////END NEW////////
