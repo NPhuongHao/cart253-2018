@@ -89,3 +89,14 @@ function setupDividerAndInstruction() {
   text('BACKSPACE to pause \n SHIFT to resume', width/2, 30);
 }
 //////END NEW////////
+//////NEW////////
+function keyPressed() {
+  if (keyCode === RETURN) {
+    window.location.reload();
+  } if (keyCode === BACKSPACE) {
+    noLoop();
+  } if (keyCode === SHIFT) {
+    loop();
+  }
+}
+//////END NEW////////
