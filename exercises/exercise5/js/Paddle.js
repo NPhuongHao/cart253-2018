@@ -17,6 +17,7 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.downKey = downKey;
   this.upKey = upKey;
   this.gainScore = false;
+  this.score = 0;
 }
 
 // handleInput()
@@ -50,3 +51,18 @@ Paddle.prototype.display = function() {
   fill(255);
   rect(this.x,this.y,this.w,this.h);
 }
+
+//////NEW////////
+Paddle.prototype.updateScore = function() {
+    if (this.gainScore === true) {
+      this.score++;
+      this.gainScore = false;
+    }
+    textAlign(CENTER);
+    textFont(mainFont);
+    fill(255);
+    textSize(20);
+    text('Score    ' + leftPaddle.score, 80, 40);
+    text('Score    ' + rightPaddle.score, width-80, 40);
+}
+//////END NEW////////

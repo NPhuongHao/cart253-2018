@@ -14,7 +14,6 @@ var ball;
 var leftPaddle;
 var rightPaddle;
 
-var scores = [0, 0];
 var divider = {
   x: 0,
   y: 0,
@@ -58,10 +57,12 @@ function draw() {
 
   if (ball.isOffScreen()) {
     ball.reset();
+    console.log(leftPaddle.score, rightPaddle.score);
   }
 
   //////NEW////////
-  updateScore();
+  leftPaddle.updateScore();
+  rightPaddle.updateScore();
   //////END NEW////////
 
   ball.handleCollision(leftPaddle);
@@ -72,24 +73,6 @@ function draw() {
   rightPaddle.display();
 }
 
-//////NEW////////
-function updateScore() {
-    if (leftPaddle.gainScore === true) {
-      scores[0]++;
-      leftPaddle.gainScore = false;
-    } else if (rightPaddle.gainScore === true) {
-      scores[1]++;
-      rightPaddle.gainScore = false;
-    }
-    console.log(scores);
-    textAlign(CENTER);
-    textFont(mainFont);
-    fill(255);
-    textSize(20);
-    text('Score    ' + scores[0], 80, 40);
-    text('Score    ' + scores[1], width-80, 40);
-}
-//////END NEW////////
 
 //////NEW////////
 function setupDividerAndInstruction() {
