@@ -15,6 +15,11 @@ var leftPaddle;
 var rightPaddle;
 
 var scores = [0, 0];
+var divider = {
+  x: 0,
+  y: 0,
+  size: 10,
+}
 
 function preload() {
   beepSFX = new Audio("assets/sounds/beep.wav");
@@ -26,7 +31,7 @@ function preload() {
 //
 // Creates the ball and paddles
 function setup() {
-  createCanvas(640,480);
+  createCanvas(860,480);
   // Create a ball
   ball = new Ball(width/2,height/2,5,5,10,5);
   // Create the right paddle with UP and DOWN as controls
@@ -42,6 +47,7 @@ function setup() {
 // and displays everything.
 function draw() {
   background(0);
+  setupDividerAndInstruction();
 
   leftPaddle.handleInput();
   rightPaddle.handleInput();
@@ -82,5 +88,19 @@ function updateScore() {
     textSize(20);
     text('Score    ' + scores[0], 80, 40);
     text('Score    ' + scores[1], width-80, 40);
+}
+//////END NEW////////
+
+//////NEW////////
+function setupDividerAndInstruction() {
+  divider.y = 65;
+  divider.x = width/2;
+  fill(255,100);
+  while (divider.y < height) {
+    rect(divider.x, divider.y, divider.size, divider.size);
+    divider.y += 20;
+  }
+  textSize(14);
+  text('BACKSPACE to pause \n SHIFT to resume', width/2, 30);
 }
 //////END NEW////////
