@@ -40,7 +40,7 @@ function setup() {
   ball = new Ball(width / 2, height / 2, 5, 5, 15, 5);
   /////NEW/////
   // Create the right paddle with UP, DOWN, LEFT, RIGHT as controls
-  rightPaddle = new Paddle(width - 10, height / 2 - 35, 10, 70, 10, DOWN_ARROW, UP_ARROW, 37, 39);
+  rightPaddle = new Paddle(width - 10, height / 2 - 35, 10, 70, 10, UP_ARROW, DOWN_ARROW, 37, 39);
   // Create the left paddle with W, S, A, D as controls
   // Keycodes 83 and 87 are W and S respectively, 65 and 68 are A and D respectively
   leftPaddle = new Paddle(0, height / 2 - 35, 10, 70, 10, 83, 87, 65, 68);
