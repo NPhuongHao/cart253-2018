@@ -35,6 +35,9 @@ Paddle.prototype.handleInput = function() {
   else if (keyDown(downKey)) {
     ////////////FIXED! this.vy = this.speed
     this.vy = this.speed;
+  }  else {
+    ////////////FIXED! added else statement to reset paddle's y velocity to 0 when no key is pressed
+    this.vy = 0;
   }
 }
 
