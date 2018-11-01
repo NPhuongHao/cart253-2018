@@ -79,6 +79,7 @@ Ball.prototype.handleCollision = function(paddle) {
       // Reverse x velocity to bounce
       ////////////FIXED! this.vx = this.vx --> this.vx = -this.vx
       this.vx = -this.vx;
+      beepSFX.play();
     }
   }
 }
@@ -90,5 +91,4 @@ Ball.prototype.handleCollision = function(paddle) {
 Ball.prototype.reset = function () {
   this.x = width/2;
   this.y = height/2;
-  console.log(ball.x, ball.y)
 }

@@ -15,6 +15,16 @@ var ball;
 var leftPaddle;
 var rightPaddle;
 
+//sound effect Variable
+var beepSFX;
+
+
+//preload the sound effect
+function preload() {
+  beepSFX = new Audio("assets/sounds/beep.wav");
+}
+
+
 // setup()
 //
 // Creates the ball and paddles
