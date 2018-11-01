@@ -8,6 +8,7 @@
 
 //Sets the properties with the provided arguments or defaults
 
+
 ////////////FIXED! Pladdle --> Paddle
 function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.x = x;
@@ -25,7 +26,8 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
 //
 // Check if the up or down keys are pressed and update velocity
 // appropriately
-Paddle.proto.handleInput = function() {
+////////////FIXED! proto --> prototype
+Paddle.prototype.handleInput = function() {
   if (keyDown(upKey)) {
     this.vy = -this.speed;
   }
