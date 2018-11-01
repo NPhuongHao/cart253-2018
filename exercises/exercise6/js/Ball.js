@@ -58,6 +58,8 @@ Ball.prototype.isOffScreen = function () {
 // Draw the ball as a rectangle on the screen
 //////////FIXED! added commas between rect's parameters. Added size parameters for rect.
 Ball.prototype.display = function () {
+  ////////////FIXED! Added fill(255)
+  fill(255);
   rect(this.x,this.y,this.size,this.size);
 }
 
