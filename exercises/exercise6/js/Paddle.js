@@ -43,8 +43,8 @@ Paddle.prototype.handleInput = function() {
 // Constrain the resulting position to be within the canvas
 Paddle.prototype.update = function() {
   this.y += this.vy;
-  ////////////FIXED! constraint() --> constrain()
-  this.y = constrain(this.y,0,hight-this.h);
+  ////////////FIXED! constraint() --> constrain(). hight --> height
+  this.y = constrain(this.y,0,height-this.h);
 }
 
 // display()
