@@ -9,12 +9,12 @@
 //Sets the properties with the provided arguments or defaults
 
 
-////////////FIXED! Pladdle --> Paddle
+////////////FIXED! Pladdle --> Paddle. xv --> vx. yv --> vy
 function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.x = x;
   this.y = y;
-  this.xv = 0;
-  this.yv = 0;
+  this.vx = 0;
+  this.vy = 0;
   this.w = w;
   this.h = h;
   ////////////FIXED! speeed --> speed
@@ -33,6 +33,7 @@ Paddle.prototype.handleInput = function() {
     this.vy = -this.speed;
   }
   else if (keyDown(downKey)) {
+    ////////////FIXED! this.vy = this.speed
     this.vy = this.speed;
   }
 }
