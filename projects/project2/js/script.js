@@ -15,19 +15,22 @@ var leftPaddle;
 var rightPaddle;
 //opacity for movement instruction
 var instructionOpacity = 100;
+var play = false; //to check if game is being played or not
+var titleOpacity = 255;
 
 function preload() {
   beepSFX = loadSound("assets/sounds/beep.wav");
   thumpSFX = loadSound("assets/sounds/thump.wav");
   bgSong = loadSound("assets/sounds/carols.mp3");
   mainFont = loadFont("assets/fonts/ARCADECLASSIC.TTF");
+  spaceButton = loadImage("assets/images/space.png");
 }
 
 // setup()
 //
 // Creates the ball and paddles
 function setup() {
-  createCanvas(windowWidth*0.7,windowHeight*0.7);
+  createCanvas(1000,480);
   // Create a ball
   ball = new Ball(width/2,height/2,5,5,10,5);
   // Create the right paddle with UP and DOWN as controls
@@ -36,8 +39,6 @@ function setup() {
   // Keycodes 83 and 87 are W and S respectively
   leftPaddle = new Paddle(0,height/2,10,60,10,83,87,65,68,10);
   noStroke();
-  bgSong.setVolume(0.3);
-  bgSong.loop();
 }
 
 // draw()
@@ -65,6 +66,10 @@ function draw() {
   leftPaddle.display();
   rightPaddle.display();
   displayScore();
+
+  if (play == false) {
+    titlePanel();
+  }
 }
 
 function setUpPlayground() {
@@ -79,6 +84,7 @@ function setUpPlayground() {
   rectMode(CORNER);
   //Paddle's movements instruction
   fill(255, instructionOpacity);
+  textFont(mainFont);
   textAlign(CENTER);
   textSize(32);
   instructionOpacity = constrain(instructionOpacity-=1.5, 0,100);//these instrucitons will fade away
@@ -98,4 +104,56 @@ function displayScore () {
   text('SCORE   ' + leftPaddle.score, 40,40);
   textAlign(RIGHT);
   text('SCORE   ' + rightPaddle.score, width-40, 40);
+}
+
+function titlePanel () {
+  background(79,118,74);
+  textAlign(CENTER);
+  fill(56,75,71);
+  imageMode(CENTER);
+  tint(255, 157);
+  image(spaceButton, width/2, height*0.8, 110, 40);
+  textFont('Lato');
+  textSize(32);
+  text('-----------------------', width/2, height*0.5);
+  textFont(mainFont);
+  rectMode(CORNERS);
+  rect(0,0,100,height);
+  rect(width,0,width-100,height);
+  rectMode(CORNER);
+  fill(223,52,65);
+  //fill(119,81,78);
+  rect(150,height*0.5-90,20,50);
+  rect(150,height*0.5-25,20,50);
+  rect(150,height*0.5+40,20,50);
+  rect(185,height*0.5-57.5,20,50);
+  rect(185,height*0.5+7.5,20,50);
+  rect(220,height*0.5-25,20,50);
+  rect(width-150,height*0.5-90,20,50);
+  rect(width-150,height*0.5-25,20,50);
+  rect(width-150,height*0.5+40,20,50);
+  rect(width-185,height*0.5-57.5,20,50);
+  rect(width-185,height*0.5+7.5,20,50);
+  rect(width-220,height*0.5-25,20,50);
+  bgSong.pause();
+  fill(242);
+  textSize(54);
+  text('BREAKOUT  PONG', width/2,height*0.3);
+  textSize(32);
+  text('CHRISTMAS  INVASION', width/2, height*0.4);
+  fill(242);
+  textSize(20);
+  text('Hit  balls  and  break  blocks  until  you  win', width/2, height*0.6);
+  textSize(16);
+  text('Best   played   with   a   fellow   player   and   mistletoe',width/2, height*0.65);
+  noLoop();
+}
+
+function keyPressed() {
+  if (keyCode === 32) {
+    play = true;
+    loop();
+    bgSong.setVolume(0.3);
+    bgSong.loop();
+  }
 }
