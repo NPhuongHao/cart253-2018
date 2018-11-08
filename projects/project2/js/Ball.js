@@ -46,6 +46,11 @@ Ball.prototype.update = function () {
 Ball.prototype.isOffScreen = function () {
   // Check for going off screen and reset if so
   if (this.x + this.size < 0 || this.x > width) {
+    if (this.x + this.size < 0) {
+      rightPaddle.updateScore();
+    } else if (this.x>width) {
+      leftPaddle.updateScore();
+    }
     return true;
   }
   else {
