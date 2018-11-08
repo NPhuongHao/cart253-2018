@@ -22,6 +22,7 @@ function preload() {
   beepSFX = loadSound("assets/sounds/beep.wav");
   thumpSFX = loadSound("assets/sounds/thump.wav");
   bgSong = loadSound("assets/sounds/carols.mp3");
+  gameOverSong = loadSound("assets/sounds/jingle.mp3");
   mainFont = loadFont("assets/fonts/ARCADECLASSIC.TTF");
   spaceButton = loadImage("assets/images/space.png");
 }
@@ -40,13 +41,12 @@ function setup() {
   leftPaddle = new Paddle(0,height/2,10,60,10,83,87,65,68,10);
   noStroke();
 }
-
 // draw()
 //
 // Handles input, updates all the elements, checks for collisions
 // and displays everything.
 function draw() {
-  setUpPlayground();
+  setUpPlayground(); //set up the playground's visual
 
   leftPaddle.handleInput();
   rightPaddle.handleInput();
@@ -65,11 +65,13 @@ function draw() {
   ball.display();
   leftPaddle.display();
   rightPaddle.display();
-  displayScore();
+  displayScore();//show each paddle's score
 
   if (play == false) {
     titlePanel();
   }
+  checkGameOver();
+
 }
 
 function setUpPlayground() {
@@ -106,36 +108,43 @@ function displayScore () {
   text('SCORE   ' + rightPaddle.score, width-40, 40);
 }
 
+//The title panel at the beginning of the game
 function titlePanel () {
   background(79,118,74);
-  textAlign(CENTER);
-  fill(56,75,71);
+  //Start button instruction;
   imageMode(CENTER);
   tint(255, 157);
   image(spaceButton, width/2, height*0.8, 110, 40);
+  //text divider
+  textAlign(CENTER);
   textFont('Lato');
   textSize(32);
   text('-----------------------', width/2, height*0.5);
   textFont(mainFont);
+  //left and right borders
+  fill(56,75,71)
   rectMode(CORNERS);
   rect(0,0,100,height);
   rect(width,0,width-100,height);
   rectMode(CORNER);
+  //small blocks illustration
   fill(223,52,65);
   //fill(119,81,78);
-  rect(150,height*0.5-90,20,50);
-  rect(150,height*0.5-25,20,50);
-  rect(150,height*0.5+40,20,50);
-  rect(185,height*0.5-57.5,20,50);
-  rect(185,height*0.5+7.5,20,50);
-  rect(220,height*0.5-25,20,50);
-  rect(width-150,height*0.5-90,20,50);
-  rect(width-150,height*0.5-25,20,50);
-  rect(width-150,height*0.5+40,20,50);
-  rect(width-185,height*0.5-57.5,20,50);
-  rect(width-185,height*0.5+7.5,20,50);
-  rect(width-220,height*0.5-25,20,50);
+  rect(150,height*0.5-90,10,50);
+  rect(150,height*0.5-25,10,50);
+  rect(150,height*0.5+40,10,50);
+  rect(185,height*0.5-57.5,10,50);
+  rect(185,height*0.5+7.5,10,50);
+  rect(220,height*0.5-25,10,50);
+  rect(width-150,height*0.5-90,10,50);
+  rect(width-150,height*0.5-25,10,50);
+  rect(width-150,height*0.5+40,10,50);
+  rect(width-185,height*0.5-57.5,10,50);
+  rect(width-185,height*0.5+7.5,10,50);
+  rect(width-220,height*0.5-25,10,50);
+  //stop BG song from playing
   bgSong.pause();
+  //text content
   fill(242);
   textSize(54);
   text('BREAKOUT  PONG', width/2,height*0.3);
@@ -150,10 +159,47 @@ function titlePanel () {
 }
 
 function keyPressed() {
-  if (keyCode === 32) {
+  if (keyCode === 32) {//SPACE --> start game
     play = true;
     loop();
     bgSong.setVolume(0.3);
     bgSong.loop();
+  } if (keyCode === 13) {//ENTER ---> replay
+    resetGame();
   }
+}
+
+function checkGameOver() {
+  if (leftPaddle.score == 11 || rightPaddle.score == 11) {
+    background(56,75,71);
+    fill(79,118,74)
+    rectMode(CORNERS);
+    rect(0,0,leftPaddle.playgroundWidthLimit,height);
+    rect(width,0,width-rightPaddle.playgroundWidthLimit,height);
+    rectMode(CORNER);
+    //text content
+    fill(242)
+    textAlign(CENTER);
+    textSize(40);
+    text('GAME  OVER', width / 2, height * 0.4);
+    textSize(20);
+    if (leftPaddle.score == 11) {
+      text('Player  1  won  with  ' + leftPaddle.score + '  points!', width / 2, height * 0.55);
+    } else if (rightPaddle.score == 11) {
+      text('Player  2  won  with  ' + rightPaddle.score + '  points!', width / 2, height * 0.55);
+    }
+    text('Press  ENTER  to  replay', width / 2, height * 0.65);
+    bgSong.pause();
+    gameOverSong.play();
+    noLoop();
+    }
+}
+
+function resetGame() {
+  play = false;
+  leftPaddle.score = 0;
+  rightPaddle.score = 0;
+  leftPaddle.playgroundWidthLimit = 10;
+  rightPaddle.playgroundWidthLimit = 10;
+  ball.reset();
 }
