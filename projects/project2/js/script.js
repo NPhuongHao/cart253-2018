@@ -15,8 +15,8 @@ var leftPaddle;
 var rightPaddle;
 
 function preload() {
-  beepSFX = new Audio("assets/sounds/beep.wav");
-  thumpSFX = new Audio("assets/sounds/thump.wav");
+  beepSFX = loadSound("assets/sounds/beep.wav");
+  thumpSFX = loadSound("assets/sounds/thump.wav");
   bgSong = loadSound("assets/sounds/carols.mp3");
   mainFont = loadFont("assets/fonts/ARCADECLASSIC.TTF");
 }
