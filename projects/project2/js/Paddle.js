@@ -70,6 +70,6 @@ Paddle.prototype.updateScore = function() {
   this.score += 1;
   this.playgroundWidthLimit += 50;
   this.playgroundWidthLimit = constrain(this.playgroundWidthLimit,10,width/2);
-  thumpSFX.currentTime = 0;
+  thumpSFX.stop();
   thumpSFX.play();
 }

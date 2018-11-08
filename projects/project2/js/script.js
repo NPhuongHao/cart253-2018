@@ -114,7 +114,7 @@ function titlePanel () {
   //Start button instruction;
   imageMode(CENTER);
   tint(255, 157);
-  image(spaceButton, width/2, height*0.8, 110, 40);
+  image(spaceButton, width/2, height*0.8, 110, 35);
   //text divider
   textAlign(CENTER);
   textFont('Lato');
@@ -152,7 +152,7 @@ function titlePanel () {
   text('CHRISTMAS  INVASION', width/2, height*0.4);
   fill(242);
   textSize(20);
-  text('Hit  balls  and  break  blocks  until  you  win', width/2, height*0.6);
+  text('Hit  balls  and  break  blocks  until  you  win !!', width/2, height*0.6);
   textSize(16);
   text('Best   played   with   a   fellow   player   and   mistletoe',width/2, height*0.65);
   noLoop();
@@ -162,8 +162,8 @@ function keyPressed() {
   if (keyCode === 32) {//SPACE --> start game
     play = true;
     loop();
-    gameOverSong.pause();
-    bgSong.currentTime = 0;
+    //play BG song
+    gameOverSong.stop();
     bgSong.setVolume(0.3);
     bgSong.loop();
   } if (keyCode === 13) {//ENTER ---> replay
@@ -172,7 +172,7 @@ function keyPressed() {
 }
 
 function checkGameOver() {
-  if (leftPaddle.score == 11 || rightPaddle.score == 11) {
+  if (leftPaddle.score == 2 || rightPaddle.score == 2) {
     background(56,75,71);
     fill(79,118,74)
     rectMode(CORNERS);
@@ -185,14 +185,14 @@ function checkGameOver() {
     textSize(40);
     text('GAME  OVER', width / 2, height * 0.4);
     textSize(20);
-    if (leftPaddle.score == 11) {
+    if (leftPaddle.score == 2) {
       text('Player  1  won  with  ' + leftPaddle.score + '  points!', width / 2, height * 0.55);
-    } else if (rightPaddle.score == 11) {
+    } else if (rightPaddle.score == 2) {
       text('Player  2  won  with  ' + rightPaddle.score + '  points!', width / 2, height * 0.55);
     }
     text('Press  ENTER  to  replay', width / 2, height * 0.65);
-    bgSong.pause();
-    gameOverSong.currentTime = 0;
+    //play gameOver's song
+    bgSong.stop();
     gameOverSong.loop();
     noLoop();
     }
