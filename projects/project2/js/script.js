@@ -162,6 +162,8 @@ function keyPressed() {
   if (keyCode === 32) {//SPACE --> start game
     play = true;
     loop();
+    gameOverSong.pause();
+    bgSong.currentTime = 0;
     bgSong.setVolume(0.3);
     bgSong.loop();
   } if (keyCode === 13) {//ENTER ---> replay
@@ -190,7 +192,8 @@ function checkGameOver() {
     }
     text('Press  ENTER  to  replay', width / 2, height * 0.65);
     bgSong.pause();
-    gameOverSong.play();
+    gameOverSong.currentTime = 0;
+    gameOverSong.loop();
     noLoop();
     }
 }
@@ -202,4 +205,5 @@ function resetGame() {
   leftPaddle.playgroundWidthLimit = 10;
   rightPaddle.playgroundWidthLimit = 10;
   ball.reset();
+  loop();
 }
