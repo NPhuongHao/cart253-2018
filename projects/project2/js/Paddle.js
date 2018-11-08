@@ -16,6 +16,10 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.speed = speed;
   this.downKey = downKey;
   this.upKey = upKey;
+  //paddle's color RGB
+  this.r = 254;
+  this.g = 203;
+  this.b = 2
 }
 
 // handleInput()
@@ -46,6 +50,6 @@ Paddle.prototype.update = function() {
 //
 // Draw the paddle as a rectangle on the screen
 Paddle.prototype.display = function() {
-  fill(255);
+  fill(this.r,this.g,this.b);
   rect(this.x,this.y,this.w,this.h);
 }

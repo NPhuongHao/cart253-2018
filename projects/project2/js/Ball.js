@@ -14,6 +14,10 @@ function Ball(x,y,vx,vy,size,speed) {
   this.vy = vy;
   this.size = size;
   this.speed = speed;
+  //Ball's color RGB
+  this.r = 231;
+  this.g = 240;
+  this.b = 237
 }
 
 // update()
