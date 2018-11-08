@@ -17,6 +17,7 @@ var rightPaddle;
 var instructionOpacity = 100;
 var play = false; //to check if game is being played or not
 var titleOpacity = 255;
+var winningPoint = 11; //to define at what point the game is over
 
 function preload() {
   beepSFX = loadSound("assets/sounds/beep.wav");
@@ -172,7 +173,7 @@ function keyPressed() {
 }
 
 function checkGameOver() {
-  if (leftPaddle.score == 2 || rightPaddle.score == 2) {
+  if (leftPaddle.score == winningPoint || rightPaddle.score == winningPoint) {
     background(56,75,71);
     fill(79,118,74)
     rectMode(CORNERS);
@@ -185,9 +186,9 @@ function checkGameOver() {
     textSize(40);
     text('GAME  OVER', width / 2, height * 0.4);
     textSize(20);
-    if (leftPaddle.score == 2) {
+    if (leftPaddle.score == winningPoint) {
       text('Player  1  won  with  ' + leftPaddle.score + '  points!', width / 2, height * 0.55);
-    } else if (rightPaddle.score == 2) {
+    } else if (rightPaddle.score == winningPoint) {
       text('Player  2  won  with  ' + rightPaddle.score + '  points!', width / 2, height * 0.55);
     }
     text('Press  ENTER  to  replay', width / 2, height * 0.65);
