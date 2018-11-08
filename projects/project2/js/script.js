@@ -15,10 +15,7 @@ var leftPaddle;
 var rightPaddle;
 
 function preload() {
-  beepSFX = new Audio("assets/sounds/beep.wav");
-  thumpSFX = new Audio("assets/sounds/thump.wav");
-  bgSong = loadSound("assets/sounds/carols.mp3");
-  mainFont = loadFont("assets/fonts/ARCADECLASSIC.TTF");
+  mainFont = loadFont('assets/fonts/ARCADECLASSIC.TTF');
 }
 
 // setup()
@@ -34,8 +31,6 @@ function setup() {
   // Keycodes 83 and 87 are W and S respectively
   leftPaddle = new Paddle(0,height/2,10,60,10,83,87,10);
   noStroke();
-  bgSong.setVolume(0.3);
-  bgSong.loop();
 }
 
 // draw()
@@ -65,11 +60,9 @@ function draw() {
 }
 
 function setUpPlayground() {
-  //background(79,118,74);
-  background(56,75,71);
+  background(67,88,105);
   //set up territory limits
-  //fill(56,75,71);
-  fill(79,118,74);
+  fill(33,42,49);
   rectMode(CORNERS);
   rect(0,0,leftPaddle.playgroundWidthLimit,height);
   rect(width,0,width-rightPaddle.playgroundWidthLimit,height);

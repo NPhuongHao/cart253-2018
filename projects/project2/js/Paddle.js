@@ -17,9 +17,9 @@ function Paddle(x,y,w,h,speed,downKey,upKey,playgroundWidthLimit) {
   this.downKey = downKey;
   this.upKey = upKey;
   //paddle's color RGB
-  this.r = 223;
-  this.g = 52;
-  this.b = 65;
+  this.r = 254;
+  this.g = 203;
+  this.b = 2;
   this.score = 0;
   this.playgroundWidthLimit = 10;
 }
@@ -60,6 +60,4 @@ Paddle.prototype.updateScore = function() {
   this.score += 1;
   this.playgroundWidthLimit += 50;
   this.playgroundWidthLimit = constrain(this.playgroundWidthLimit,10,width/2);
-  thumpSFX.currentTime = 0;
-  thumpSFX.play();
 }
