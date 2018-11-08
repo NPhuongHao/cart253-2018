@@ -31,10 +31,10 @@ function setup() {
   // Create a ball
   ball = new Ball(width/2,height/2,5,5,10,5);
   // Create the right paddle with UP and DOWN as controls
-  rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW,10);
+  rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW,37,39,10);
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
-  leftPaddle = new Paddle(0,height/2,10,60,10,83,87,10);
+  leftPaddle = new Paddle(0,height/2,10,60,10,83,87,65,68,10);
   noStroke();
   bgSong.setVolume(0.3);
   bgSong.loop();
@@ -64,6 +64,7 @@ function draw() {
   ball.display();
   leftPaddle.display();
   rightPaddle.display();
+  displayScore();
 }
 
 function setUpPlayground() {
@@ -75,15 +76,7 @@ function setUpPlayground() {
   rectMode(CORNERS);
   rect(0,0,leftPaddle.playgroundWidthLimit,height);
   rect(width,0,width-rightPaddle.playgroundWidthLimit,height);
-  //set up score display
-  fill(231,240,237);
   rectMode(CORNER);
-  textFont(mainFont);
-  textAlign(LEFT);
-  textSize(20);
-  text('SCORE   ' + leftPaddle.score, 40,40);
-  textAlign(RIGHT);
-  text('SCORE   ' + rightPaddle.score, width-40, 40);
   //Paddle's movements instruction
   fill(255, instructionOpacity);
   textAlign(CENTER);
@@ -94,4 +87,15 @@ function setUpPlayground() {
   textStyle(BOLD);
   text('⇦   ⇨   ⇧   ⇩', width*3/4, height/2);
   textStyle(NORMAL);
+}
+
+function displayScore () {
+  //set up score display
+  fill(231,240,237);
+  textFont(mainFont);
+  textAlign(LEFT);
+  textSize(20);
+  text('SCORE   ' + leftPaddle.score, 40,40);
+  textAlign(RIGHT);
+  text('SCORE   ' + rightPaddle.score, width-40, 40);
 }

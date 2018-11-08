@@ -6,7 +6,7 @@
 // Paddle constructor
 //
 // Sets the properties with the provided arguments or defaults
-function Paddle(x,y,w,h,speed,downKey,upKey,playgroundWidthLimit) {
+function Paddle(x,y,w,h,speed,downKey,upKey,leftKey,rightKey,playgroundWidthLimit) {
   this.x = x;
   this.y = y;
   this.vx = 0;
@@ -16,6 +16,8 @@ function Paddle(x,y,w,h,speed,downKey,upKey,playgroundWidthLimit) {
   this.speed = speed;
   this.downKey = downKey;
   this.upKey = upKey;
+  this.leftKey = leftKey;
+  this.rightKey = rightKey;
   //paddle's color RGB
   this.r = 223;
   this.g = 52;
@@ -34,9 +36,14 @@ Paddle.prototype.handleInput = function() {
   }
   else if (keyIsDown(this.downKey)) {
     this.vy = this.speed;
+  } else if (keyIsDown(this.leftKey)) {
+    this.vx = -this.speed;
+  } else if (keyIsDown(this.rightKey)) {
+    this.vx = this.speed;
   }
   else {
     this.vy = 0;
+    this.vx = 0;
   }
 }
 
@@ -46,6 +53,9 @@ Paddle.prototype.handleInput = function() {
 Paddle.prototype.update = function() {
   this.y += this.vy;
   this.y = constrain(this.y,0,height-this.h);
+  this.x += this.vx;
+  leftPaddle.x = constrain(leftPaddle.x,0,leftPaddle.playgroundWidthLimit-leftPaddle.w);
+  rightPaddle.x = constrain(rightPaddle.x,width-rightPaddle.playgroundWidthLimit,width-rightPaddle.w);
 }
 
 // display()
