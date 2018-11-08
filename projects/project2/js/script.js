@@ -13,6 +13,8 @@
 var ball;
 var leftPaddle;
 var rightPaddle;
+//opacity for movement instruction
+var instructionOpacity = 100;
 
 function preload() {
   beepSFX = loadSound("assets/sounds/beep.wav");
@@ -81,5 +83,15 @@ function setUpPlayground() {
   textSize(20);
   text('SCORE   ' + leftPaddle.score, 40,40);
   textAlign(RIGHT);
-  text('SCORE   ' + rightPaddle.score, width-40, 40)
+  text('SCORE   ' + rightPaddle.score, width-40, 40);
+  //Paddle's movements instruction
+  fill(255, instructionOpacity);
+  textAlign(CENTER);
+  textSize(32);
+  instructionOpacity = constrain(instructionOpacity-=1.5, 0,100);//these instrucitons will fade away
+  text('W   A   S   D', width/4, height/2);
+  textFont('Lato');
+  textStyle(BOLD);
+  text('⇦   ⇨   ⇧   ⇩', width*3/4, height/2);
+  textStyle(NORMAL);
 }
