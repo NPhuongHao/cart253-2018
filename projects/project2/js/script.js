@@ -17,7 +17,7 @@ var rightPaddle = [];
 var instructionOpacity = 100;
 var play = false; //to check if game is being played or not
 var titleOpacity = 255;
-var winningPoint = 20; //to define at what point the game is over
+var winningPoint = 2; //to define at what point the game is over
 var hitPaddle;
 
 function preload() {
@@ -35,17 +35,17 @@ function preload() {
 // Creates the ball and paddles
 function setup() {
   createCanvas(1000,480);
-  // Create a ball
+  // Create a ball and its additional ball
   //x,y,vx,vy,size,speed
   balls[0] = new Ball(width/2,height/2,5,5,10,5);
   balls[1] = new Ball(balls[0].x,balls[0].y,balls[0].vx,-balls[0].vy,balls[0].size,balls[0].speed);
   // Create the unknown
   unknownBall = new specialBall(width/2,height/2,7,0,20,7);
-  // Create the right paddle with UP and DOWN as controls
+  // Create the right paddle & its mirror
   //x,y,w,h,speed,originalSpeed,downKey,upKey,leftKey,rightKey,playgroundWidthLimit
   rightPaddle[0] = new Paddle(width-10,height/2,10,60,10,10,DOWN_ARROW,UP_ARROW,37,39,10);
   rightPaddle[1] = new Paddle(rightPaddle[0].x, height-rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
-  // Create the left paddle with W and S as controls
+  // Create the left paddle & its mirror
   // Keycodes 83 and 87 are W and S respectively
   leftPaddle[0] = new Paddle(0,height/2,10,60,10,10,83,87,65,68,10);
   leftPaddle[1] = new Paddle(leftPaddle[0].x, height-leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
@@ -235,12 +235,14 @@ function checkGameOver() {
 }
 
 function resetGame() {
-  play = false;
-  leftPaddle[0].score = 0;
-  rightPaddle[0].score = 0;
-  leftPaddle[0].playgroundWidthLimit = 10;
-  rightPaddle[0].playgroundWidthLimit = 10;
+  rightPaddle[0] = new Paddle(width-10,height/2,10,60,10,10,DOWN_ARROW,UP_ARROW,37,39,10);
+  rightPaddle[1] = new Paddle(rightPaddle[0].x, height-rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
+  leftPaddle[0] = new Paddle(0,height/2,10,60,10,10,83,87,65,68,10);
+  leftPaddle[1] = new Paddle(leftPaddle[0].x, height-leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
   balls[0].reset();
   balls[1].reset();
+  leftPaddle[0].score = 0;
+  rightPaddle[0].score = 0;
+  play = false;
   loop();
 }

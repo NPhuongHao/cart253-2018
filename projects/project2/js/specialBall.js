@@ -1,7 +1,8 @@
 //Special ball
 //A class to define how a special ball behaves
 //A special ball can:
-//Moves toward
+//Move toward the latest paddle that gained point
+//Get a random category (slowPaddle, reverseBall, manyBall or doublePaddle) and acts accordingly
 
 var effectCounter = [0, 0, 0, 0, 0]; //frame counters used for each special ball effect
 var triggerReaction = false; //variable to determine when to start special ball effect
@@ -27,6 +28,35 @@ function specialBall(x,y,vx,vy,size,speed) {
 specialBall.prototype.update = function () {
   // Update position with velocity
   this.x += this.vx;
+}
+
+//check if the ball can be displayed on screen. Each hit[] array member is assigned with a paddle's score
+//as leftPaddle gains 2 pts or 5 pts, a specialBall will appear. Same goes with rightPaddle.
+specialBall.prototype.checkGo = function () {
+  //Determine which this.hit array member should be checked out
+  if (leftPaddle[0].score == 2) {
+    this.checkHit(this.hit[0]);
+  } else if (leftPaddle[0].score == 5) {
+    this.checkHit(this.hit[2]);
+  }
+
+  if (rightPaddle[0].score == 2 ) {
+    this.checkHit(this.hit[1]);
+  } else if (rightPaddle[0].score == 5) {
+      this.checkHit(this.hit[3]);
+  }
+  //console.log(this.go)
+}
+
+//check if the ball that come out at a certain checkpoint has hit the paddle
+specialBall.prototype.checkHit = function(hitCheck) {
+  if (hitCheck == false) {
+    //if not, the ball is still displayed on screen
+    this.go = true;
+  } else {
+  //if so, the ball is hidden from screen
+  this.go = false;
+  }
 }
 
 // isOffScreen()
@@ -57,7 +87,7 @@ specialBall.prototype.handleCollision =function(paddle) {
       //check if the ball already hit a paddle
       //reset ball
       this.reset();
-      //asset random category
+      //specialBall gets a random category
       var r = random();
       if (r < 0.25) {
         this.category = 'slowPaddle';
@@ -68,8 +98,8 @@ specialBall.prototype.handleCollision =function(paddle) {
       } else if (r < 1) {
         this.category = 'doublePaddle';
       }
-      console.log(this.category);
-      triggerReaction = true;
+      //console.log(this.category);
+      triggerReaction = true; // Start specialBall's reaction to its category
       hitPaddle = paddle;
     }
   }
@@ -80,6 +110,7 @@ specialBall.prototype.display = function() {
 }
 
 specialBall.prototype.reset = function() {
+  //after a special ball collides with a paddle, tell the program that it hit successfully
   if (leftPaddle[0].score == 2) {
     this.hit[0] = true;
   } else if (leftPaddle[0].score == 5) {
@@ -91,45 +122,18 @@ specialBall.prototype.reset = function() {
   } else if (rightPaddle[0].score == 5) {
     this.hit[3] = true;
   }
-
+  //Reset effectCounter
   effectCounter = [0,0,0,0,0];
 
   this.x = width/2;
   this.y = height/2;
 }
 
-specialBall.prototype.checkGo = function () {
-  //Determine which this.hit array member should be checked out
-  if (leftPaddle[0].score == 2) {
-    this.checkHit(this.hit[0]);
-  } else if (leftPaddle[0].score == 5) {
-    this.checkHit(this.hit[2]);
-  }
-
-  if (rightPaddle[0].score == 2 ) {
-    this.checkHit(this.hit[1]);
-  } else if (rightPaddle[0].score == 5) {
-      this.checkHit(this.hit[3]);
-  }
-  //console.log(this.go)
-}
-
-//check if the ball that come out at a certain checkpoint has hit the paddle
-specialBall.prototype.checkHit = function(hitCheck) {
-  if (hitCheck == false) {
-    //if not, the ball is still displayed on screen
-    this.go = true;
-  } else {
-  //if so, the ball is hidden from screen
-  this.go = false;
-  }
-}
-
 //handle ball's reaction according to its category
 specialBall.prototype.handleReaction = function(category,hitPaddle) {
   if (category == 'slowPaddle' && effectCounter[0] < 200) {
-    console.log('checkpointslow');
-    //if ball's category is 'slowPaddle', slow down Paddle's speed by 1/2 for 500 frames?
+    //console.log('checkpointslow');
+    //if ball's category is 'slowPaddle', slow down Paddle's speed by 1/2 for 800 frames
     hitPaddle.speed = hitPaddle.originalSpeed * 0.5;
     console.log(hitPaddle.speed);
     //set color effect for paddle
@@ -138,7 +142,7 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
     hitPaddle.b = 240;
     effectCounter[0]++;
     console.log(effectCounter[0]);
-  } else {
+  } else { //after 800 frames are processed, return the original color and speed to the paddle
     hitPaddle.r = 223;
     hitPaddle.g = 52;
     hitPaddle.b = 65;
@@ -146,11 +150,14 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
   }
 
   if (category == 'reverseBall' && effectCounter[1] < 1) {
+    //if ball's category is 'reverseBall', reverse the ball's velocity x
+      this.vx = -this.vx;
       console.log('checkpointreverse');
       effectCounter[1]++;
 
   } else if (category == 'manyBall' && effectCounter[2] < 800) {
-      console.log('checkpointmany');
+      //if ball's category is 'manyBall', add one more ball to the screen.
+      //console.log('checkpointmany');
       balls[1].update();
       balls[1].handleCollision(leftPaddle[0]);
       balls[1].handleCollision(rightPaddle[0]);
@@ -160,13 +167,15 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
         balls[1].vy = 0;
       }
       if (!balls[1].vx == 0 && !balls[1].vy == 0) {
+        //Display the additional ball only when it's moving
         balls[1].display();
-        console.log(balls[1]);
+        //console.log(balls[1]);
       }
       effectCounter[2]++;
   }
 
   if (category == 'doublePaddle') {
+    //if ball's category is 'doublePaddle', add another paddle that mirrors the original paddle's movement vertically
       if (hitPaddle == leftPaddle[0] && effectCounter[3] < 800) {
         console.log('checkpointdoubleleft');
         leftPaddle[1].handleInput();

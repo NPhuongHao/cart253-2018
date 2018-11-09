@@ -69,6 +69,7 @@ Paddle.prototype.display = function() {
 
 Paddle.prototype.updateScore = function() {
   this.score += 1;
+  //if paddle gains score, increase its playground limit
   this.playgroundWidthLimit += 50;
   this.playgroundWidthLimit = constrain(this.playgroundWidthLimit,10,width/2);
   if (this.x < width/2) {//if the current paddle that gained point is leftPaddle, then unknown Ball will swing left
