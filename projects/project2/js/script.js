@@ -26,6 +26,7 @@ function preload() {
   gameOverSong = loadSound("assets/sounds/jingle.mp3");
   mainFont = loadFont("assets/fonts/ARCADECLASSIC.TTF");
   spaceButton = loadImage("assets/images/space.png");
+  secretGift = loadImage("assets/images/box.png");
 }
 
 // setup()
@@ -34,7 +35,10 @@ function preload() {
 function setup() {
   createCanvas(1000,480);
   // Create a ball
+  //x,y,vx,vy,size,speed
   ball = new Ball(width/2,height/2,5,5,10,5);
+  // Create the unknown
+  unknownBall = new specialBall(width/2,height/2,5,0,20,5);
   // Create the right paddle with UP and DOWN as controls
   rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW,37,39,10);
   // Create the left paddle with W and S as controls
@@ -55,6 +59,8 @@ function draw() {
   ball.update();
   leftPaddle.update();
   rightPaddle.update();
+  unknownBall.checkGo();
+
 
   if (ball.isOffScreen()) {
     ball.reset();
@@ -66,11 +72,29 @@ function draw() {
   ball.display();
   leftPaddle.display();
   rightPaddle.display();
+
+  //handle the behavior of specialBall if it appears on screen
+  if (unknownBall.go == true) {
+    //console.log(unknownBall.go);
+    unknownBall.update();
+    //Check if unknownBall is off screen
+    if (unknownBall.isOffScreen()) {
+      console.log('checkpoint');
+      unknownBall.reset();
+    }
+    unknownBall.handleCollision(leftPaddle);
+    unknownBall.handleCollision(rightPaddle);
+    unknownBall.display();
+  }
+
   displayScore();//show each paddle's score
 
+  //if the game is not being played, show the title panel
   if (play == false) {
     titlePanel();
   }
+
+  //check if the game is over
   checkGameOver();
 
 }
