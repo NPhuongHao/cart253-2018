@@ -74,10 +74,10 @@ Paddle.prototype.updateScore = function() {
   this.playgroundWidthLimit = constrain(this.playgroundWidthLimit,10,width/2);
   if (this.x < width/2) {//if the current paddle that gained point is leftPaddle, then unknown Ball will swing left
     unknownBall.vx = -unknownBall.speed;
-    console.log('left');
+    //console.log('left');
   } else if (this.x > width/2) {//if the current paddle that gained point is rightPaddle, then unknown Ball will swing rightKey
     unknownBall.vx = unknownBall.speed;
-    console.log('right');
+    //console.log('right');
   }
   thumpSFX.stop();
   thumpSFX.play();

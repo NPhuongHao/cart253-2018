@@ -83,6 +83,7 @@ Ball.prototype.handleCollision = function(paddle) {
       //Collision sound effect
       beepSFX.stop();
       beepSFX.play();
+      brickPaddle = paddle;
     }
   }
 }

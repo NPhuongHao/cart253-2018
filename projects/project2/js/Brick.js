@@ -28,10 +28,16 @@ Brick.prototype.handleCollision = function (ball) {
       ball.y -= ball.vy;
       // Reverse x velocity to bounce
       ball.vx = -ball.vx;
+      //Make the brick disappear
       this.exist = false;
       //Collision sound effect
       beepSFX.stop();
       beepSFX.play();
+      if (brickPaddle == leftPaddle[0] || brickPaddle == leftPaddle[1]) {
+        leftPaddle[0].updateScore();
+      } else if (brickPaddle == rightPaddle[0] || brickPaddle == rightPaddle[1]) {
+        rightPaddle[0].updateScore();
+      }
     }
   }
 }

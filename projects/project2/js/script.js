@@ -17,8 +17,9 @@ var rightPaddle = [];
 var instructionOpacity = 100;
 var play = false; //to check if game is being played or not
 var titleOpacity = 255;
-var winningPoint = 2; //to define at what point the game is over
-var hitPaddle;
+var winningPoint = 11; //to define at what point the game is over
+var hitPaddle; //to define which paddle was hit by the specialBall
+var brickPaddle; //to define which paddle launched the ball that hit the brick
 
 function preload() {
   beepSFX = loadSound("assets/sounds/beep.wav");
@@ -81,6 +82,7 @@ function draw() {
   leftPaddle[0].update();
   rightPaddle[0].update();
   unknownBall.checkGo();
+  console.log(unknownBall.go);
 
 
   if (balls[0].isOffScreen()) {
@@ -277,5 +279,8 @@ function resetGame() {
   leftPaddle[0].score = 0;
   rightPaddle[0].score = 0;
   play = false;
+  for (var i=0; i<18; i++) {
+    bricks[i].exist = true;
+  }
   loop();
 }

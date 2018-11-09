@@ -36,13 +36,13 @@ specialBall.prototype.checkGo = function () {
   //Determine which this.hit array member should be checked out
   if (leftPaddle[0].score == 2) {
     this.checkHit(this.hit[0]);
-  } else if (leftPaddle[0].score == 5) {
-    this.checkHit(this.hit[2]);
+  } if (leftPaddle[0].score == 7) {
+    this.checkHit(this.hit[1]);
   }
 
   if (rightPaddle[0].score == 2 ) {
-    this.checkHit(this.hit[1]);
-  } else if (rightPaddle[0].score == 5) {
+    this.checkHit(this.hit[2]);
+  } if (rightPaddle[0].score == 7) {
       this.checkHit(this.hit[3]);
   }
   //console.log(this.go)
@@ -113,13 +113,11 @@ specialBall.prototype.reset = function() {
   //after a special ball collides with a paddle, tell the program that it hit successfully
   if (leftPaddle[0].score == 2) {
     this.hit[0] = true;
-  } else if (leftPaddle[0].score == 5) {
-    this.hit[2] = true;
-  }
-
-  if (rightPaddle[0].score == 2) {
+  } if (leftPaddle[0].score == 7) {
     this.hit[1] = true;
-  } else if (rightPaddle[0].score == 5) {
+  } if (rightPaddle[0].score == 2) {
+    this.hit[2] = true;
+  } if (rightPaddle[0].score == 7) {
     this.hit[3] = true;
   }
   //Reset effectCounter
@@ -135,13 +133,11 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
     //console.log('checkpointslow');
     //if ball's category is 'slowPaddle', slow down Paddle's speed by 1/2 for 800 frames
     hitPaddle.speed = hitPaddle.originalSpeed * 0.5;
-    console.log(hitPaddle.speed);
     //set color effect for paddle
     hitPaddle.r = 158;
     hitPaddle.g = 243;
     hitPaddle.b = 240;
     effectCounter[0]++;
-    console.log(effectCounter[0]);
   } else { //after 800 frames are processed, return the original color and speed to the paddle
     hitPaddle.r = 223;
     hitPaddle.g = 52;
@@ -181,7 +177,8 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
         leftPaddle[1].handleInput();
         leftPaddle[1].update();
         balls[0].handleCollision(leftPaddle[1]);
-        leftPaddle[1].display();
+        leftPaddle
+        [1].display();
         effectCounter[3]++;
 
       } else if (hitPaddle == rightPaddle[0] && effectCounter[4] < 800) {
