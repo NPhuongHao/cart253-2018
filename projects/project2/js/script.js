@@ -34,22 +34,38 @@ function preload() {
 //
 // Creates the ball and paddles
 function setup() {
-  createCanvas(1000,480);
+  createCanvas(1000, 480);
   // Create a ball and its additional ball
   //x,y,vx,vy,size,speed
-  balls[0] = new Ball(width/2,height/2,5,5,10,5);
-  balls[1] = new Ball(balls[0].x,balls[0].y,balls[0].vx,-balls[0].vy,balls[0].size,balls[0].speed);
+  balls[0] = new Ball(width / 2 - 2.5, height / 2 - 2.5, 5, 5, 10, 5);
+  balls[1] = new Ball(balls[0].x, balls[0].y, balls[0].vx, -balls[0].vy, balls[0].size, balls[0].speed);
   // Create the unknown
-  unknownBall = new specialBall(width/2,height/2,7,0,20,7);
+  unknownBall = new specialBall(width / 2, height / 2, 7, 0, 20, 7);
   // Create the right paddle & its mirror
   //x,y,w,h,speed,originalSpeed,downKey,upKey,leftKey,rightKey,playgroundWidthLimit
-  rightPaddle[0] = new Paddle(width-10,height/2,10,60,10,10,DOWN_ARROW,UP_ARROW,37,39,10);
-  rightPaddle[1] = new Paddle(rightPaddle[0].x, height-rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
+  rightPaddle[0] = new Paddle(width - 10, height / 2, 10, 60, 10, 10, DOWN_ARROW, UP_ARROW, 37, 39, 10);
+  rightPaddle[1] = new Paddle(rightPaddle[0].x, height - rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
   // Create the left paddle & its mirror
   // Keycodes 83 and 87 are W and S respectively
-  leftPaddle[0] = new Paddle(0,height/2,10,60,10,10,83,87,65,68,10);
-  leftPaddle[1] = new Paddle(leftPaddle[0].x, height-leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
+  leftPaddle[0] = new Paddle(0, height / 2, 10, 60, 10, 10, 83, 87, 65, 68, 10);
+  leftPaddle[1] = new Paddle(leftPaddle[0].x, height - leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
+
+  for (var t = 0; t < 3; t++) {
+    for (var i = 0; i < 3; i++) {
+      var brickY = height / 2 - 10 - (i + 1) * 80;
+      var brickX = width / 2 - 10 - 40 + t * 30;
+      bricks.push(new Brick(brickX, brickY, 15, 60, true));
+    }
+    for (var i = 3; i < 6; i++) {
+      var brickX = width / 2 - 10 - 40 + t * 30;
+      var brickY = height / 2 + 10 + (i-3) * 80;
+      bricks.push(new Brick(brickX, brickY, 15, 60, true));
+    }
+  }
+
   noStroke();
+
+
 }
 // draw()
 //
@@ -78,6 +94,8 @@ function draw() {
   leftPaddle[0].display();
   rightPaddle[0].display();
 
+  brickHandle();
+
   //handle the behavior of specialBall if it appears on screen
   if (unknownBall.go == true) {
     //console.log(unknownBall.go);
@@ -95,10 +113,10 @@ function draw() {
   }
 
   if (triggerReaction == true) {
-    unknownBall.handleReaction(unknownBall.category,hitPaddle);
+    unknownBall.handleReaction(unknownBall.category, hitPaddle);
   }
 
-  displayScore();//show each paddle's score
+  displayScore(); //show each paddle's score
 
   //if the game is not being played, show the title panel
   if (play == false) {
@@ -112,108 +130,109 @@ function draw() {
 
 function setUpPlayground() {
   //background(79,118,74);
-  background(56,75,71);
+  background(56, 75, 71);
   //set up territory limits
   //fill(56,75,71);
-  fill(79,118,74);
+  fill(79, 118, 74);
   rectMode(CORNERS);
-  rect(0,0,leftPaddle[0].playgroundWidthLimit,height);
-  rect(width,0,width-rightPaddle[0].playgroundWidthLimit,height);
+  rect(0, 0, leftPaddle[0].playgroundWidthLimit, height);
+  rect(width, 0, width - rightPaddle[0].playgroundWidthLimit, height);
   rectMode(CORNER);
   //Paddle's movements instruction
   fill(255, instructionOpacity);
   textFont(mainFont);
   textAlign(CENTER);
   textSize(32);
-  instructionOpacity = constrain(instructionOpacity-=1.5, 0,100);//these instrucitons will fade away
-  text('W   A   S   D', width/4, height/2);
+  instructionOpacity = constrain(instructionOpacity -= 1.5, 0, 100); //these instrucitons will fade away
+  text('W   A   S   D', width / 4, height / 2);
   textFont('Lato');
   textStyle(BOLD);
-  text('⇦   ⇨   ⇧   ⇩', width*3/4, height/2);
+  text('⇦   ⇨   ⇧   ⇩', width * 3 / 4, height / 2);
   textStyle(NORMAL);
 }
 
-function displayScore () {
+function displayScore() {
   //set up score display
-  fill(231,240,237);
+  fill(231, 240, 237);
   textFont(mainFont);
   textAlign(LEFT);
   textSize(20);
-  text('SCORE   ' + leftPaddle[0].score, 40,40);
+  text('SCORE   ' + leftPaddle[0].score, 40, 40);
   textAlign(RIGHT);
-  text('SCORE   ' + rightPaddle[0].score, width-40, 40);
+  text('SCORE   ' + rightPaddle[0].score, width - 40, 40);
 }
 
 //The title panel at the beginning of the game
-function titlePanel () {
-  background(79,118,74);
+function titlePanel() {
+  background(79, 118, 74);
   //Start button instruction;
   imageMode(CENTER);
   tint(255, 157);
-  image(spaceButton, width/2, height*0.8, 110, 35);
+  image(spaceButton, width / 2, height * 0.8, 110, 35);
   //text divider
   textAlign(CENTER);
   textFont('Lato');
   textSize(32);
-  text('-----------------------', width/2, height*0.5);
+  text('-----------------------', width / 2, height * 0.5);
   textFont(mainFont);
   //left and right borders
-  fill(56,75,71)
+  fill(56, 75, 71)
   rectMode(CORNERS);
-  rect(0,0,100,height);
-  rect(width,0,width-100,height);
+  rect(0, 0, 100, height);
+  rect(width, 0, width - 100, height);
   rectMode(CORNER);
   //small blocks illustration
-  fill(223,52,65);
+  fill(223, 52, 65);
   //fill(119,81,78);
-  rect(150,height*0.5-90,10,50);
-  rect(150,height*0.5-25,10,50);
-  rect(150,height*0.5+40,10,50);
-  rect(185,height*0.5-57.5,10,50);
-  rect(185,height*0.5+7.5,10,50);
-  rect(220,height*0.5-25,10,50);
-  rect(width-150,height*0.5-90,10,50);
-  rect(width-150,height*0.5-25,10,50);
-  rect(width-150,height*0.5+40,10,50);
-  rect(width-185,height*0.5-57.5,10,50);
-  rect(width-185,height*0.5+7.5,10,50);
-  rect(width-220,height*0.5-25,10,50);
+  rect(150, height * 0.5 - 90, 10, 50);
+  rect(150, height * 0.5 - 25, 10, 50);
+  rect(150, height * 0.5 + 40, 10, 50);
+  rect(185, height * 0.5 - 57.5, 10, 50);
+  rect(185, height * 0.5 + 7.5, 10, 50);
+  rect(220, height * 0.5 - 25, 10, 50);
+  rect(width - 150, height * 0.5 - 90, 10, 50);
+  rect(width - 150, height * 0.5 - 25, 10, 50);
+  rect(width - 150, height * 0.5 + 40, 10, 50);
+  rect(width - 185, height * 0.5 - 57.5, 10, 50);
+  rect(width - 185, height * 0.5 + 7.5, 10, 50);
+  rect(width - 220, height * 0.5 - 25, 10, 50);
   //stop BG song from playing
   bgSong.pause();
   //text content
   fill(242);
   textSize(54);
-  text('BREAKOUT  PONG', width/2,height*0.3);
+  text('BREAKOUT  PONG', width / 2, height * 0.3);
   textSize(32);
-  text('CHRISTMAS  INVASION', width/2, height*0.4);
+  text('CHRISTMAS  INVASION', width / 2, height * 0.4);
   fill(242);
   textSize(20);
-  text('Hit  balls  and  break  blocks  until  you  win !!', width/2, height*0.6);
+  text('Hit  balls  and  break  blocks  until  you  win !!', width / 2, height * 0.6);
   textSize(16);
-  text('Best   played   with   a   fellow   player   and   mistletoe',width/2, height*0.65);
+  text('Best   played   with   a   fellow   player   and   mistletoe', width / 2, height * 0.65);
   noLoop();
 }
 
 function keyPressed() {
-  if (keyCode === 32) {//SPACE --> start game
+  if (keyCode === 32) { //SPACE --> start game
     play = true;
     loop();
     //play BG song
     gameOverSong.stop();
     bgSong.setVolume(0.3);
     bgSong.loop();
-  } if (keyCode === 13) {//ENTER ---> replay
+  }
+  if (keyCode === 13) { //ENTER ---> replay
     resetGame();
   }
 }
 
 function checkGameOver() {
   if (leftPaddle[0].score == winningPoint || rightPaddle[0].score == winningPoint) {
-    background(56,75,71);
-    fill(79,118,74)
+    background(56, 75, 71);
+    fill(79, 118, 74)
     rectMode(CORNERS);
-    rect(0,0,leftPaddle[0].playgroundWidthLimit,height);
-    rect(width,0,width-rightPaddle[0].playgroundWidthLimit,height);
+    rect(0, 0, leftPaddle[0].playgroundWidthLimit, height);
+    rect(width, 0, width - rightPaddle[0].playgroundWidthLimit, height);
     rectMode(CORNER);
     //text content
     fill(242)
@@ -231,14 +250,28 @@ function checkGameOver() {
     bgSong.stop();
     gameOverSong.loop();
     noLoop();
+  }
+}
+
+function brickHandle() {
+  bricks[0].exist = false;
+  bricks[3].exist = false;
+  bricks[12].exist = false;
+  bricks[15].exist = false;
+  for (var i = 0; i < 18; i++) {
+    if (bricks[i].exist == true) {
+      bricks[i].handleCollision(balls[0]);
+      bricks[i].handleCollision(balls[1]);
+      bricks[i].display();
     }
+  }
 }
 
 function resetGame() {
-  rightPaddle[0] = new Paddle(width-10,height/2,10,60,10,10,DOWN_ARROW,UP_ARROW,37,39,10);
-  rightPaddle[1] = new Paddle(rightPaddle[0].x, height-rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
-  leftPaddle[0] = new Paddle(0,height/2,10,60,10,10,83,87,65,68,10);
-  leftPaddle[1] = new Paddle(leftPaddle[0].x, height-leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
+  rightPaddle[0] = new Paddle(width - 10, height / 2, 10, 60, 10, 10, DOWN_ARROW, UP_ARROW, 37, 39, 10);
+  rightPaddle[1] = new Paddle(rightPaddle[0].x, height - rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
+  leftPaddle[0] = new Paddle(0, height / 2, 10, 60, 10, 10, 83, 87, 65, 68, 10);
+  leftPaddle[1] = new Paddle(leftPaddle[0].x, height - leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
   balls[0].reset();
   balls[1].reset();
   leftPaddle[0].score = 0;
