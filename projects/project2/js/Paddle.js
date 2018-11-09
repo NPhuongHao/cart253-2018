@@ -6,13 +6,14 @@
 // Paddle constructor
 //
 // Sets the properties with the provided arguments or defaults
-function Paddle(x,y,w,h,speed,downKey,upKey,leftKey,rightKey,playgroundWidthLimit) {
+function Paddle(x,y,w,h,speed,originalSpeed,downKey,upKey,leftKey,rightKey,playgroundWidthLimit) {
   this.x = x;
   this.y = y;
   this.vx = 0;
   this.vy = 0;
   this.w = w;
   this.h = h;
+  this.originalSpeed = originalSpeed;
   this.speed = speed;
   this.downKey = downKey;
   this.upKey = upKey;
@@ -54,8 +55,8 @@ Paddle.prototype.update = function() {
   this.y += this.vy;
   this.y = constrain(this.y,0,height-this.h);
   this.x += this.vx;
-  leftPaddle.x = constrain(leftPaddle.x,0,leftPaddle.playgroundWidthLimit-leftPaddle.w);
-  rightPaddle.x = constrain(rightPaddle.x,width-rightPaddle.playgroundWidthLimit,width-rightPaddle.w);
+  leftPaddle[0].x = constrain(leftPaddle[0].x,0,leftPaddle[0].playgroundWidthLimit-leftPaddle[0].w);
+  rightPaddle[0].x = constrain(rightPaddle[0].x,width-rightPaddle[0].playgroundWidthLimit,width-rightPaddle[0].w);
 }
 
 // display()
@@ -70,6 +71,13 @@ Paddle.prototype.updateScore = function() {
   this.score += 1;
   this.playgroundWidthLimit += 50;
   this.playgroundWidthLimit = constrain(this.playgroundWidthLimit,10,width/2);
+  if (this.x < width/2) {//if the current paddle that gained point is leftPaddle, then unknown Ball will swing left
+    unknownBall.vx = -unknownBall.speed;
+    console.log('left');
+  } else if (this.x > width/2) {//if the current paddle that gained point is rightPaddle, then unknown Ball will swing rightKey
+    unknownBall.vx = unknownBall.speed;
+    console.log('right');
+  }
   thumpSFX.stop();
   thumpSFX.play();
 }

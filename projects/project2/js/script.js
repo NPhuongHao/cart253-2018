@@ -10,14 +10,15 @@
 // Written with JavaScript OOP.
 
 // Variable to contain the objects representing our ball and paddles
-var ball;
-var leftPaddle;
-var rightPaddle;
+var balls = [];
+var leftPaddle = [];
+var rightPaddle = [];
 //opacity for movement instruction
 var instructionOpacity = 100;
 var play = false; //to check if game is being played or not
 var titleOpacity = 255;
-var winningPoint = 11; //to define at what point the game is over
+var winningPoint = 20; //to define at what point the game is over
+var hitPaddle;
 
 function preload() {
   beepSFX = loadSound("assets/sounds/beep.wav");
@@ -36,14 +37,18 @@ function setup() {
   createCanvas(1000,480);
   // Create a ball
   //x,y,vx,vy,size,speed
-  ball = new Ball(width/2,height/2,5,5,10,5);
+  balls[0] = new Ball(width/2,height/2,5,5,10,5);
+  balls[1] = new Ball(balls[0].x,balls[0].y,balls[0].vx,-balls[0].vy,balls[0].size,balls[0].speed);
   // Create the unknown
-  unknownBall = new specialBall(width/2,height/2,5,0,20,5);
+  unknownBall = new specialBall(width/2,height/2,7,0,20,7);
   // Create the right paddle with UP and DOWN as controls
-  rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW,37,39,10);
+  //x,y,w,h,speed,originalSpeed,downKey,upKey,leftKey,rightKey,playgroundWidthLimit
+  rightPaddle[0] = new Paddle(width-10,height/2,10,60,10,10,DOWN_ARROW,UP_ARROW,37,39,10);
+  rightPaddle[1] = new Paddle(rightPaddle[0].x, height-rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
-  leftPaddle = new Paddle(0,height/2,10,60,10,83,87,65,68,10);
+  leftPaddle[0] = new Paddle(0,height/2,10,60,10,10,83,87,65,68,10);
+  leftPaddle[1] = new Paddle(leftPaddle[0].x, height-leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
   noStroke();
 }
 // draw()
@@ -53,25 +58,25 @@ function setup() {
 function draw() {
   setUpPlayground(); //set up the playground's visual
 
-  leftPaddle.handleInput();
-  rightPaddle.handleInput();
+  leftPaddle[0].handleInput();
+  rightPaddle[0].handleInput();
 
-  ball.update();
-  leftPaddle.update();
-  rightPaddle.update();
+  balls[0].update();
+  leftPaddle[0].update();
+  rightPaddle[0].update();
   unknownBall.checkGo();
 
 
-  if (ball.isOffScreen()) {
-    ball.reset();
+  if (balls[0].isOffScreen()) {
+    balls[0].reset();
   }
 
-  ball.handleCollision(leftPaddle);
-  ball.handleCollision(rightPaddle);
+  balls[0].handleCollision(leftPaddle[0]);
+  balls[0].handleCollision(rightPaddle[0]);
 
-  ball.display();
-  leftPaddle.display();
-  rightPaddle.display();
+  balls[0].display();
+  leftPaddle[0].display();
+  rightPaddle[0].display();
 
   //handle the behavior of specialBall if it appears on screen
   if (unknownBall.go == true) {
@@ -81,10 +86,16 @@ function draw() {
     if (unknownBall.isOffScreen()) {
       console.log('checkpoint');
       unknownBall.reset();
+      //console.log(unknownBall.go);
     }
-    unknownBall.handleCollision(leftPaddle);
-    unknownBall.handleCollision(rightPaddle);
+    unknownBall.handleCollision(leftPaddle[0]);
+    unknownBall.handleCollision(rightPaddle[0]);
     unknownBall.display();
+    //console.log(unknownBall.go);
+  }
+
+  if (triggerReaction == true) {
+    unknownBall.handleReaction(unknownBall.category,hitPaddle);
   }
 
   displayScore();//show each paddle's score
@@ -106,8 +117,8 @@ function setUpPlayground() {
   //fill(56,75,71);
   fill(79,118,74);
   rectMode(CORNERS);
-  rect(0,0,leftPaddle.playgroundWidthLimit,height);
-  rect(width,0,width-rightPaddle.playgroundWidthLimit,height);
+  rect(0,0,leftPaddle[0].playgroundWidthLimit,height);
+  rect(width,0,width-rightPaddle[0].playgroundWidthLimit,height);
   rectMode(CORNER);
   //Paddle's movements instruction
   fill(255, instructionOpacity);
@@ -128,9 +139,9 @@ function displayScore () {
   textFont(mainFont);
   textAlign(LEFT);
   textSize(20);
-  text('SCORE   ' + leftPaddle.score, 40,40);
+  text('SCORE   ' + leftPaddle[0].score, 40,40);
   textAlign(RIGHT);
-  text('SCORE   ' + rightPaddle.score, width-40, 40);
+  text('SCORE   ' + rightPaddle[0].score, width-40, 40);
 }
 
 //The title panel at the beginning of the game
@@ -197,12 +208,12 @@ function keyPressed() {
 }
 
 function checkGameOver() {
-  if (leftPaddle.score == winningPoint || rightPaddle.score == winningPoint) {
+  if (leftPaddle[0].score == winningPoint || rightPaddle[0].score == winningPoint) {
     background(56,75,71);
     fill(79,118,74)
     rectMode(CORNERS);
-    rect(0,0,leftPaddle.playgroundWidthLimit,height);
-    rect(width,0,width-rightPaddle.playgroundWidthLimit,height);
+    rect(0,0,leftPaddle[0].playgroundWidthLimit,height);
+    rect(width,0,width-rightPaddle[0].playgroundWidthLimit,height);
     rectMode(CORNER);
     //text content
     fill(242)
@@ -210,10 +221,10 @@ function checkGameOver() {
     textSize(40);
     text('GAME  OVER', width / 2, height * 0.4);
     textSize(20);
-    if (leftPaddle.score == winningPoint) {
-      text('Player  1  won  with  ' + leftPaddle.score + '  points!', width / 2, height * 0.55);
-    } else if (rightPaddle.score == winningPoint) {
-      text('Player  2  won  with  ' + rightPaddle.score + '  points!', width / 2, height * 0.55);
+    if (leftPaddle[0].score == winningPoint) {
+      text('Player  1  won  with  ' + leftPaddle[0].score + '  points!', width / 2, height * 0.55);
+    } else if (rightPaddle[0].score == winningPoint) {
+      text('Player  2  won  with  ' + rightPaddle[0].score + '  points!', width / 2, height * 0.55);
     }
     text('Press  ENTER  to  replay', width / 2, height * 0.65);
     //play gameOver's song
@@ -225,10 +236,11 @@ function checkGameOver() {
 
 function resetGame() {
   play = false;
-  leftPaddle.score = 0;
-  rightPaddle.score = 0;
-  leftPaddle.playgroundWidthLimit = 10;
-  rightPaddle.playgroundWidthLimit = 10;
-  ball.reset();
+  leftPaddle[0].score = 0;
+  rightPaddle[0].score = 0;
+  leftPaddle[0].playgroundWidthLimit = 10;
+  rightPaddle[0].playgroundWidthLimit = 10;
+  balls[0].reset();
+  balls[1].reset();
   loop();
 }
