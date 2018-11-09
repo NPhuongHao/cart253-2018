@@ -82,7 +82,7 @@ function draw() {
   leftPaddle[0].update();
   rightPaddle[0].update();
   unknownBall.checkGo();
-  console.log(unknownBall.go);
+  //console.log(unknownBall.go);
 
 
   if (balls[0].isOffScreen()) {
@@ -278,6 +278,8 @@ function resetGame() {
   balls[1].reset();
   leftPaddle[0].score = 0;
   rightPaddle[0].score = 0;
+  unknownBall.hit = [false, false, false, false];
+  unknownBall.category = '';
   play = false;
   for (var i=0; i<18; i++) {
     bricks[i].exist = true;
