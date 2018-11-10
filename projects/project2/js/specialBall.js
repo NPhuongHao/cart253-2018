@@ -106,27 +106,33 @@ specialBall.prototype.display = function() {
 specialBall.prototype.reset = function(paddle) {
   //after a special ball collides with a paddle, tell the program that it hit successfully
   if (leftPaddle[0].score >= 2) {
-    console.log("hit[0] = true");
+    //console.log("hit[0] = true");
     this.hit[0] = true;
   }
   if (leftPaddle[0].score >= 7) {
-    console.log("hit[1] = true");
+    //console.log("hit[1] = true");
     this.hit[1] = true;
   }
   if (rightPaddle[0].score >= 2) {
-    console.log("hit[2] = true");
+    //console.log("hit[2] = true");
     this.hit[2] = true;
   }
   if (rightPaddle[0].score >= 7) {
-    console.log("hit[3] = true");
+    //console.log("hit[3] = true");
     this.hit[3] = true;
   }
   //Reset effectCounter
-  if (hitPaddle == leftPaddle[0]) {
-    leftPaddle[0].effectCounter = [0,0,0,0,0];
-  } else if (hitPaddle == rightPaddle[0]) {
-    rightPaddle[0].effectCounter = [0,0,0,0,0];
+  if (!unknownBall.isOffScreen()) {
+    if (hitPaddle == leftPaddle[0]) {
+      leftPaddle[0].effectCounter = [0,0,0,0,0];
+      console.log('leftCounterRefreshed');
+      console.log(hitPaddle.effectCounter);
+    } else if (hitPaddle == rightPaddle[0]) {
+      rightPaddle[0].effectCounter = [0,0,0,0,0];
+      console.log('rightCounterRefreshed');
+    }
   }
+
 
   this.x = width/2;
   this.y = height/2;
@@ -206,7 +212,7 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
       console.log('checkpointreverse');
       hitPaddle.effectCounter[1]++;
 
-  } else if (category == 'manyBall' && hitPaddle.effectCounter[2] < 800) {
+  } else if (category == 'manyBall' && hitPaddle.effectCounter[2] < 500) {
       //if ball's category is 'manyBall', add one more ball to the screen.
       //console.log('checkpointmany');
       balls[1].update();
@@ -216,15 +222,14 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
       balls[1].handleCollision(rightPaddle[1]);
       if (balls[1].isOffScreen()) {
         balls[1].reset();
-        balls[1].vx = 0;
-        balls[1].vy = 0;
       }
-      if (!balls[1].vx == 0 && !balls[1].vy == 0) {
-        //Display the additional ball only when it's moving
-        balls[1].display();
-        //console.log(balls[1]);
-      }
+        if (!balls[1].vx == 0 && !balls[1].vy == 0) {
+          //Display the additional ball only when it's moving
+          balls[1].display();
+          //console.log(balls[1]);
+        }
       hitPaddle.effectCounter[2]++;
+      console.log(hitPaddle.effectCounter[2]);
   }
 
   if (category == 'doublePaddle') {
