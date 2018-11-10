@@ -14,16 +14,23 @@ var balls = [];
 var leftPaddle = [];
 var rightPaddle = [];
 //opacity for movement instruction
-var instructionOpacity = 100;
+var instructionOpacity = [100,100];
 var play = false; //to check if game is being played or not
 var titleOpacity = 255;
-var winningPoint = 11; //to define at what point the game is over
+var winningPoint = 15; //to define at what point the game is over
+var territoryGained = 50; //to define how large a paddle's territory should extent after winning a point
 var hitPaddle; //to define which paddle was hit by the specialBall
 var brickPaddle; //to define which paddle launched the ball that hit the brick
 
 function preload() {
   beepSFX = loadSound("assets/sounds/beep.wav");
   thumpSFX = loadSound("assets/sounds/thump.wav");
+
+  slowPaddleSFX = loadSound("assets/sounds/slowPaddle.wav");
+  reverseBallSFX = loadSound("assets/sounds/reverseBall.wav");
+  manyBallSFX = loadSound("assets/sounds/manyBall.wav");
+  doublePaddleSFX = loadSound("assets/sounds/doublePaddle.wav");
+
   bgSong = loadSound("assets/sounds/carols.mp3");
   gameOverSong = loadSound("assets/sounds/jingle.mp3");
   mainFont = loadFont("assets/fonts/ARCADECLASSIC.TTF");
@@ -38,10 +45,10 @@ function setup() {
   createCanvas(1000, 480);
   // Create a ball and its additional ball
   //x,y,vx,vy,size,speed
-  balls[0] = new Ball(width / 2 - 2.5, height / 2 - 2.5, 5, 5, 10, 5);
+  balls[0] = new Ball(width / 2 - 2.5, height / 2 - 2.5, 5, 4, 10, 5);
   balls[1] = new Ball(balls[0].x, balls[0].y, balls[0].vx, -balls[0].vy, balls[0].size, balls[0].speed);
   // Create the unknown
-  unknownBall = new specialBall(width / 2, height / 2, 7, 0, 20, 7);
+  unknownBall = new specialBall(width / 2, height / 2, 7, 0, 25, 7);
   // Create the right paddle & its mirror
   //x,y,w,h,speed,originalSpeed,downKey,upKey,leftKey,rightKey,playgroundWidthLimit
   rightPaddle[0] = new Paddle(width - 10, height / 2, 10, 60, 10, 10, DOWN_ARROW, UP_ARROW, 37, 39, 10);
@@ -141,16 +148,23 @@ function setUpPlayground() {
   rect(width, 0, width - rightPaddle[0].playgroundWidthLimit, height);
   rectMode(CORNER);
   //Paddle's movements instruction
-  fill(255, instructionOpacity);
+  fill(255, instructionOpacity[0]);
   textFont(mainFont);
   textAlign(CENTER);
   textSize(32);
-  instructionOpacity = constrain(instructionOpacity -= 1.5, 0, 100); //these instrucitons will fade away
+  instructionOpacity[0] = constrain(instructionOpacity[0] -= 1.5, 0, 100); //these instrucitons will fade away
   text('W   A   S   D', width / 4, height / 2);
   textFont('Lato');
   textStyle(BOLD);
   text('⇦   ⇨   ⇧   ⇩', width * 3 / 4, height / 2);
   textStyle(NORMAL);
+  if(leftPaddle[0].score == 1 || rightPaddle[0].score == 1) {
+    fill(255, instructionOpacity[1]);
+    textFont(mainFont);
+    textSize(20);
+    text('Try  to  move  paddle  forward!', width/2, height/2);
+    instructionOpacity[1] = constrain(instructionOpacity[1] -= 1, 0, 100);
+  }
 }
 
 function displayScore() {
@@ -248,6 +262,9 @@ function checkGameOver() {
       text('Player  2  won  with  ' + rightPaddle[0].score + '  points!', width / 2, height * 0.55);
     }
     text('Press  ENTER  to  replay', width / 2, height * 0.65);
+    fill(242,150);
+    textSize(14);
+    text('Songs  used \n 8 Bit  Jingle  Bells  by  Peter  McIsaac \n 8  Bit  Carols  of  the  Bells  by  RUSH  COIL', width/2, height*0.85);
     //play gameOver's song
     bgSong.stop();
     gameOverSong.loop();
@@ -274,6 +291,11 @@ function resetGame() {
   rightPaddle[1] = new Paddle(rightPaddle[0].x, height - rightPaddle[0].y, rightPaddle[0].w, rightPaddle[0].h, rightPaddle[0].speed, rightPaddle[0].originalSpeed, UP_ARROW, DOWN_ARROW, 37, 39, 10);
   leftPaddle[0] = new Paddle(0, height / 2, 10, 60, 10, 10, 83, 87, 65, 68, 10);
   leftPaddle[1] = new Paddle(leftPaddle[0].x, height - leftPaddle[0].y, leftPaddle[0].w, leftPaddle[0].h, leftPaddle[0].speed, leftPaddle[0].originalSpeed, 87, 83, 65, 68, 10);
+  rightPaddle[0].effectCounter = [0,0,0,0];
+  leftPaddle[0].effectCounter = [0,0,0,0];
+  rightPaddle[1].effectCounter = [0,0,0,0];
+  leftPaddle[1].effectCounter = [0,0,0,0];
+
   balls[0].reset();
   balls[1].reset();
   leftPaddle[0].score = 0;

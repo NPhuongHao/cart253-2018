@@ -4,8 +4,9 @@
 //Move toward the latest paddle that gained point
 //Get a random category (slowPaddle, reverseBall, manyBall or doublePaddle) and acts accordingly
 
-var effectCounter = [0, 0, 0, 0, 0]; //frame counters used for each special ball effect
 var triggerReaction = false; //variable to determine when to start special ball effect
+var reactionText; //variable for reaction text
+var reactionNameOpacity = [255,255]; //variable to determine which text to show when a special effect occurs
 
 // specialBall constructor
 //
@@ -48,32 +49,6 @@ specialBall.prototype.checkGo = function () {
     this.go = true;
   }
 }
-  //Determine which this.hit array member should be checked out
-  /*if (leftPaddle[0].score >= 2) {
-    this.checkHit(this.hit[0]);
-  } else if (leftPaddle[0].score >= 7) {
-    this.checkHit(this.hit[1]);
-  }
-
-  if (rightPaddle[0].score >= 2 ) {
-    this.checkHit(this.hit[2]);
-  } else if (rightPaddle[0].score >= 7) {
-      this.checkHit(this.hit[3]);
-  }
-  //console.log(this.go)
-}
-
-//check if the ball that come out at a certain checkpoint has hit the paddle
-specialBall.prototype.checkHit = function(hitCheck) {
-  console.log(hitCheck);
-  if (hitCheck == true) {
-    //if not, the ball is still displayed on screen
-    this.go = false;
-  } else {
-  //if so, the ball is hidden from screen
-  this.go = true;
-  }
-}*/
 
 // isOffScreen()
 //
@@ -117,6 +92,9 @@ specialBall.prototype.handleCollision =function(paddle) {
       //console.log(this.category);
       triggerReaction = true; // Start specialBall's reaction to its category
       hitPaddle = paddle;
+      unknownBall.collisionSound(this.category);
+      reactionNameOpacity = [255,255];
+      console.log(reactionNameOpacity);
     }
   }
 }
@@ -144,7 +122,11 @@ specialBall.prototype.reset = function(paddle) {
     this.hit[3] = true;
   }
   //Reset effectCounter
-  effectCounter = [0,0,0,0,0];
+  if (hitPaddle == leftPaddle[0]) {
+    leftPaddle[0].effectCounter = [0,0,0,0,0];
+  } else if (hitPaddle == rightPaddle[0]) {
+    rightPaddle[0].effectCounter = [0,0,0,0,0];
+  }
 
   this.x = width/2;
   this.y = height/2;
@@ -152,9 +134,57 @@ specialBall.prototype.reset = function(paddle) {
   this.go = false;
 }
 
+//handle ball's sound effect when colliding with a paddle, according to its category
+specialBall.prototype.collisionSound = function(category) {
+  if (category == 'slowPaddle') {
+    slowPaddleSFX.play();
+  }
+  else if (category == 'reverseBall') {
+    reverseBallSFX.play();
+  }
+  else if (category == 'doublePaddle') {
+    doublePaddleSFX.play();
+  } else if (category == 'manyBall') {
+    manyBallSFX.play();
+  }
+}
+
+specialBall.prototype.reactionText = function(category) {
+  var reactionTextX; //the X position of the reactionText
+  var i; // to define which side of the playground should the text be displayed
+  if (hitPaddle == leftPaddle[0] || hitPaddle == leftPaddle[1]) {
+    i = 0;
+    reactionTextX = width/4;
+  } else if (hitPaddle == rightPaddle[0] || hitPaddle == rightPaddle[1]) {
+    i = 1;
+    reactionTextX = width*3/4;
+  }
+  if (category == 'slowPaddle') {
+    //console.log(category);
+    reactionText = 'Freeze!';
+  } else if (category == 'reverseBall') {
+    //console.log(category);
+    reactionText = 'Ball  reversed!';
+  } else if (category == 'manyBall') {
+    //console.log(category);
+    reactionText = 'More  ball   more  fun!';
+  } else if (category == 'doublePaddle') {
+    //console.log(category);
+    reactionText = 'Mirror  paddle!';
+  }
+  fill(255, reactionNameOpacity[i]);
+  textFont(mainFont);
+  textAlign(CENTER);
+  textSize(19);
+  text(reactionText, reactionTextX, height/2);
+  reactionNameOpacity[i] = constrain(reactionNameOpacity[i] - 2.5, 0, 255);
+  console.log(reactionText);
+}
+
 //handle ball's reaction according to its category
 specialBall.prototype.handleReaction = function(category,hitPaddle) {
-  if (category == 'slowPaddle' && effectCounter[0] < 200) {
+  this.reactionText(this.category);
+  if (category == 'slowPaddle' && hitPaddle.effectCounter[0] < 500) {
     //console.log('checkpointslow');
     //if ball's category is 'slowPaddle', slow down Paddle's speed by 1/2 for 800 frames
     hitPaddle.speed = hitPaddle.originalSpeed * 0.5;
@@ -162,7 +192,7 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
     hitPaddle.r = 158;
     hitPaddle.g = 243;
     hitPaddle.b = 240;
-    effectCounter[0]++;
+    hitPaddle.effectCounter[0]++;
   } else { //after 800 frames are processed, return the original color and speed to the paddle
     hitPaddle.r = 223;
     hitPaddle.g = 52;
@@ -170,18 +200,20 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
     hitPaddle.speed = hitPaddle.originalSpeed;
   }
 
-  if (category == 'reverseBall' && effectCounter[1] < 1) {
+  if (category == 'reverseBall' && hitPaddle.effectCounter[1] < 1) {
     //if ball's category is 'reverseBall', reverse the ball's velocity x and y
       balls[0].vx = -balls[0].vx;
       console.log('checkpointreverse');
-      effectCounter[1]++;
+      hitPaddle.effectCounter[1]++;
 
-  } else if (category == 'manyBall' && effectCounter[2] < 800) {
+  } else if (category == 'manyBall' && hitPaddle.effectCounter[2] < 800) {
       //if ball's category is 'manyBall', add one more ball to the screen.
       //console.log('checkpointmany');
       balls[1].update();
       balls[1].handleCollision(leftPaddle[0]);
       balls[1].handleCollision(rightPaddle[0]);
+      balls[1].handleCollision(leftPaddle[1]);
+      balls[1].handleCollision(rightPaddle[1]);
       if (balls[1].isOffScreen()) {
         balls[1].reset();
         balls[1].vx = 0;
@@ -192,27 +224,29 @@ specialBall.prototype.handleReaction = function(category,hitPaddle) {
         balls[1].display();
         //console.log(balls[1]);
       }
-      effectCounter[2]++;
+      hitPaddle.effectCounter[2]++;
   }
 
   if (category == 'doublePaddle') {
     //if ball's category is 'doublePaddle', add another paddle that mirrors the original paddle's movement vertically
-      if (hitPaddle == leftPaddle[0] && effectCounter[3] < 800) {
+      if (hitPaddle == leftPaddle[0] && hitPaddle.effectCounter[3] < 500) {
         console.log('checkpointdoubleleft');
         leftPaddle[1].handleInput();
         leftPaddle[1].update();
         balls[0].handleCollision(leftPaddle[1]);
+        unknownBall.handleCollision(leftPaddle[1]);
         leftPaddle
         [1].display();
-        effectCounter[3]++;
+        hitPaddle.effectCounter[3]++;
 
-      } else if (hitPaddle == rightPaddle[0] && effectCounter[4] < 800) {
+      } else if (hitPaddle == rightPaddle[0] && hitPaddle.effectCounter[4] < 800) {
         console.log('checkpointdoubleright');
         rightPaddle[1].handleInput();
         rightPaddle[1].update();
         balls[0].handleCollision(rightPaddle[1]);
+        unknownBall.handleCollision(rightPaddle[1]);
         rightPaddle[1].display();
-        effectCounter[4]++;
+        hitPaddle.effectCounter[4]++;
       }
   }
 }

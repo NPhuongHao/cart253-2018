@@ -25,6 +25,7 @@ function Paddle(x,y,w,h,speed,originalSpeed,downKey,upKey,leftKey,rightKey,playg
   this.b = 65;
   this.score = 0;
   this.playgroundWidthLimit = 10;
+    this.effectCounter = [0, 0, 0, 0, 0]; //frame counters used for each special ball effect (check specialBall.js)
 }
 
 // handleInput()
@@ -57,6 +58,12 @@ Paddle.prototype.update = function() {
   this.x += this.vx;
   leftPaddle[0].x = constrain(leftPaddle[0].x,0,leftPaddle[0].playgroundWidthLimit-leftPaddle[0].w);
   rightPaddle[0].x = constrain(rightPaddle[0].x,width-rightPaddle[0].playgroundWidthLimit,width-rightPaddle[0].w);
+  //leftPaddle[1].x = constrain(leftPaddle[0].x,0,leftPaddle[0].playgroundWidthLimit-leftPaddle[0].w);
+  //rightPaddle[1].x = constrain(rightPaddle[0].x,width-rightPaddle[0].playgroundWidthLimit,width-rightPaddle[0].w);
+  leftPaddle[1].x = leftPaddle[0].x;
+  leftPaddle[1].y = height - leftPaddle[0].h - leftPaddle[0].y;
+  rightPaddle[1].x = rightPaddle[0].x;
+  rightPaddle[1].y = height - rightPaddle[0].h - rightPaddle[0].y;
 }
 
 // display()
@@ -70,7 +77,7 @@ Paddle.prototype.display = function() {
 Paddle.prototype.updateScore = function() {
   this.score += 1;
   //if paddle gains score, increase its playground limit
-  this.playgroundWidthLimit += 50;
+  this.playgroundWidthLimit += territoryGained;
   this.playgroundWidthLimit = constrain(this.playgroundWidthLimit,10,width/2);
   if (this.x < width/2) {//if the current paddle that gained point is leftPaddle, then unknown Ball will swing left
     unknownBall.vx = -unknownBall.speed;

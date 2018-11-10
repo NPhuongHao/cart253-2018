@@ -6,15 +6,15 @@ function Brick(x,y,w,h,exist) {
   this.w = w;
   this.h = h;
   this.exist = true; //Boolean variable to check if the brick has been destroyed or not
-  //paddle's color RGB
-  this.r = 223;
-  this.g = 52;
-  this.b = 65;
+  //brick's color RGB
+  this.r = 246;
+  this.g = 100;
+  this.b = 99;
 
 }
 
 Brick.prototype.display = function() {
-  fill(246,133,82);
+  fill(bricks[0].r,bricks[0].g,bricks[0].b);
   rect(this.x,this.y,this.w,this.h);
 }
 
