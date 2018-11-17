@@ -5,10 +5,12 @@ Nguyen Phuong Hao
 
 Reach the stars and light them up to form beautiful constellations!
 
+FIRST PROTOTYPE: Build grid, create snake and handle keyboard input to move the snake around
+
 ******************/
 
 var borderLength = 10;
-var hexagonHeight = Math.sqrt(3) * borderLength;
+var hexagonHeight = Math.sqrt(3) * 10;
 
 var canvasWidth = 1020;
 var canvasHeight = Math.sqrt(3) * borderLength * 34.5;
@@ -20,29 +22,45 @@ var gridcode = {
   i: 0
 };
 
+var i = 0;
 var snake;
+
+var counter = 0;
+var speed = 0;
 
 var bgImg;
 
 function setup() {
   createCanvas(canvasWidth,canvasHeight);
-  snake = new Snake(17, 17, 'A', 5, 30, 10);
-  angleMode(DEGREES);
-  background(102);
+  snake = new Snake(17, 17, 'A', 5, 30, 5);
+  background(12);
   drawGrid();
-  push();
-  fill(0);
-  stroke(0);
-  rect(0,0,width,20);
-  rect(0,0,20,height);
-  rect(0,height-20,width,20);
-  rect(width-20,0,20,height);
-  pop();
 }
 
 function draw() {
-  snake.update();
-  noLoop();
+  //noLoop();
+  snake.speedCount();
+  if(counter%speed == 0) {
+    background(0,50);
+    snake.updateLength();
+    snake.handleWallCollision();
+    snake.movement();
+    snake.display();
+    push();
+    fill(200);
+    noStroke();
+    rect(0,0,width,20);
+    rect(0,0,20,height);
+    rect(0,height-20,width,20);
+    rect(width-20,0,20,height);
+    pop();
+  }
+
+  /*i++;
+  if (i==20) {
+    noLoop();
+  }*/
+
 }
 
 function drawGrid() {
@@ -60,12 +78,10 @@ function drawGrid() {
         strokeColor = 200;
       }
       fill(fillColor);
-      stroke(strokeColor)
-      if (fillColor == 255) {
-        gridcode.t = t;
-        gridcode.i = i;
-        gridTypeA.push(gridcode);
-      }
+      stroke(strokeColor);
+      gridcode.t = t;
+      gridcode.i = i;
+      gridTypeA.push(gridcode);
       polygon(x, y, borderLength, 6);
     }
   }
@@ -84,14 +100,17 @@ function drawGrid() {
       }
       fill(fillColor);
       stroke(strokeColor);
-      if (fillColor == 255) {
-        gridcode.t = t;
-        gridcode.i = i;
-        gridTypeB.push(gridcode);
-      }
+      gridcode.t = t;
+      gridcode.i = i;
+      gridTypeB.push(gridcode);
       polygon(x, y, borderLength, 6);
     }
   }
+}
+
+
+function keyPressed() {
+  snake.keyPressed();
 }
 
 //from p5.js
