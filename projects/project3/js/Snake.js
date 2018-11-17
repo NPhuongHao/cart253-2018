@@ -9,8 +9,8 @@
 
 function Snake(t,i,type,speed,angle,length) {
   this.type = type; //the grid type its head finds itself on upon the start
-  this.tHead = t; //its t coordinator that indicates its y position
-  this.iHead = i; //its i coordinator that indicates its x position
+  this.t = t; //its t coordinator that indicates its y position
+  this.i = i; //its i coordinator that indicates its x position
 
   this.speed = speed;//its default speeed
   this.angle = angle;//its default movement's angle
@@ -20,9 +20,11 @@ function Snake(t,i,type,speed,angle,length) {
   this.length = length;//its length
 
   this.snakeDots = [];//an array to store each of its dots' positions
+  //variables to store the next additions to the t & i parameters of the snake's head (check the update() function)
   this.tNext;
   this.iNext;
 
+  //the speed level of the snake
   this.speedLevel = 0;
 }
 
@@ -32,7 +34,7 @@ Snake.prototype.updateLength = function() {
     this.snakeDots.push(new SnakeDot(7+i,7+i, 'A', 30, 5));
     this.snakeDots.push(new SnakeDot(7+i,7+i, 'B', 30, 5));
   }
-  //First, assign the last snakeDots[] element's t&i parameters into the head's t&i parameters
+  //Assign the last snakeDots[] element's t&i parameters into the head's t&i parameters
   this.t = this.snakeDots[this.length*2-1].t;
   this.i = this.snakeDots[this.length*2-1].i;
   this.type = this.snakeDots[this.length*2-1].type;
@@ -41,10 +43,13 @@ Snake.prototype.updateLength = function() {
 
 Snake.prototype.speedCount = function() {
   if (this.speedLevel == 0) {
-    speed = 5;
-    counter ++;
-    //console.log(counter);
+    decelerator = 8;
+  } if (this.speedLevel == 1) {
+    decelerator = 5;
+  } if (this.speedLevel == 2) {
+    decelerator = 2;
   }
+  counter ++;
 }
 
 Snake.prototype.keyPressed = function() {
@@ -174,7 +179,7 @@ Snake.prototype.updateHead = function() {
 }
 
 Snake.prototype.handleWallCollision = function() {
-  if (this.snakeDots[this.length*2-1].t<0) {
+  if (this.snakeDots[this.length*2-1].t<1) {
     if (this.type == 'A') {
       this.t = 35;
     } else if (this.type =='B') {
@@ -184,11 +189,11 @@ Snake.prototype.handleWallCollision = function() {
     if (this.type == 'A') {
       this.t = 1;
     } else if (this.type == 'B') {
-      this.t = 0;
+      this.t = 1;
     }
-  } else if (this.snakeDots[this.length*2-1].x<0) {
-    this.i = 33;
-  } else if (this.snakeDots[this.length*2-1].x+hexagonHeight>width) {
+  } else if (this.snakeDots[this.length*2-1].i<0) {
+    this.i = 34;
+  } else if (this.snakeDots[this.length*2-1].i>34) {
     this.i = 0;
   }
 }
