@@ -38,7 +38,6 @@ Snake.prototype.updateLength = function() {
   this.t = this.snakeDots[this.length*2-1].t;
   this.i = this.snakeDots[this.length*2-1].i;
   this.type = this.snakeDots[this.length*2-1].type;
-  //console.log(this.snakeDots);
 }
 
 Snake.prototype.speedCount = function() {
@@ -61,7 +60,6 @@ Snake.prototype.keyPressed = function() {
     } else if (this.angle == 330) {
       this.angle = 30;
     }
-    console.log(this.angle);
   }
   if (keyCode === LEFT_ARROW) {//if LEFT_ARROW is pressed, the snake will turn 60deg to its left
     if (this.angle > 30) {
@@ -133,12 +131,10 @@ Snake.prototype.updateHead = function() {
       this.tNext = 0;
       this.iNext = 0;
       this.type = 'B';
-      //console.log('30 type A changed');
     } else if (this.type == 'B') {//if it's falling on a hexagon type B, move it to hexagon type A with a bigger t & i parameters
       this.tNext = 1;
       this.iNext = 1;
       this.type = 'A';
-      //console.log('30 type B changed');
     }
   } else if (this.angle == 150) {//if the head is moving diagonally down, on the left side
     if (this.type == 'A') {//if it's falling on a hexagon type A, move it to a hexagon type B with smaller i parameter
@@ -175,7 +171,6 @@ Snake.prototype.updateHead = function() {
   //Next, we update the t and i parameters given its changements
   this.t += this.tNext;
   this.i += this.iNext;
-  console.log(this.t, this.i);
 }
 
 Snake.prototype.handleWallCollision = function() {

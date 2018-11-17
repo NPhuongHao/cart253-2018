@@ -47,6 +47,7 @@ function setup() {
   //Create a snake with the Snake class
   snake = new Snake(17, 17, 'A', 5, 30, 5);
   drawGrid();
+  console.log('FIRST PROTOTYPE: Build movement grid, create snake and handle keyboard input to move the snake around. Snake cannot bite itself or collide with anything yet.')
 }
 
 function draw() {
@@ -81,7 +82,7 @@ function drawBackground() {
   fill(255,50);
   textAlign(CENTER);
   textStyle(BOLD);
-  text('USE LEFT AND RIGHT ARROWS TO TURN THE SNAKE TO ITS LEFT OR ITS RIGHT\n Press 1, 2, 3 for different speed levels',width/2,height-100);
+  text('USE LEFT AND RIGHT ARROWS TO TURN THE SNAKE TO ITS LEFT OR ITS RIGHT\n Press 1, 2, 3 for different speed levels\n Console.log for more prototype details',width/2,height-100);
   pop();
 }
 
