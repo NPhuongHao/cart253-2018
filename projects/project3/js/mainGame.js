@@ -59,6 +59,7 @@ function setup() {
   drawGrid();
   snake.updateSnake();
   console.log('FIRST PROTOTYPE: Build movement grid, create snake and handle keyboard input to move the snake around. Snake cannot bite itself or collide with anything yet.')
+  console.log('SECOND PROTOTYPE: Snake can now bite itself. Added bait and special bait. Added score system. Added background and repositioned the canvas.')
 }
 
 function draw() {
