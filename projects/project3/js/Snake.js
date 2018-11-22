@@ -76,7 +76,7 @@ Snake.prototype.movement = function() {
   //this.y = this.snakeDots[this.length*2-1].y;
 
   //console.log(this.i, this.t, this.x, this.y);
-  /*console.log(this.speed, hexagonWidth);
+  /*console.log(this.speed, hexagonHeight);
   this.vx = cos(this.angle) * (this.speed);
   this.vy = sin(this.angle) * (this.speed);
 
