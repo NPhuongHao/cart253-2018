@@ -63,6 +63,7 @@ function draw() {
     snake.movement();
 <<<<<<< HEAD
     snake.handleSelfCollision();
+<<<<<<< HEAD
 =======
     snake.display();
 
@@ -72,6 +73,12 @@ function draw() {
 
   snake.display();
   bait.display();
+=======
+  }
+
+  snake.display();
+  bait.displayBait();
+>>>>>>> parent of c482546... Revert "P3: Added bait. Bait has oscillating size. Added background under canvas. Set canvas in the middle of the window"
 
   drawBorder();
 
