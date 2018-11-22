@@ -46,7 +46,9 @@ function setup() {
   createCanvas(canvasWidth,canvasHeight);
   //Create a snake with the Snake class
   snake = new Snake(17, 17, 'A', 5, 30, 5);
-  bait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength);
+  //Bait(t,i,type,size,radius)
+  bait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength,10);
+  specialBait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength,30);
   drawGrid();
   snake.updateLength();
   console.log('FIRST PROTOTYPE: Build movement grid, create snake and handle keyboard input to move the snake around. Snake cannot bite itself or collide with anything yet.')
@@ -57,6 +59,13 @@ function draw() {
   drawBackground();
   bait.updateBait();
   snake.update();
+
+  if(specialBait.specialBait == true) {
+    specialBait.updateBait();
+    specialBait.display();
+    specialBait.handleSnakeCollision();
+    specialBait.specialBaitTimer();
+  }
 
   if(counter%decelerator == 0) {
     snake.handleWallCollision();
@@ -164,6 +173,9 @@ function keyPressed() {
   }
   if (keyIsDown(51)) {//the '3' key is pressed
     snake.speedLevel = 2;
+  }
+  if (keyCode === ENTER) {
+    window.location.reload();
   }
 }
 

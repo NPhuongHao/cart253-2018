@@ -1,8 +1,7 @@
-var angle = 0;
-var radius = 10;
-var growth;
+var specialBaitCounter = 0;
+var timerW = 0;
 
-function Bait(t,i,type,size) {
+function Bait(t,i,type,size,radius) {
   this.type = type;
   this.t = t;
   this.i = i;
@@ -17,6 +16,11 @@ function Bait(t,i,type,size) {
   this.onScreen = true;
 
   this.specialBait = false;
+  this.counterToSpecialBait = 0;
+
+  this.angle = 0;
+  this.radius = radius;
+  this.growth;
 }
 
 Bait.prototype.updateBait = function() {
@@ -24,12 +28,7 @@ Bait.prototype.updateBait = function() {
     this.generateBait();
     this.onScreen = true;
   }
-  if (this.specialBait == true) {
-    radius = 20;
-  } else if (this.specialBait == false) {
-    radius = 10;
-  }
-  console.log(radius);
+  //console.log(this.radius);
   if (this.type == 'A') {
     this.x = borderLength * 3 * this.i;
     this.y = hexagonWidth * (this.t - 1 / 2);
@@ -37,8 +36,8 @@ Bait.prototype.updateBait = function() {
     this.x = borderLength * (3 * this.i + 1.5);
     this.y = hexagonWidth * this.t;
   }
-  growth = sin(angle) * (radius/2);
-  angle += 0.15;
+  this.growth = sin(this.angle) * (this.radius/2);
+  this.angle += 0.15;
 }
 
 Bait.prototype.generateBait = function() {
@@ -58,19 +57,34 @@ Bait.prototype.handleSnakeCollision = function() {
   if (snake.snakeDots[snake.length*2-1].t == this.t && snake.snakeDots[snake.length*2-1].i == this.i && snake.snakeDots[snake.length*2-1].type == this.type) {
     console.log('ATE!');
     this.onScreen = false;
-    if(this.specialBait == true) {
+    if(specialBait.specialBait == true && this.radius == 30) {
       snake.score += 3;
     } else {
       snake.score += 1;
     }
-    console.log(snake.score);
     snake.addLength();
     if (snake.score%5 == 0) {
-      this.specialBait = true;
-    } else if (this.specialBait == true) {
-      this.specialBait = false;
+      specialBait.specialBait = true;
+    } else if (this.radius == 30) {
+      specialBait.specialBait = false;
     }
   }
+}
+
+Bait.prototype.specialBaitTimer = function() {
+  timerW = map(specialBaitCounter,0,200,0,200);
+  push();
+  fill(255);
+  rectMode(CORNER);
+  rect(width*0.5-100,60,timerW,20);
+  pop();
+  specialBaitCounter = constrain(specialBaitCounter + 1, 0, 200);
+    console.log(specialBaitCounter);
+  if (timerW == 200) {
+    specialBait.specialBait = false;
+    specialBaitCounter = 0;
+  }
+    console.log(specialBaitCounter);
 }
 
 Bait.prototype.display = function() {
@@ -78,6 +92,6 @@ Bait.prototype.display = function() {
   fill(255);
   noStroke();
   //ellipse(this.x, this.y, hexagonWidth, hexagonWidth);
-  polygon(this.x, this.y, this.size+growth, 6);
+  polygon(this.x, this.y, this.size+this.growth, 6);
   pop();
 }
