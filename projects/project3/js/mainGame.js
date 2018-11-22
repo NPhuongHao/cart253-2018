@@ -59,7 +59,6 @@ function draw() {
   snake.update();
 
   if(counter%decelerator == 0) {
-
     snake.handleWallCollision();
     bait.handleSnakeCollision();
     snake.movement();
@@ -93,6 +92,7 @@ function drawBackground() {
   textAlign(CENTER);
   textStyle(BOLD);
   text('USE LEFT AND RIGHT ARROWS TO TURN THE SNAKE TO ITS LEFT OR ITS RIGHT\n Press 1, 2, 3 for different speed levels\n Console.log for more prototype details',width/2,height-100);
+  text('Score: '+ snake.score, 80, 50);
   pop();
 }
 

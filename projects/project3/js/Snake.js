@@ -29,6 +29,7 @@ function Snake(t,i,type,speed,angle,length) {
 
   //the snake's score
   this.score = 0;
+  this.highScore = 0;
 }
 
 //Set up the snake
@@ -50,7 +51,6 @@ Snake.prototype.addLength = function() {
   this.length+=1;
   this.snakeDots.unshift(new SnakeDot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
   this.snakeDots.unshift(new SnakeDot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
-    console.log(snake.snakeDots);
 }
 
 Snake.prototype.speedCount = function() {
@@ -224,5 +224,11 @@ Snake.prototype.handleWallCollision = function() {
 Snake.prototype.display = function() {
   for (var i=0; i<this.length*2; i++) {
     this.snakeDots[i].displayDot();
+  }
+}
+
+Snake.prototype.manageHighScore = function() {
+  if (this.score >= this.highScore) {
+    this.highScore = this.score;
   }
 }

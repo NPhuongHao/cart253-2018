@@ -15,6 +15,8 @@ function Bait(t,i,type,size) {
   }
   this.size = size;
   this.onScreen = true;
+
+  this.specialBait = false;
 }
 
 Bait.prototype.updateBait = function() {
@@ -22,6 +24,12 @@ Bait.prototype.updateBait = function() {
     this.generateBait();
     this.onScreen = true;
   }
+  if (this.specialBait == true) {
+    radius = 20;
+  } else if (this.specialBait == false) {
+    radius = 10;
+  }
+  console.log(radius);
   if (this.type == 'A') {
     this.x = borderLength * 3 * this.i;
     this.y = hexagonWidth * (this.t - 1 / 2);
@@ -50,9 +58,18 @@ Bait.prototype.handleSnakeCollision = function() {
   if (snake.snakeDots[snake.length*2-1].t == this.t && snake.snakeDots[snake.length*2-1].i == this.i && snake.snakeDots[snake.length*2-1].type == this.type) {
     console.log('ATE!');
     this.onScreen = false;
-    snake.score += 1;
+    if(this.specialBait == true) {
+      snake.score += 3;
+    } else {
+      snake.score += 1;
+    }
     console.log(snake.score);
     snake.addLength();
+    if (snake.score%5 == 0) {
+      this.specialBait = true;
+    } else if (this.specialBait == true) {
+      this.specialBait = false;
+    }
   }
 }
 
