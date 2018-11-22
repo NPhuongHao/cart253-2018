@@ -60,29 +60,13 @@ function draw() {
   if(counter%decelerator == 0) {
 
     snake.handleWallCollision();
+    bait.handleSnakeCollision();
     snake.movement();
-<<<<<<< HEAD
-<<<<<<< HEAD
     snake.handleSelfCollision();
-<<<<<<< HEAD
-=======
-=======
-    snake.handleSelfCollision();
->>>>>>> parent of 0e0845f... Revert "P3: If snake bites its tail, the frame will freeze. Press ENTER to restart"
-    snake.display();
-
-    drawBorder();
->>>>>>> parent of 07f92a4... P3: If snake bites its tail, the frame will freeze. Press ENTER to restart
   }
 
   snake.display();
   bait.display();
-=======
-  }
-
-  snake.display();
-  bait.displayBait();
->>>>>>> parent of c482546... Revert "P3: Added bait. Bait has oscillating size. Added background under canvas. Set canvas in the middle of the window"
 
   drawBorder();
 
@@ -179,9 +163,6 @@ function keyPressed() {
   }
   if (keyIsDown(51)) {//the '3' key is pressed
     snake.speedLevel = 2;
-  }
-  if (keyCode == ENTER) {
-    window.location.reload();
   }
 }
 
