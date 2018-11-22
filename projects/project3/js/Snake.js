@@ -110,7 +110,7 @@ Snake.prototype.updateHead = function() {
   //The snake head can move in 6 different directions, each of them creates an angle with the horizontal line (f(x) = 0)
   //Its movement can be based on the hexagonal grid which is divided into 2 types A & B
   //Hexagon with the same t and i parameters will be positioned as below:
-  //Hexagon type A(t,i) is adjacent to hexagon type B(t,i) on the top left
+  //Hexagon type A(t,i) is adjacent to hexagon type B(t,i) on the bottom right
 
   //This position results in the following situation:
   //A hexagon type A(t,i) will be surrounded by 4 hexagons of type B and 2 of type A with the following t&i parameters (from top to top right and so on):
@@ -119,7 +119,7 @@ Snake.prototype.updateHead = function() {
   //B(t-1,i); A(t,i+1); A(t+1,i+1); B(t+1,i); A(t+1,i); A(t+1,i)
 
   //With that said, depending on its current movement's direction (determined by its angle with the Ox axe (f(x) = 0)),
-  //we can plan which hexagon its gonna fall on nextX
+  //we can plan which hexagon its gonna fall on next
   if (this.angle == 90) {//if the head is moving down
     this.tNext = 1;
     this.iNext = 0;
@@ -190,6 +190,20 @@ Snake.prototype.handleWallCollision = function() {
     this.i = 34;
   } else if (this.snakeDots[this.length*2-1].i>34) {
     this.i = 0;
+  }
+}
+
+Snake.prototype.handleSelfCollision = function() {
+  for (var i = this.length*2-2; i>=0; i--) {
+    //console.log(this.snakeDots[this.length*2-1], this.snakeDots[i]);
+    if (this.snakeDots[this.length*2-1].t == this.snakeDots[i].t && this.snakeDots[this.length*2-1].i == this.snakeDots[i].i && this.snakeDots[this.length*2-1].type == this.snakeDots[i].type) {
+      noLoop();
+      push();
+      fill(255);
+      textAlign(CENTER);
+      text('PRESS ENTER TO RESTART', width/2, 100);
+      pop();
+    }
   }
 }
 
