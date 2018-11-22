@@ -33,7 +33,7 @@ function Snake(t,i,type,speed,angle,length) {
 }
 
 //Set up the snake
-Snake.prototype.updateLength = function() {
+Snake.prototype.updateSnake = function() {
   for (var i = 0; i<this.length; i++) {
     this.snakeDots.push(new SnakeDot(7+i,7+i, 'A', 30, 5));
     this.snakeDots.push(new SnakeDot(7+i,7+i, 'B', 30, 5));

@@ -32,8 +32,14 @@ var snake;
 var counter = 0;
 var decelerator = 0;
 
-//variable to store the BG image if needed
-var bgImg;
+//variables to control the time limit of the special bait (check specialBaitTimer() in Bait.js)
+var specialBaitCounter = 0;//Counter that goes up each time a new special bait pops up
+var timerW = 0;//the width of the timer
+
+//variable to control when the special bait will pop up
+var counterToSpecialBait = 0;
+//variable to control if the special bait is on screen
+var specialBaitgo = false;
 
 
 //-----------------------------------------------------//
@@ -45,33 +51,30 @@ function preload() {}
 function setup() {
   createCanvas(canvasWidth,canvasHeight);
   //Create a snake with the Snake class
-  snake = new Snake(17, 17, 'A', 5, 30, 5);
+  //Snake(t,i,type,speed,angle,length)
+  snake = new Snake(17, 17, 'A', 5, 30, 2);//Default length of the snake will be 2*2=4. Why? Check drawGrid()
   //Bait(t,i,type,size,radius)
-  bait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength,10);
-  specialBait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength,30);
+  bait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength,10);//this is the normal bait
+  specialBait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength,30);//this is the special bait with a bigger radius value
   drawGrid();
-  snake.updateLength();
+  snake.updateSnake();
   console.log('FIRST PROTOTYPE: Build movement grid, create snake and handle keyboard input to move the snake around. Snake cannot bite itself or collide with anything yet.')
 }
 
 function draw() {
-  snake.speedCount();
   drawBackground();
+  snake.speedCount();
+
   bait.updateBait();
   snake.update();
 
-  if(specialBait.specialBait == true) {
-    specialBait.updateBait();
-    specialBait.display();
-    specialBait.handleSnakeCollision();
-    specialBait.specialBaitTimer();
+  //check if the special bait is good to go
+  if(specialBaitgo == true) {
+    handleSpecialBait();
   }
 
-  if(counter%decelerator == 0) {
-    snake.handleWallCollision();
-    bait.handleSnakeCollision();
-    snake.movement();
-    snake.handleSelfCollision();
+  if(counter%decelerator == 0) {//the bigger the decelerator , the slower the snake
+    handleSnake();
   }
 
   snake.display();
@@ -89,7 +92,6 @@ function draw() {
 
 //-----------------------------------------------------//
 //-----------------------------------------------------//
-
 
 
 //Set up the background with short instruction
@@ -177,6 +179,22 @@ function keyPressed() {
   if (keyCode === ENTER) {
     window.location.reload();
   }
+}
+
+//handle the special bait's behavior
+function handleSpecialBait() {
+  specialBait.updateBait();
+  specialBait.display();
+  specialBait.handleSnakeCollision();
+  specialBait.specialBaitTimer();
+}
+
+//handle the snake's behavior
+function handleSnake() {
+  snake.handleWallCollision();
+  bait.handleSnakeCollision();
+  snake.movement();
+  snake.handleSelfCollision();
 }
 
 //from p5.js. function used to draw polygons
