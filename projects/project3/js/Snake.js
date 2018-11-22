@@ -26,6 +26,9 @@ function Snake(t,i,type,speed,angle,length) {
 
   //the speed level of the snake
   this.speedLevel = 0;
+
+  //the snake's score
+  this.score = 0;
 }
 
 //Set up the snake
@@ -34,10 +37,20 @@ Snake.prototype.updateLength = function() {
     this.snakeDots.push(new SnakeDot(7+i,7+i, 'A', 30, 5));
     this.snakeDots.push(new SnakeDot(7+i,7+i, 'B', 30, 5));
   }
+}
+
+Snake.prototype.update = function() {
   //Assign the last snakeDots[] element's t&i parameters into the head's t&i parameters
   this.t = this.snakeDots[this.length*2-1].t;
   this.i = this.snakeDots[this.length*2-1].i;
   this.type = this.snakeDots[this.length*2-1].type;
+}
+
+Snake.prototype.addLength = function() {
+  this.length+=1;
+  this.snakeDots.unshift(new SnakeDot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
+  this.snakeDots.unshift(new SnakeDot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
+    console.log(snake.snakeDots);
 }
 
 Snake.prototype.speedCount = function() {

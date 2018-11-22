@@ -48,6 +48,7 @@ function setup() {
   snake = new Snake(17, 17, 'A', 5, 30, 5);
   bait = new Bait(floor(random(2,32)),floor(random(2,32)),'A',borderLength);
   drawGrid();
+  snake.updateLength();
   console.log('FIRST PROTOTYPE: Build movement grid, create snake and handle keyboard input to move the snake around. Snake cannot bite itself or collide with anything yet.')
 }
 
@@ -55,7 +56,7 @@ function draw() {
   snake.speedCount();
   drawBackground();
   bait.updateBait();
-  snake.updateLength();
+  snake.update();
 
   if(counter%decelerator == 0) {
 

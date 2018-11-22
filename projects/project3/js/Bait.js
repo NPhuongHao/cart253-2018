@@ -50,6 +50,9 @@ Bait.prototype.handleSnakeCollision = function() {
   if (snake.snakeDots[snake.length*2-1].t == this.t && snake.snakeDots[snake.length*2-1].i == this.i && snake.snakeDots[snake.length*2-1].type == this.type) {
     console.log('ATE!');
     this.onScreen = false;
+    snake.score += 1;
+    console.log(snake.score);
+    snake.addLength();
   }
 }
 
