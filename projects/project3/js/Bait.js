@@ -38,7 +38,11 @@ Bait.prototype.generateBait = function() {
   console.log(this.t, this.i, this.type);
 }
 
-Bait.prototype.displayBait = function() {
+Bait.prototype.handleSnakeCollision = function() {
+
+}
+
+Bait.prototype.display = function() {
   push();
   fill(255);
   noStroke();

@@ -65,7 +65,7 @@ function draw() {
   }
 
   snake.display();
-  bait.displayBait();
+  bait.display();
 
   drawBorder();
 
