@@ -62,9 +62,13 @@ function draw() {
     snake.handleWallCollision();
     snake.movement();
 <<<<<<< HEAD
+<<<<<<< HEAD
     snake.handleSelfCollision();
 <<<<<<< HEAD
 =======
+=======
+    snake.handleSelfCollision();
+>>>>>>> parent of 0e0845f... Revert "P3: If snake bites its tail, the frame will freeze. Press ENTER to restart"
     snake.display();
 
     drawBorder();
@@ -175,6 +179,9 @@ function keyPressed() {
   }
   if (keyIsDown(51)) {//the '3' key is pressed
     snake.speedLevel = 2;
+  }
+  if (keyCode == ENTER) {
+    window.location.reload();
   }
 }
 
