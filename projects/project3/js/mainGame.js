@@ -58,7 +58,6 @@ function draw() {
     snake.updateLength();
     snake.handleWallCollision();
     snake.movement();
-    snake.handleSelfCollision();
     snake.display();
 
     drawBorder();
@@ -155,9 +154,6 @@ function keyPressed() {
   }
   if (keyIsDown(51)) {//the '3' key is pressed
     snake.speedLevel = 2;
-  }
-  if (keyCode == ENTER) {
-    window.location.reload();
   }
 }
 
