@@ -71,7 +71,7 @@ Bait.prototype.handleSnakeCollision = function() {
   if (snake.snakeDots[snake.length*2-1].t == this.t && snake.snakeDots[snake.length*2-1].i == this.i && snake.snakeDots[snake.length*2-1].type == this.type) {
     console.log('ATE!');
     this.onScreen = false;//the bait disappears
-    if(specialBaitgo == true && this.radius == 30) {//ifthe eaten bait if the special bait
+    if(this.OscillatorRadius == 30) {//ifthe eaten bait if the special bait
       snake.score += 3;
     } else {//if the eaten bait is the normal bait
       snake.score += 1;
@@ -80,7 +80,7 @@ Bait.prototype.handleSnakeCollision = function() {
     counterToSpecialBait++;//add one point to the counter
     if (counterToSpecialBait%5 == 0) {//if 5 baits have bean eaten since the last special bait
       specialBaitgo = true;//if so, a new special bait is good to go
-    } else if (this.radius == 30) {
+    } else if (this.OscillatorRadius == 30) {
       specialBaitgo = false;//if not, a new special bait won't appear
     }
   }
