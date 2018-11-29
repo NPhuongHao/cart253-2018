@@ -80,7 +80,7 @@ Bait.prototype.handleSnakeCollision = function() {
     counterToSpecialBait++;//add one point to the counter
     if (counterToSpecialBait%5 == 0) {//if 5 baits have bean eaten since the last special bait
       specialBaitgo = true;//if so, a new special bait is good to go
-    } else if (this.OscillatorRadius == 30) {
+    } else {
       specialBaitgo = false;//if not, a new special bait won't appear
     }
   }

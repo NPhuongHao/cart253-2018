@@ -99,7 +99,7 @@ Snake.prototype.movement = function() {
 
   /*this.x = this.nextX;
   this.y = this.nextY;*/
-  /**************MOVEMENT BASED ON VELOCITY, LEFT HERE IN CASE OF REUSE***********/
+  /*END*************MOVEMENT BASED ON VELOCITY, LEFT HERE IN CASE OF REUSE***********/
 
   //First, update the head's next position
   this.updateHead();
