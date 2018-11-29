@@ -51,6 +51,8 @@ function setup() {
     mgr.showScene( Intro );
 }
 
+
+
 //from p5.js. function used to draw polygons
 function polygon(x, y, radius, npoints) {
   var angle = TWO_PI / npoints;

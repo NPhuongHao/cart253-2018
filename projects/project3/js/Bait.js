@@ -73,6 +73,7 @@ Bait.prototype.handleSnakeCollision = function() {
     this.onScreen = false;//the bait disappears
     if(this.OscillatorRadius == 30) {//ifthe eaten bait if the special bait
       snake.score += 3;
+      specialBaitCounter = 0;
     } else {//if the eaten bait is the normal bait
       snake.score += 1;
     }

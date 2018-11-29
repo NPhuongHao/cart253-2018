@@ -71,7 +71,6 @@ function MainGame() {
     fill(255,50);
     textAlign(CENTER);
     textStyle(BOLD);
-    text('USE LEFT AND RIGHT ARROWS TO TURN THE SNAKE TO ITS LEFT OR ITS RIGHT\n Press 1, 2, 3 for different speed levels\n Check console for more prototype details',width/2,height-100);
     text('Score: '+ snake.score, 80, 50);
     pop();
   }
