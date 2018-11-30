@@ -33,7 +33,7 @@ var counterToSpecialBait = 0;
 //variable to control if the special bait is on screen
 var specialBaitgo = false;
 
-
+var mainGame;
 //-----------------------------------------------------//
 //-----------------------------------------------------//
 
@@ -48,7 +48,11 @@ function setup() {
     var mgr = new SceneManager();
     mgr.bgIntro = bgIntro;
     mgr.wire();
+
+    mgr.addScene ( GameOver );
+
     mgr.showScene( Intro );
+    mainGame = new MainGame();
 }
 
 

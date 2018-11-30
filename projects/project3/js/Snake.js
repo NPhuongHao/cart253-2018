@@ -184,18 +184,23 @@ Snake.prototype.updateHead = function() {
   //Next, we update the t and i parameters given its changements
   this.t += this.tNext;
   this.i += this.iNext;
+
+  this.showGameOver = function() {
+    this.sceneManager.showScene( GameOver );
+  }
 }
 
 Snake.prototype.handleSelfCollision = function() {
   for (var i = this.length*2-2; i>=0; i--) {
     //console.log(this.snakeDots[this.length*2-1], this.snakeDots[i]);
     if (this.snakeDots[this.length*2-1].t == this.snakeDots[i].t && this.snakeDots[this.length*2-1].i == this.snakeDots[i].i && this.snakeDots[this.length*2-1].type == this.snakeDots[i].type) {
-      noLoop();
+      /*noLoop();
       push();
       fill(255);
       textAlign(CENTER);
       text('PRESS ENTER TO RESTART', width/2, 100);
-      pop();
+      pop();*/
+      this.showGameOver();
     }
   }
 }
