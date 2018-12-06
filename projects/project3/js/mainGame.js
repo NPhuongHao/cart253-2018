@@ -51,12 +51,6 @@ function MainGame() {
 
     drawBorder();
 
-    /******TO TEST HOW THE GAME BEHAVES IN A LIMITED FRAME RANGE. LEFT IN CASE OF REUSE
-    i++;
-    if (i==20) {
-      noLoop();
-    }
-    ****************************************/
   }
 
   //-----------------------------------------------------//

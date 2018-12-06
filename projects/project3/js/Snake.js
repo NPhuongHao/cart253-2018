@@ -186,7 +186,7 @@ Snake.prototype.updateHead = function() {
   this.i += this.iNext;
 
   this.showGameOver = function() {
-    this.sceneManager.showScene( GameOver );
+    mgr.showScene( GameOver );
   }
 }
 
