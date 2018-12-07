@@ -10,7 +10,6 @@ function MainGame() {
   }
 
   this.setup = function() {
-    bgSong.loop();
     // find a different scene using the SceneManager
     oGame = this.sceneManager.findScene( Intro ).oScene;
 

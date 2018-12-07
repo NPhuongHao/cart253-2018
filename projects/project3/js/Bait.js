@@ -39,9 +39,9 @@ Bait.prototype.updateBait = function() {
 
   if (snakeProperties.clearSkyMode == false) {
     for (var i = 0; i<79; i++) {
-      if(this.t == obstacle.dots[i].t) {
-        if (this.i == obstacle.dots[i].i) {
-          if (this.type == obstacle.dots[i].type) {
+      if(this.t > obstacle.dots[i].t-1 || this.t <obstacle.dots[i].t+1) {
+        if (this.i > obstacle.dots[i].i || this.i > obstacle.dots[i].i) {
+          if (!this.type == obstacle.dots[i].type) {
             this.generateBait();
           }
         }

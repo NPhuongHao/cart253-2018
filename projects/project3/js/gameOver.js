@@ -52,6 +52,8 @@ function GameOver() {
       snake.updateSnake();
       snake.highScore = snakeHighScore;
       snake.speedLevel = snakeSpeed;
+      specialBaitgo = false;
+      counterToSpecialBait = 0;
       bgSong.loop();
     }
 
@@ -74,8 +76,10 @@ function GameOver() {
         obstacle.setup();
       }
 
+      specialBaitgo = false;
+      counterToSpecialBait = 0;
+
       snake.updateSnake();
       snakeHighScore = snake.highScore;
-      bgSong.loop();
     }
 }

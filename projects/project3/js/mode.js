@@ -173,6 +173,7 @@ function Mode() {
   this.keyPressed = function() {
     if (keyCode === RIGHT_ARROW) {
       if (speedChosen == true && modeChosen == true) {
+        bgSong.loop();
         this.sceneManager.showScene( MainGame );//call main game scene
       }
     }
