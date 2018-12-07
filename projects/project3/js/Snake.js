@@ -35,8 +35,8 @@ function Snake(t,i,type,speed,angle,length) {
 //Set up the snake
 Snake.prototype.updateSnake = function() {
   for (var i = 0; i<this.length; i++) {
-    this.snakeDots.push(new SnakeDot(7+i,7+i, 'A', 30, 5));
-    this.snakeDots.push(new SnakeDot(7+i,7+i, 'B', 30, 5));
+    this.snakeDots.push(new SnakeDot(13+i,7+i, 'A', 30, 5));
+    this.snakeDots.push(new SnakeDot(13+i,7+i, 'B', 30, 5));
   }
 }
 
@@ -84,22 +84,6 @@ Snake.prototype.keyPressed = function() {
 }
 
 Snake.prototype.movement = function() {
-  /**************MOVEMENT BASED ON VELOCITY, LEFT HERE IN CASE OF REUSE***********/
-  //this.x = this.snakeDots[this.length*2-1].x;
-  //this.y = this.snakeDots[this.length*2-1].y;
-
-  //console.log(this.i, this.t, this.x, this.y);
-  /*console.log(this.speed, hexagonWidth);
-  this.vx = cos(this.angle) * (this.speed);
-  this.vy = sin(this.angle) * (this.speed);
-
-  this.x += this.vx;
-  this.y += this.vy;
-  console.log(cos(this.angle)*this.speed+this.x);*/
-
-  /*this.x = this.nextX;
-  this.y = this.nextY;*/
-  /*END*************MOVEMENT BASED ON VELOCITY, LEFT HERE IN CASE OF REUSE***********/
 
   //First, update the head's next position
   this.updateHead();
@@ -185,22 +169,13 @@ Snake.prototype.updateHead = function() {
   this.t += this.tNext;
   this.i += this.iNext;
 
-  this.showGameOver = function() {
-    mgr.showScene( GameOver );
-  }
 }
 
 Snake.prototype.handleSelfCollision = function() {
   for (var i = this.length*2-2; i>=0; i--) {
     //console.log(this.snakeDots[this.length*2-1], this.snakeDots[i]);
     if (this.snakeDots[this.length*2-1].t == this.snakeDots[i].t && this.snakeDots[this.length*2-1].i == this.snakeDots[i].i && this.snakeDots[this.length*2-1].type == this.snakeDots[i].type) {
-      /*noLoop();
-      push();
-      fill(255);
-      textAlign(CENTER);
-      text('PRESS ENTER TO RESTART', width/2, 100);
-      pop();*/
-      this.showGameOver();
+      mgr.showScene(GameOver);
     }
   }
 }
@@ -227,13 +202,18 @@ Snake.prototype.handleWallCollision = function() {
 }
 
 Snake.prototype.display = function() {
+  push();
+  fill(255);
+  stroke(255);
   for (var i=0; i<this.length*2; i++) {
     this.snakeDots[i].displayDot();
   }
+  pop();
 }
 
 Snake.prototype.manageHighScore = function() {
   if (this.score >= this.highScore) {
+    console.log('Highscore!');
     this.highScore = this.score;
   }
 }

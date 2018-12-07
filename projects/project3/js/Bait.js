@@ -37,6 +37,18 @@ Bait.prototype.updateBait = function() {
     this.onScreen = true;
   }
 
+  if (snakeProperties.clearSkyMode == false) {
+    for (var i = 0; i<79; i++) {
+      if(this.t == obstacle.dots[i].t) {
+        if (this.i == obstacle.dots[i].i) {
+          if (this.type == obstacle.dots[i].type) {
+            this.generateBait();
+          }
+        }
+      }
+    }
+  }
+
   //set bait's position based on its type
   if (this.type == 'A') {
     this.x = borderLength * 3 * this.i;
@@ -63,7 +75,6 @@ Bait.prototype.generateBait = function() {
   } else if (r < 1) {
     this.type = 'B';
   }
-  //console.log(this.t, this.i, this.type);
 }
 
 //this function defines what happen if the snake's head collides with the bait's position
@@ -100,7 +111,13 @@ Bait.prototype.specialBaitTimer = function() {
   pop();
 
   //add 1 unit to the special bait's time counter until it reaches 300
-  specialBaitCounter = constrain(specialBaitCounter + 1, 0, 300);
+  if (snake.speedLevel == 0) {
+    specialBaitCounter = constrain(specialBaitCounter + 1.5, 0, 300);
+  } else if (snake.speedLevel == 1) {
+    specialBaitCounter = constrain(specialBaitCounter + 1, 0, 300);
+  } else if (snake.speedLevel == 2) {
+    specialBaitCounter = constrain(specialBaitCounter + 0.7, 0, 300);
+  }
 
   //if the width of the timer reaches 200, the special bait disappears and the counter is reset
   if (timerW == 200) {

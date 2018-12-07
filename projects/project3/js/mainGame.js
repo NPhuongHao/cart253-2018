@@ -10,6 +10,7 @@ function MainGame() {
   }
 
   this.setup = function() {
+    bgSong.loop();
     // find a different scene using the SceneManager
     oGame = this.sceneManager.findScene( Intro ).oScene;
 
@@ -22,16 +23,23 @@ function MainGame() {
     specialBait = new Bait(floor(random(2, 32)), floor(random(2, 32)), 'A', borderLength, 30); //this is the special bait with a bigger radius value
     drawGrid();
 
+    //obstacle
+    if (snakeProperties.clearSkyMode == false) {
+      obstacle = new Obstacle(0);
+      obstacle.setup();
+    }
+
     snake.updateSnake();
-
-    //bgSong.loop();
-
-    console.log('FIRST PROTOTYPE: Build movement grid, create snake and handle keyboard input to move the snake around. Snake cannot bite itself or collide with anything yet.')
-    console.log('SECOND PROTOTYPE: Snake can now bite itself. Added bait and special bait. Added score system. Added background and repositioned the canvas.')
   }
 
   this.draw = function() {
     drawBackground();
+    if (snakeProperties.speedMode === 'Fixed') {
+      snake.speedLevel = snakeProperties.speedLevel;
+    } if (snakeProperties.speedMode === 'Flexible') {
+      snake.speedLevel = 0;
+    }
+
     snake.speedCount();
 
     bait.updateBait();
@@ -44,6 +52,10 @@ function MainGame() {
 
     if (counter % decelerator == 0) { //the bigger the decelerator , the slower the snake
       handleSnake();
+    }
+
+    if(snakeProperties.clearSkyMode == false) {
+      handleObstacle();
     }
 
     snake.display();
@@ -73,17 +85,23 @@ function MainGame() {
     snake.keyPressed();
 
     //Change the snake's speed level
-    if (keyIsDown(49)) { //the '1' key is pressed
-      snake.speedLevel = 0;
+    if (snakeProperties.speedMode === 'Flexible') {
+      if (keyIsDown(49)) { //the '1' key is pressed
+        snake.speedLevel = 0;
+      }
+      if (keyIsDown(50)) { //the '2' key is pressed
+        snake.speedLevel = 1;
+      }
+      if (keyIsDown(51)) { //the '3' key is pressed
+        snake.speedLevel = 2;
+      }
     }
-    if (keyIsDown(50)) { //the '2' key is pressed
-      snake.speedLevel = 1;
-    }
-    if (keyIsDown(51)) { //the '3' key is pressed
-      snake.speedLevel = 2;
-    }
+
     if (keyCode === ENTER) {
-      window.location.reload();
+      noLoop();
+    }
+    if (keyCode === SHIFT) {
+      loop();
     }
   }
 
@@ -102,5 +120,11 @@ function MainGame() {
     snake.movement();
     snake.handleSelfCollision();
   }
+
+  function handleObstacle() {
+    obstacle.handleCollision();
+    obstacle.display();
+  }
+
 
 }

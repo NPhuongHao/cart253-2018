@@ -22,8 +22,10 @@ var snake;
 var snakeProperties = {
   speedMode: 'Fixed',
   speedLevel: 0,
-  playMode: 'ClearSky',
+  clearSkyMode: true,
 }
+
+var obstacle;
 
 //variables to monitor the snake's speed (see the speedCount() function in Snake class)
 var counter = 0;
@@ -54,7 +56,7 @@ function preload() {
   titleFont = loadFont('../assets/fonts/Acme-Regular.ttf');
 
   soundFormats('mp3', 'wav');
-  //bgSong = loadSound('assets/sounds/Ib_Puppet.mp3');
+  bgSong = loadSound('assets/sounds/Ib_Puppet.mp3');
   twinkle = loadSound('assets/sounds/twinkle.mp3');
 }
 
@@ -62,8 +64,6 @@ function setup() {
     mgr = new SceneManager();
     mgr.bgIntro = bgIntro;
     mgr.wire();
-
-    mgr.addScene ( GameOver );
 
     mgr.showScene( Intro );
 }

@@ -14,7 +14,7 @@ function Tutorial() {
 
   this.draw = function() {
     if (screenCounter == 2) {
-      this.sceneManager.showScene( MainGame );//call main game scene
+      this.sceneManager.showScene( Mode );//call mode scene
     }
     if (screenCounter < 2) {
       tint(255,100);

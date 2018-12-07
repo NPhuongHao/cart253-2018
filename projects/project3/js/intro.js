@@ -10,13 +10,10 @@ function Intro() {
       createCanvas(canvasWidth,canvasHeight);
       image(this.sceneManager.bgIntro, 0, 0);
 
-      setupTitle();
-
-      setupButtons();
-
   }
 
   this.draw = function() {
+    setupTitle();
     handleHoverButtons();
   }
 
@@ -35,6 +32,7 @@ function Intro() {
     fill(255);
     textSize(68);
     textFont(titleFont);
+    textAlign(LEFT);
     text('STAR EATER', 130, 280);
     pop();
   }
