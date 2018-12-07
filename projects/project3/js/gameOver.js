@@ -29,7 +29,7 @@ function GameOver() {
           text('YOUR SCORE: ' + snake.score,width/2,height*0.4);
           textSize(48);
           text('High score: ' + snake.highScore, width/2, height*0.6);
-          textSize(16);
+          textSize(24);
           fill(200);
           textFont(globalFont);
           text('Press → to replay \n Press ENTER to go back to menu', width/2, height*0.8);

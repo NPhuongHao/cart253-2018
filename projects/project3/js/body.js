@@ -52,8 +52,8 @@ function preload() {
   bgIntro = loadImage('assets/images/bgIntro.jpg');
   tut[0] = loadImage('assets/images/bgTut01.jpg');
   tut[1] = loadImage('assets/images/bgTut02.jpg')
-  globalFont = loadFont('../assets/fonts/SedgwickAve-Regular.ttf');
-  titleFont = loadFont('../assets/fonts/Acme-Regular.ttf');
+  globalFont = 'Dancing Script';
+  titleFont = 'Kaushan Script';
 
   soundFormats('mp3', 'wav');
   bgSong = loadSound('assets/sounds/Ib_Puppet.mp3');

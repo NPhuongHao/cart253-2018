@@ -32,7 +32,7 @@ function Mode() {
   function setupMode() {
     fill(100);
     textFont(globalFont);
-    textSize(20);
+    textSize(24);
 
     text('Relaxed snake', marginLeft,marginTop+90);
     text('Dutiful snake', marginLeft,marginTop+140);
@@ -167,7 +167,6 @@ function Mode() {
       textAlign(CENTER);
       text('Press → to start', width/2, height - 80);
       pop();
-      console.log(snakeProperties.speedLevel, snakeProperties.clearSkyMode);
     }
   }
 
