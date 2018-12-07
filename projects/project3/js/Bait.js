@@ -69,7 +69,9 @@ Bait.prototype.generateBait = function() {
 //this function defines what happen if the snake's head collides with the bait's position
 Bait.prototype.handleSnakeCollision = function() {
   if (snake.snakeDots[snake.length*2-1].t == this.t && snake.snakeDots[snake.length*2-1].i == this.i && snake.snakeDots[snake.length*2-1].type == this.type) {
-    console.log('ATE!');
+    twinkle.stop();
+    twinkle.setVolume(0.3);
+    twinkle.play();
     this.onScreen = false;//the bait disappears
     if(this.OscillatorRadius == 30) {//ifthe eaten bait if the special bait
       snake.score += 3;
@@ -102,6 +104,25 @@ Bait.prototype.specialBaitTimer = function() {
 
   //if the width of the timer reaches 200, the special bait disappears and the counter is reset
   if (timerW == 200) {
+    specialBaitgo = false;
+    specialBaitCounter = 0;
+  }
+}
+
+Bait.prototype.TutorialSpecialBaitTimer = function() {
+  //the width of the timer according to the special bait's time counter. Tutorial version
+  timerW = map(specialBaitCounter,0,150,0,150);
+  push();
+  fill(255);
+  rectMode(CORNER);
+  rect(width*0.6,height*0.35,timerW,20);//display the timer
+  pop();
+
+  //add 1 unit to the special bait's time counter until it reaches 300
+  specialBaitCounter = constrain(specialBaitCounter + 3, 0, 150);
+
+  //if the width of the timer reaches 200, the special bait disappears and the counter is reset
+  if (timerW == 150) {
     specialBaitgo = false;
     specialBaitCounter = 0;
   }
