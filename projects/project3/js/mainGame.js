@@ -55,7 +55,7 @@ function MainGame() {
   //-----------------------------------------------------//
   //-----------------------------------------------------//
 
-  //Set up the background with short instruction
+  //Set up the background
   function drawBackground() {
     background(0, 50);
     push();
@@ -63,6 +63,7 @@ function MainGame() {
     fill(255, 50);
     textAlign(CENTER);
     textStyle(BOLD);
+    textFont(globalFont);
     text('Score: ' + snake.score, 80, 50);
     pop();
   }

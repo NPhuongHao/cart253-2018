@@ -19,6 +19,11 @@ var gridcode = {
 };
 
 var snake;
+var snakeProperties = {
+  speedMode: 'Fixed',
+  speedLevel: 0,
+  playMode: 'ClearSky',
+}
 
 //variables to monitor the snake's speed (see the speedCount() function in Snake class)
 var counter = 0;

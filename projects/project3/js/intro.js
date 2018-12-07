@@ -23,7 +23,7 @@ function Intro() {
   this.mousePressed = function() {
     if (mouseX+buttonW/2>width*0.3 && mouseX-buttonW/2<width*0.3) {//If mouse's X position overlapses with button's width
       if (mouseY+buttonH/2>height*0.55 && mouseY-buttonH/2<height*0.55) {//If mouse's Y position overlapses with button1's height
-        this.sceneManager.showScene( MainGame );//call main game scene
+        this.sceneManager.showScene( Mode );//call main game scene
       } else if (mouseY+buttonH/2>height*0.65 && mouseY-buttonH/2<height*0.65) {//If mouse's Y position overlapses with button2's height
         this.sceneManager.showScene( Tutorial );//call tutorial scene
       }
@@ -35,7 +35,7 @@ function Intro() {
     fill(255);
     textSize(68);
     textFont(titleFont);
-    text('STARRY SNAKE', 95, 280);
+    text('STAR EATER', 130, 280);
     pop();
   }
 
