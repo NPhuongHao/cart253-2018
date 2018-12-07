@@ -32,13 +32,13 @@ function GameOver() {
           textSize(24);
           fill(200);
           textFont(globalFont);
-          text('Press → to replay \n Press ENTER to go back to menu', width/2, height*0.8);
+          text('Press SPACE to replay \n Press ENTER to go back to menu', width/2, height*0.8);
         }
         drawBorder();
     }
 
     this.keyPressed = function() {
-      if (keyCode === RIGHT_ARROW) {
+      if (keyCode === SPACE) {
         mgr.showScene(MainGame);
         resetPositionAndScore();
       } if (keyCode === ENTER) {

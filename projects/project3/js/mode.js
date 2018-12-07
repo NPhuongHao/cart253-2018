@@ -40,7 +40,7 @@ function Mode() {
     text('Flexible snake', marginLeft,marginTop+240);
 
     text('Clear sky', width-marginLeft,marginTop+140);
-    text('Clouded sky', width-marginLeft,marginTop+190);
+    text('Cloudy sky', width-marginLeft,marginTop+190);
   }
 
   function handleHover() {
@@ -84,7 +84,7 @@ function Mode() {
           text('Clouded sky', width-marginLeft,marginTop+190);
           fill(150,150);
           textSize(16);
-          text('Conquer clouded skies \n by evading\n obstacles', width-marginLeft,marginTop+240);
+          text('Conquer cloudy sky \n by evading\n obstacles', width-marginLeft,marginTop+240);
         pop();
       }
     }
