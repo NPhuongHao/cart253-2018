@@ -15,10 +15,8 @@ function GameOver() {
       snake.manageHighScore();
       snakeHighScore = snake.highScore;
       snakeSpeed = snake.speedLevel;
-      console.log(snakeHighScore);
         if (screenFreeze<30) {
           screenFreeze ++;
-          console.log('check' + screenFreeze);
         }
         if (screenFreeze >= 30) {
           background(0,50)
@@ -32,13 +30,13 @@ function GameOver() {
           textSize(24);
           fill(200);
           textFont(globalFont);
-          text('Press SPACE to replay \n Press ENTER to go back to menu', width/2, height*0.8);
+          text('Press BACKSPACE to replay \n Press ENTER to go back to menu', width/2, height*0.8);
         }
         drawBorder();
     }
 
     this.keyPressed = function() {
-      if (keyCode === SPACE) {
+      if (keyCode === BACKSPACE) {
         mgr.showScene(MainGame);
         resetPositionAndScore();
       } if (keyCode === ENTER) {

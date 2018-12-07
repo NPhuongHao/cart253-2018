@@ -81,7 +81,7 @@ function Mode() {
       } else if (mouseY>marginTop+175 && mouseY<marginTop+200) {
         push();
         fill(255);
-          text('Clouded sky', width-marginLeft,marginTop+190);
+          text('Cloudy sky', width-marginLeft,marginTop+190);
           fill(150,150);
           textSize(16);
           text('Conquer cloudy sky \n by evading\n obstacles', width-marginLeft,marginTop+240);
@@ -156,7 +156,7 @@ function Mode() {
       } else if (snakeProperties.clearSkyMode == false) {
         push();
         fill(255);
-          text('Clouded sky', width-marginLeft,marginTop+190);
+          text('Cloudy sky', width-marginLeft,marginTop+190);
         pop();
       }
     }

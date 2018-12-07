@@ -213,7 +213,6 @@ Snake.prototype.display = function() {
 
 Snake.prototype.manageHighScore = function() {
   if (this.score >= this.highScore) {
-    console.log('Highscore!');
     this.highScore = this.score;
   }
 }
