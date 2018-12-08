@@ -1,21 +1,38 @@
+/*****************
+
+
+
+  This is the Game Over scene.
+  This scene pops up when the website is opened, or when the player chooses to restart a new game.
+  From here, player can whether choose to read the tutorial or start a game.
+
+
+
+******************/
+
 function Intro() {
 
+  //width and height of the buttons
   var buttonW = 150;
   var buttonH = 40;
 
-  this.preload = function() {
-  }
+  this.preload = function() {}
 
   this.setup = function() {
       createCanvas(canvasWidth,canvasHeight);
-      image(this.sceneManager.bgIntro, 0, 0);
-
+      image(this.sceneManager.bgIntro, 0, 0);//set up the Intro's BG image
   }
 
   this.draw = function() {
+    //Display the title
     setupTitle();
-    handleHoverButtons();
+    //Handle how the buttons behave
+    handleButtons();
   }
+
+  //-----------------------------------------------------//
+  //--------------OTHER FUNCTIONS------------------------//
+  //-----------------------------------------------------//
 
   this.mousePressed = function() {
     if (mouseX+buttonW/2>width*0.3 && mouseX-buttonW/2<width*0.3) {//If mouse's X position overlapses with button's width
@@ -37,22 +54,25 @@ function Intro() {
     pop();
   }
 
-  function handleHoverButtons() {
-    if (mouseX+buttonW/2>width*0.3 && mouseX-buttonW/2<width*0.3) {
-      if (mouseY+buttonH/2>height*0.55 && mouseY-buttonH/2<height*0.55) {
-        startBtnHover();
-      } else if (mouseY+buttonH/2>height*0.65 && mouseY-buttonH/2<height*0.65) {
-        tutorialBtnHover();
+  function handleButtons() {
+    if (mouseX+buttonW/2>width*0.3 && mouseX-buttonW/2<width*0.3) {//if mouse's X position coincides with the buttons' horizontal range
+      if (mouseY+buttonH/2>height*0.55 && mouseY-buttonH/2<height*0.55) {//if mouse's Y position coincides with the start button's vertical range
+        startBtnHover();//start start button's hover effect
+      } else if (mouseY+buttonH/2>height*0.65 && mouseY-buttonH/2<height*0.65) {//if mouse's Y position coincides with the tutorial button's vertical range
+        tutorialBtnHover();//start tutorial button's hover effect
       } else {
-        setupButtons();
+        setupButtons();//else, set up the buttons' visual as they are originally
       }
     } else {
-      setupButtons();
+      setupButtons();//else, set up the buttons' visual as they are originally
     }
   }
 
   function setupButtons() {
+    //this function sets up the buttons' visual as they are originally
     push();
+
+    //draw the outlines
     fill(0,200);
     strokeWeight(3);
     stroke(255);
@@ -60,23 +80,30 @@ function Intro() {
     rect(width*0.3, height*0.55, buttonW, buttonH);
     rect(width*0.3, height*0.65, buttonW, buttonH);
     noStroke();
+
+    //display the button's names
     fill(255);
     textAlign(CENTER);
     textSize(20);
     textFont(globalFont);
     text('Start', width*0.3, height*0.55+buttonH/4);
     text('Tutorial', width*0.3, height*0.65+buttonH/4);
+
     pop();
   }
 
   function startBtnHover() {
     push();
+
+    //fill the start button with white
     fill(255,50);
     strokeWeight(3);
     stroke(255);
     rectMode(CENTER);
     rect(width*0.3, height*0.55, buttonW, buttonH);
     noStroke();
+
+    //display the button's name in black
     fill(0);
     textAlign(CENTER);
     textSize(20);
@@ -87,12 +114,16 @@ function Intro() {
 
   function tutorialBtnHover() {
     push();
+
+    //fill the tutorial button with white
     fill(255,50);
     strokeWeight(3);
     stroke(255);
     rectMode(CENTER);
     rect(width*0.3, height*0.65, buttonW, buttonH);
     noStroke();
+
+    //display the button's name in black
     fill(0);
     textAlign(CENTER);
     textSize(20);

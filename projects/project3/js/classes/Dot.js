@@ -1,12 +1,14 @@
 /*****************
 
-  Class for each dot of the snake.
+  Class for each dot display on screen.
 
-  This class controls how each of the snake's dots moves and collide with each other.
+  This class controls:
+  - How each of the snake's dots behaves and collide with each other.
+  - How each of the obstacle's dots behaves and collide with the snake.
 
 ******************/
 
-function SnakeDot(t,i, type, angle, speed) {
+function Dot(t,i, type, angle, speed) {
   this.type = type;
   this.t = t;
   this.i = i;
@@ -23,7 +25,7 @@ function SnakeDot(t,i, type, angle, speed) {
   }
 }
 
-SnakeDot.prototype.updatePosition = function() {
+Dot.prototype.updatePosition = function() {
   if (this.type == 'A') {
     //if the grid type its head finds itself on upon the start is A, its x and y position is below
     this.x = borderLength * 3 * this.i;
@@ -35,6 +37,6 @@ SnakeDot.prototype.updatePosition = function() {
   }
 }
 
-SnakeDot.prototype.displayDot = function() {
+Dot.prototype.displayDot = function() {
   polygon(this.x, this.y, borderLength, 6);
 }

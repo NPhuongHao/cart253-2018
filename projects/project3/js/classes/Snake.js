@@ -29,14 +29,14 @@ function Snake(t,i,type,speed,angle,length) {
 
   //the snake's score
   this.score = 0;
-  this.highScore = 0;
+  this.highScore = [0,0];//array to store highscores. First element is for clear sky mode, second is for cloudy sky mode
 }
 
 //Set up the snake
 Snake.prototype.updateSnake = function() {
   for (var i = 0; i<this.length; i++) {
-    this.snakeDots.push(new SnakeDot(13+i,7+i, 'A', 30, 5));
-    this.snakeDots.push(new SnakeDot(13+i,7+i, 'B', 30, 5));
+    this.snakeDots.push(new Dot(13+i,7+i, 'A', 30, 5));
+    this.snakeDots.push(new Dot(13+i,7+i, 'B', 30, 5));
   }
 }
 
@@ -48,12 +48,16 @@ Snake.prototype.update = function() {
 }
 
 Snake.prototype.addLength = function() {
+  //this function adds two dots to the snake (rather than one, just to make everything else easier)
   this.length+=1;
-  this.snakeDots.unshift(new SnakeDot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
-  this.snakeDots.unshift(new SnakeDot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
+  //push two new snakeDot objects to the BEGINNING of the snakeDots[] array
+  this.snakeDots.unshift(new Dot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
+  this.snakeDots.unshift(new Dot(this.snakeDots[0].t, this.snakeDots[0].i, this.snakeDots[0].type, this.snakeDots[0].speed));
 }
 
+
 Snake.prototype.speedCount = function() {
+  //this function decreases the snake's speed decelerator as the snake goes faster (check mainGame.js for its use)
   if (this.speedLevel == 0) {
     decelerator = 8;
   } if (this.speedLevel == 1) {
@@ -83,8 +87,9 @@ Snake.prototype.keyPressed = function() {
   }
 }
 
-Snake.prototype.movement = function() {
 
+Snake.prototype.movement = function() {
+  //this function determines how the snake advances following its head
   //First, update the head's next position
   this.updateHead();
 
@@ -172,8 +177,8 @@ Snake.prototype.updateHead = function() {
 }
 
 Snake.prototype.handleSelfCollision = function() {
+  //this function sends the player to the GameOver scene if the snake self collides
   for (var i = this.length*2-2; i>=0; i--) {
-    //console.log(this.snakeDots[this.length*2-1], this.snakeDots[i]);
     if (this.snakeDots[this.length*2-1].t == this.snakeDots[i].t && this.snakeDots[this.length*2-1].i == this.snakeDots[i].i && this.snakeDots[this.length*2-1].type == this.snakeDots[i].type) {
       mgr.showScene(GameOver);
     }
@@ -182,26 +187,28 @@ Snake.prototype.handleSelfCollision = function() {
 
 
 Snake.prototype.handleWallCollision = function() {
-  if (this.snakeDots[this.length*2-1].t<1) {
+  //this function sends the snake to the other side of the screen if it collides with a border
+  if (this.snakeDots[this.length*2-1].t<1) {//if it touches the top border
     if (this.type == 'A') {
       this.t = 35;
     } else if (this.type =='B') {
       this.t = 34;
     }
-  } else if (this.snakeDots[this.length*2-1].t>34) {
+  } else if (this.snakeDots[this.length*2-1].t>34) {//if it touches the bottom border
     if (this.type == 'A') {
       this.t = 1;
     } else if (this.type == 'B') {
       this.t = 1;
     }
-  } else if (this.snakeDots[this.length*2-1].i<0) {
+  } else if (this.snakeDots[this.length*2-1].i<0) {//if it touches the left border
     this.i = 34;
-  } else if (this.snakeDots[this.length*2-1].i>34) {
+  } else if (this.snakeDots[this.length*2-1].i>34) {//if it touches the right border
     this.i = 0;
   }
 }
 
 Snake.prototype.display = function() {
+  //display the snake
   push();
   fill(255);
   stroke(255);
@@ -212,7 +219,14 @@ Snake.prototype.display = function() {
 }
 
 Snake.prototype.manageHighScore = function() {
-  if (this.score >= this.highScore) {
-    this.highScore = this.score;
+  //this functions check if the current score beats the highscore in its respective category
+  if (snakeProperties.clearSkyMode == true) {
+    if (this.score >= this.highScore[0]) {
+      this.highScore[0] = this.score;
+    }
+  } else if (snakeProperties.clearSkyMode == false) {
+    if (this.score >= this.highScore[1]) {
+      this.highScore[1] = this.score;
+    }
   }
 }

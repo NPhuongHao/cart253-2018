@@ -1,5 +1,25 @@
-var mgr;
-var titleFont;
+/*****************
+
+  NGUYEN Phuong Hao
+  Pippin Barr
+  CART 253 A
+  Concordia University
+
+  PROJECT NAME: STAR EATER
+  Eat as much star as possible to maintain your celestial beauty. Go, starry snake!
+
+  -----------------------------
+
+  This is the body scene, the global javascript file.
+  It stores global variables, global functions and initiates the website.
+
+******************/
+
+//-----------------------------------------------------//
+//--------------GLOBAL VARIABLES-----------------------//
+//-----------------------------------------------------//
+
+var mgr;//variable for the sceneManager() function
 
 //variables for each hexagon in the grid
 var borderLength = 10;
@@ -18,13 +38,15 @@ var gridcode = {
   i: 0
 };
 
+//variable to store the snake object and the snake's global properties
 var snake;
 var snakeProperties = {
-  speedMode: 'Fixed',
-  speedLevel: 0,
-  clearSkyMode: true,
+  speedMode: 'Fixed', // Fixed or Flexible (check Mode.js)
+  speedLevel: 0,      // Relaxed(0), Dutiful(1) or Starving(2) (check Mode.js)
+  clearSkyMode: true, // Clear Sky mode (true) or Cloudy SKy mode (false) (check Mode.js)
 }
 
+//variable to store the obstacle object
 var obstacle;
 
 //variables to monitor the snake's speed (see the speedCount() function in Snake class)
@@ -40,24 +62,32 @@ var counterToSpecialBait = 0;
 //variable to control if the special bait is on screen
 var specialBaitgo = false;
 
+//array to store the tutorial scenes' code
 var tut = [];
 
-//-----------------------------------------------------//
-//-----------------------------------------------------//
 
 
+//-----------------------------------------------------//
+//-----------------------------------------------------//
+//-----------------------------------------------------//
 
 
 function preload() {
+  //load BG image of the main menu
   bgIntro = loadImage('assets/images/bgIntro.jpg');
+
+  //load images of the tutorial
   tut[0] = loadImage('assets/images/bgTut01.jpg');
-  tut[1] = loadImage('assets/images/bgTut02.jpg')
+  tut[1] = loadImage('assets/images/bgTut02.jpg');
+
+  //load fonts
   globalFont = 'Dancing Script';
   titleFont = 'Kaushan Script';
 
+  //load sounds
   soundFormats('mp3', 'wav');
   bgSong = loadSound('assets/sounds/Ib_Puppet.mp3');
-  twinkle = loadSound('assets/sounds/twinkle.mp3');
+  twinkle = loadSound('assets/sounds/twinkle.mp3'); //effect when the snake eats a bait
 }
 
 function setup() {
@@ -65,7 +95,7 @@ function setup() {
     mgr.bgIntro = bgIntro;
     mgr.wire();
 
-    mgr.showScene( Intro );
+    mgr.showScene( Intro );//call the Intro scene
 }
 
 
@@ -125,6 +155,56 @@ function drawGrid() {
       gridTypeB.push(gridcode);
       polygon(x, y, borderLength, 6);
     }
+  }
+}
+
+//reset snake's position, its length and score
+function resetPositionAndScore() {
+  //Store a new Snake object into the snake variable
+  snake = new Snake(17, 17, 'A', 5, 30, 2);
+
+  //Set up the new snake
+  snake.updateSnake();
+
+  //Store the current snakeHighScore value back into its respective highscore category
+  if (snakeProperties.clearSkyMode == true) {
+    snake.highScore[0] = snakeHighScore;
+  } else if (snakeProperties.clearSkyMode == false) {
+    snake.highScore[1] = snakeHighScore;
+  }
+
+  //Store the snakeSpeed value back into the the new snake's speed level
+  snake.speedLevel = snakeSpeed;
+
+  //Reset the special Bait if it was on screen when the player lost
+  specialBaitgo = false;
+  counterToSpecialBait = 0;
+
+  //Replay the BG song
+  bgSong.loop();
+}
+
+//reset everything except the highscores
+function resetEverything() {
+  //Store a new Snake object into the snake variable
+  snake = new Snake(17, 17, 'A', 5, 30, 2);
+
+  //store a new Bait onject into the bait variable and the specialBait variable
+  bait = new Bait(floor(random(2, 32)), floor(random(2, 32)), 'A', borderLength, 10); //this is the normal bait
+  specialBait = new Bait(floor(random(2, 32)), floor(random(2, 32)), 'A', borderLength, 30); //this is the special bait with a bigger radius value
+
+  //Reset the special Bait if it was on screen when the player lost
+  specialBaitgo = false;
+  counterToSpecialBait = 0;
+
+  //Set up the new snake
+  snake.updateSnake();
+
+  //Store the current snakeHighScore value back into its respective highscore category
+  if (snakeProperties.clearSkyMode == true) {
+    snake.highScore[0] = snakeHighScore;
+  } else if (snakeProperties.clearSkyMode == false) {
+    snake.highScore[1] = snakeHighScore;
   }
 }
 

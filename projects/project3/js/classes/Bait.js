@@ -7,7 +7,7 @@
 ******************/
 
 function Bait(t,i,type,size,radius) {
-  //t,i,type,size of Bait class behave the same way with t,i,type,size of SnakeDot class
+  //t,i,type,size of Bait class behave the same way with t,i,type,size of Dot class
   this.type = type;
   this.t = t;
   this.i = i;
@@ -40,7 +40,7 @@ Bait.prototype.updateBait = function() {
   //if generated Bait's position coincides with or stays too close to the obstacles' position, generate a new Bait
   if (snakeProperties.clearSkyMode == false) {
     for (var i = 0; i<79; i++) {
-      if(this.t > obstacle.dots[i].t-1 || this.t <obstacle.dots[i].t+1 && his.i > obstacle.dots[i].i || this.i > obstacle.dots[i].i && !this.type == obstacle.dots[i].type) {
+      if(this.t > obstacle.dots[i].t-1 || this.t <obstacle.dots[i].t+1 && this.i > obstacle.dots[i].i || this.i > obstacle.dots[i].i && !this.type == obstacle.dots[i].type) {
             this.generateBait();
       }
     }

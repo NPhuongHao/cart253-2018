@@ -1,13 +1,18 @@
 /*****************
 
-This is the main game scene.
+
+
+  This is the Game Over scene.
+  This scene pops up after player chooses a mode or choose to restart a game of the same mode.
+  From here, player can control the snake and play the game.
+
+
 
 ******************/
 
 function MainGame() {
-  var i =0;
-  this.preload = function() {
-  }
+
+  this.preload = function() {}
 
   this.setup = function() {
     // find a different scene using the SceneManager
@@ -23,24 +28,21 @@ function MainGame() {
     drawGrid();
 
     //obstacle
-    if (snakeProperties.clearSkyMode == false) {
-      obstacle = new Obstacle(0);
-      obstacle.setup();
-    }
+    obstacle = new Obstacle(0);
 
+    //update the snake's original length and position
     snake.updateSnake();
   }
 
   this.draw = function() {
-    drawBackground();
-    if (snakeProperties.speedMode === 'Fixed') {
-      snake.speedLevel = snakeProperties.speedLevel;
-    } if (snakeProperties.speedMode === 'Flexible') {
-      snake.speedLevel = 0;
-    }
 
+    drawBackground();
+
+    //setup the snake's speed level and decelerator's value
+    setupSpeed();
     snake.speedCount();
 
+    //update on the status of the snake and the bait
     bait.updateBait();
     snake.update();
 
@@ -53,17 +55,20 @@ function MainGame() {
       handleSnake();
     }
 
-    if(snakeProperties.clearSkyMode == false) {
+    if(snakeProperties.clearSkyMode == false) {//if the player is playing Cloudy Sky mode, handle the obstacle
       handleObstacle();
     }
 
+    //display the snake and the bait
     snake.display();
     bait.display();
 
+    //draw border of the playground (for aesthetic purposes)
     drawBorder();
   }
 
   //-----------------------------------------------------//
+  //--------------OTHER FUNCTIONS------------------------//
   //-----------------------------------------------------//
 
   //Set up the background
@@ -81,11 +86,19 @@ function MainGame() {
     pop();
   }
 
+  function setupSpeed() {
+    if (snakeProperties.speedMode === 'Fixed') {
+      snake.speedLevel = snakeProperties.speedLevel; // if the player is playing Fixed speed mode (0, 1, or 2), assign the fixed speedlevel value to snake.speedlevel
+    } if (snakeProperties.speedMode === 'Flexible') {
+      snake.speedLevel = 0;//if the player is playing Flexible speed mode, the snake always starts with a level 0 speed
+    }
+  }
+
   this.keyPressed = function() {
     //Change the snake's direction
     snake.keyPressed();
 
-    //Change the snake's speed level
+    //Change the snake's speed level during gameplay if the player is playing Flexible speed mode
     if (snakeProperties.speedMode === 'Flexible') {
       if (keyIsDown(49)) { //the '1' key is pressed
         snake.speedLevel = 0;
@@ -103,7 +116,7 @@ function MainGame() {
     }
   }
 
-  //handle the special bait's behavior
+  //handle the special bait's behaviors
   function handleSpecialBait() {
     specialBait.updateBait();
     specialBait.display();
@@ -111,7 +124,7 @@ function MainGame() {
     specialBait.specialBaitTimer();
   }
 
-  //handle the snake's behavior
+  //handle the snake's behaviors
   function handleSnake() {
     snake.handleWallCollision();
     bait.handleSnakeCollision();
@@ -119,7 +132,9 @@ function MainGame() {
     snake.handleSelfCollision();
   }
 
+  //handle the obstacle's behaviors
   function handleObstacle() {
+    obstacle.setup();
     obstacle.handleCollision();
     obstacle.display();
   }
