@@ -28,35 +28,43 @@ function MainGame() {
     drawGrid();
 
     //obstacle
-    obstacle = new Obstacle(0);
+    obstacle = new Obstacle();
 
     //update the snake's original length and position
     snake.updateSnake();
   }
 
   this.draw = function() {
-
     drawBackground();
 
     //setup the snake's speed level and decelerator's value
+
     setupSpeed();
     snake.speedCount();
 
+
+    if(snakeProperties.clearSkyMode == false) {//if the player is playing Cloudy Sky mode, handle the obstacle
+      handleObstacle();
+    }
+
     //update on the status of the snake and the bait
+
     bait.updateBait();
+
     snake.update();
+
+
 
     //check if the special bait is good to go
     if (specialBaitgo == true) {
       handleSpecialBait();
     }
 
+    console.log('checkpoint6');
+
+
     if (counter % decelerator == 0) { //the bigger the decelerator , the slower the snake
       handleSnake();
-    }
-
-    if(snakeProperties.clearSkyMode == false) {//if the player is playing Cloudy Sky mode, handle the obstacle
-      handleObstacle();
     }
 
     //display the snake and the bait
