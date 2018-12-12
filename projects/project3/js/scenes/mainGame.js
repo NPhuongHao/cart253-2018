@@ -60,8 +60,6 @@ function MainGame() {
       handleSpecialBait();
     }
 
-    console.log('checkpoint6');
-
 
     if (counter % decelerator == 0) { //the bigger the decelerator , the slower the snake
       handleSnake();

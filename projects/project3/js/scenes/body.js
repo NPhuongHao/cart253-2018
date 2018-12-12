@@ -65,6 +65,8 @@ var specialBaitgo = false;
 //array to store the tutorial scenes' code
 var tut = [];
 
+var snakeHighScore;//store the last highscore
+
 
 
 //-----------------------------------------------------//

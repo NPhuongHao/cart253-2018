@@ -13,7 +13,6 @@ function GameOver() {
   var oGame;// variable used to retrieve the last frame of the desired scene (check setup())
 
   var screenFreeze = 0;//count the time (in frames) the losing mainGame scene is displayed on the screen before moving to score announcement
-  var snakeHighScore;//store the last highscore
   var snakeSpeed;//store the last speed level
   var snakeMode;//store the last play mode
 
