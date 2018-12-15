@@ -36,11 +36,15 @@ function Pause() {
     if (keyCode === ENTER) {
       this.sceneManager.showScene( MainGame );//call main game scene
     } if (keyCode === SHIFT) {
+      bgSong.stop();
       this.sceneManager.showScene( MainGame );
       resetPositionAndScore();
     } if (keyCode === BACKSPACE) {
-      this.scenemanager.showScene ( Intro );
       resetEverything();
+      createCanvas(canvasWidth,canvasHeight);
+      bgSong.stop();
+      image(this.sceneManager.bgIntro, 0, 0);//set up the Intro's BG image
+      this.sceneManager.showScene ( Intro );
     }
   }
 }
