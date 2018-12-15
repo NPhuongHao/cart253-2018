@@ -61,6 +61,11 @@ function Mode() {
 
     text('Clear sky', width-marginHorizontal, marginVertical+140);
     text('Cloudy sky', width-marginHorizontal, marginVertical+190);
+
+    push();
+    fill(255);
+    text('Press BACKSPACE to go back to the main menu', width/2, height - 120);
+    pop();
   }
 
   function handleHover() {
@@ -205,6 +210,11 @@ function Mode() {
         bgSong.loop();//start BG song
         this.sceneManager.showScene( MainGame );//call main game scene
       }
+    }
+    if (keyCode === BACKSPACE) {
+      createCanvas(canvasWidth,canvasHeight);
+      image(this.sceneManager.bgIntro, 0, 0);//set up the Intro's BG image
+      this.sceneManager.showScene( Intro );//call Intro scene
     }
   }
 }
