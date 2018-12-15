@@ -88,6 +88,8 @@ function Intro() {
     textFont(globalFont);
     text('Start', width*0.3, height*0.55+buttonH/4);
     text('Tutorial', width*0.3, height*0.65+buttonH/4);
+    fill(50);
+    text("BG music: Puppet (Mary's Theme) from Ib OST, music box cover by Musicbox cover", width/2, height - 50);
 
     pop();
   }

@@ -67,6 +67,12 @@ function Tutorial() {
 
   function displayPresentation() {
     snakeProperties.clearSkyMode = true;
+    bait.t = 17;
+    bait.i = 11;
+    bait.type = 'A';
+    specialBait.t = 17;
+    specialBait.i = 23;
+    specialBait.type = 'A';
     bait.updateBait()
     specialBait.updateBait();
     bait.display()
