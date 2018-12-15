@@ -110,6 +110,21 @@ function Intro() {
     textFont(globalFont);
     text('Start', width*0.3, height*0.55+buttonH/4);
     pop();
+
+    //set up the tutorial button normally
+    push();
+    fill(0,200);
+    strokeWeight(3);
+    stroke(255);
+    rectMode(CENTER);
+    rect(width*0.3, height*0.65, buttonW, buttonH);
+    noStroke();
+    fill(255);
+    textAlign(CENTER);
+    textSize(20);
+    textFont(globalFont);
+    text('Tutorial', width*0.3, height*0.65+buttonH/4);
+    pop();
   }
 
   function tutorialBtnHover() {
@@ -129,6 +144,21 @@ function Intro() {
     textSize(20);
     textFont(globalFont);
     text('Tutorial', width*0.3, height*0.65+buttonH/4);
+    pop();
+
+    //display the start button normally
+    push();
+    fill(0,200);
+    strokeWeight(3);
+    stroke(255);
+    rectMode(CENTER);
+    rect(width*0.3, height*0.55, buttonW, buttonH);
+    noStroke();
+    fill(255);
+    textAlign(CENTER);
+    textSize(20);
+    textFont(globalFont);
+    text('Start', width*0.3, height*0.55+buttonH/4);
     pop();
   }
 }

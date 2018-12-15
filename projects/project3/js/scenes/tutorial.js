@@ -31,6 +31,7 @@ function Tutorial() {
 
   this.draw = function() {
     if (screenCounter < 2) {
+      push();
       tint(255,100);
       //display the tutorial slide according to the current screen counter
       image(tut[screenCounter], 0, 0);
@@ -41,11 +42,13 @@ function Tutorial() {
       }
 
       drawBorder();
+      pop();
     }
 
     //if player click on the right arrow the second time
     if (screenCounter == 2) {
       this.sceneManager.showScene( Mode );//call mode scene
+      screenCounter = 0;
     }
   }
 
@@ -53,11 +56,17 @@ function Tutorial() {
     if (keyCode === RIGHT_ARROW) {//go to the next slide
       screenCounter = constrain(screenCounter+1,0,2);
     }if (keyCode === LEFT_ARROW) {//go to the previous slide
+      if (screenCounter == 0) {//if the current slide is the first slide
+        this.sceneManager.showScene( Intro );//call Intro scene
+        createCanvas(canvasWidth,canvasHeight);
+        image(this.sceneManager.bgIntro, 0, 0);//set up the Intro's BG image
+      }
       screenCounter = constrain(screenCounter-1,0,2);
     }
   }
 
   function displayPresentation() {
+    snakeProperties.clearSkyMode = true;
     bait.updateBait()
     specialBait.updateBait();
     bait.display()

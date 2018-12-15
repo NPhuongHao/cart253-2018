@@ -212,9 +212,9 @@ function Mode() {
       }
     }
     if (keyCode === BACKSPACE) {
+      this.sceneManager.showScene( Intro );//call Intro scene
       createCanvas(canvasWidth,canvasHeight);
       image(this.sceneManager.bgIntro, 0, 0);//set up the Intro's BG image
-      this.sceneManager.showScene( Intro );//call Intro scene
     }
   }
 }
