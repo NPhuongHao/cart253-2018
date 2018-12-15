@@ -65,7 +65,7 @@ var specialBaitgo = false;
 //array to store the tutorial scenes' code
 var tut = [];
 
-var snakeHighScore;//store the last highscore
+var snakeHighScore = 0;//store the last highscore
 var snakeSpeed;//store the last speed level
 var snakeMode;//store the last play mode
 
